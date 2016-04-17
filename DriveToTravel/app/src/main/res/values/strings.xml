@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Drive2Travel</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="phoneNumber">Phone number</string>
+    <string name="eMail">e-mail</string>
+    <string name="carModel">Car model</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="loginButton">Login</string>
+    <string name="registerButton">Register</string>
+    <string name="registerLabel">Don\'t have an account? Register here</string>
+    <string name="loginLabeL">Already have an account? Login here</string>
+    <string name="connect_to_network">Connect to internet</string>
+    <string name="rsLanguage">Serbian</string>
+    <string name="enLanguage">English</string>
+    <string name="lang_dialog_title">Language dialog title</string>
+    <string name="lang_dialog_message">Language dialog message</string>
+    <string name="language_settings">language settings</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_main22">Main22Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_driver_main2">DriverMain2</string>
+    <string name="title_activity_my">MyActivity</string>
+    <string name="title_activity_driver_main">DriverMain</string>
+    <string name="title_activity_add_tour">AddTourActivity</string>
+    <string name="title_activity_activity_driver_main">ActivityDriverMain</string>
+    <string name="title_activity_activity_show_tours">ActivityShowTours</string>
+    <string name="title_activity_activity_tour_details">ActivityTourDetails</string>
+</resources>

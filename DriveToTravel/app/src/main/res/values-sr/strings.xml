@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Drive2Travel</string>
+    <string name="carModel">Model automobila</string>
+    <string name="connect_to_network">Povezi se na internet</string>
+    <string name="eMail">e-pošta</string>
+    <string name="loginButton">Uloguj se</string>
+    <string name="loginLabeL">Već imaš nalog? Uloguj se ovde</string>
+    <string name="name">Ime</string>
+    <string name="password">Lozinka</string>
+    <string name="phoneNumber">Broj telefona</string>
+    <string name="registerButton">Prijavi se</string>
+    <string name="registerLabel">Nemaš nalog? Prijavi se ovde</string>
+    <string name="surname">Prezime</string>
+    <string name="username">Korisničko ime</string>
+    <string name="enLanguage">Engleski</string>
+    <string name="lang_dialog_message">Jezik dialog poruka</string>
+    <string name="lang_dialog_title">Jezik dialog naslov</string>
+    <string name="language_settings">Jezik podesavanje</string>
+    <string name="rsLanguage">Srpski</string>
+
+    <string-array name="lang_select">
+        <item>English</item>
+        <item>Serbian</item>
+    </string-array>
+</resources>
