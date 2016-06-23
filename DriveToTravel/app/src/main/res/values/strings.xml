@@ -31,4 +31,5 @@
     <string name="title_activity_activity_driver_main">ActivityDriverMain</string>
     <string name="title_activity_activity_show_tours">ActivityShowTours</string>
     <string name="title_activity_activity_tour_details">ActivityTourDetails</string>
+    <string name="title_activity_activity_map">ActivityMap</string>
 </resources>
