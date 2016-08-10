@@ -25,6 +25,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
     private EditText usernameET;
     private EditText passwordET;
 
+    private Button testUserButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +41,14 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
         this.usernameET = (EditText)findViewById(R.id.etLoginActivityUsername);
         this.passwordET = (EditText)findViewById(R.id.etLoginActivityPassword);
 
+        this.testUserButton = (Button) findViewById(R.id.testUser_button);
+        testUserButton.setOnClickListener(this);
+
         //Get language
         LanguageChange.getMyLanguage(this);
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -97,6 +104,12 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 startActivity(intent);
                 finish();
 
+                break;
+
+            case R.id.testUser_button:
+                    intent = new Intent(this, PassangerMainActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
     }
