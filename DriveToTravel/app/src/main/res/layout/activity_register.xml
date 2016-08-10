@@ -110,10 +110,11 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Passenger"
+                    android:text="Passanger"
                     android:id="@+id/radioButtonRegisterActivityPassenger"
                     android:layout_alignTop="@+id/radioButtonRegisterActivityDriver"
-                    android:layout_toEndOf="@+id/radioButtonRegisterActivityDriver" />
+                    android:layout_toEndOf="@+id/radioButtonRegisterActivityDriver"
+                    android:checked="false" />
             </RadioGroup>
 
         </RelativeLayout>
