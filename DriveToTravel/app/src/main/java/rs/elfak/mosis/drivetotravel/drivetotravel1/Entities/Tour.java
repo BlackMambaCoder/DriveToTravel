@@ -48,7 +48,7 @@ public class Tour implements Parcelable
         this.destinationLocation = destArg;
 
         Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("d-M-yyyy-hh:mm", Locale.ENGLISH);
+        DateFormat dateFormat = new SimpleDateFormat("d-M-yyyy-HH:mm", Locale.ENGLISH);
 
         try
         {
