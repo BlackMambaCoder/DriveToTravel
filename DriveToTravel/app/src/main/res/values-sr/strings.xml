@@ -19,6 +19,13 @@
     <string name="language_settings">Jezik podesavanje</string>
     <string name="rsLanguage">Srpski</string>
 
+    <string name="enter_first_name_message">Unesite ime</string>
+    <string name="enter_last_name_message">Unesite prezime</string>
+    <string name="enter_username_message">Unesite korisničko ime</string>
+    <string name="enter_password_message">Unesite lozinku</string>
+
+    <string name="error_to_store_driver_message">Greška pri čuvanju korisnika. Pokušajte ponovo za par minuta</string>
+
     <string name="title_menu_passanger_transport">Vožnje</string>
     <string name="title_menu_passanger_search_transport">Pretraga vožnji</string>
     <string name="title_menu_passanger_my_transport">Moje vožnje</string>
@@ -33,6 +40,8 @@
     <string name="search_error_message">Molimo unesite sve podatke!</string>
     <string name="search_by_data">Pretraga po podacima</string>
     <string name="search_by_distance">Pretraga po rastojanju</string>
+
+    <string name="title_activity_tour_details">Detalji vožnje</string>
 
     <string-array name="lang_select">
         <item>English</item>

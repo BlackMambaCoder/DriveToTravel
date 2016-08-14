@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERAA"/>
 
     <application
         android:allowBackup="true"
@@ -41,12 +42,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rs.elfak.mosis.drivetotravel.drivetotravel1.Activities.ActivityDriverMain" />
         </activity>
-        <activity
-            android:name=".Activities.ActivityTourDetails"
-            android:label="@string/title_activity_activity_tour_details"
-            android:theme="@style/AppTheme" />
         <activity android:name=".Activities.PassangerMainActivity" />
-        <activity android:name=".Activities.SearchRideActivity"></activity>
+        <activity android:name=".Activities.SearchRideActivity" />
+        <activity android:name=".Activities.ShowTourDetailsActivity"></activity>
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -52,8 +53,12 @@ public class PassangerMainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 Tour item =(Tour) adapterView.getItemAtPosition(i);
-                Toast.makeText(PassangerMainActivity.this, "Click: " + item.getStartLocation()+" "+item.getDestinationLocation(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(PassangerMainActivity.this, "Click: " + item.getStartLocation()+" "+item.getDestinationLocation(), Toast.LENGTH_SHORT).show();
 
+                Intent intent = new Intent(PassangerMainActivity.this, ShowTourDetailsActivity.class);
+                intent.putExtra("tour", item);
+
+                startActivity(intent);
             }
         });
 
@@ -73,54 +78,6 @@ public class PassangerMainActivity extends AppCompatActivity {
         */
     }
 
-/*
-    private void showSearchDialog()
-    {
-        //Kreiranje dijaloga
-        final Dialog dialog = new Dialog(PassangerMainActivity.this);
-
-        //Postavljanje layout-a
-        dialog.setContentView(R.layout.passanger_search_activity);
-        dialog.setTitle("Pretraga vožnji");
-
-        dialog.show();
-
-        final Button cancel_btn = (Button) dialog.findViewById(R.id.passanger_dismiss_btn);
-        final Button accpet_btn = (Button) dialog.findViewById(R.id.passanger_search_btn);
-
-        final EditText start_text = (EditText) dialog.findViewById(R.id.search_start_txt);
-        final EditText stop_text = (EditText) dialog.findViewById(R.id.search_stop_text);
-
-        cancel_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        accpet_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                start = start_text.getText().toString();
-                stop = stop_text.getText().toString();
-
-                if(!start.isEmpty() && !stop.isEmpty())
-                {
-                    Toast.makeText(PassangerMainActivity.this,"Podaci za pretragu: "+start+" - "+stop,Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                }
-                else
-                {
-                    Toast.makeText(PassangerMainActivity.this,"Nisu unešeni svi podaci!!!",Toast.LENGTH_SHORT).show();
-                }
-
-
-            }
-        });
-    }
-*/
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -138,8 +95,10 @@ public class PassangerMainActivity extends AppCompatActivity {
             case R.id.passanger_menu_search_btn:
                 //Open search dialog
                 //showSearchDialog();
+
                 Intent intent = new Intent(this, SearchRideActivity.class);
                 startActivityForResult(intent,SearchRideActivity.REQUEST_CODE);
+
 
             default:
                 return super.onOptionsItemSelected(item);

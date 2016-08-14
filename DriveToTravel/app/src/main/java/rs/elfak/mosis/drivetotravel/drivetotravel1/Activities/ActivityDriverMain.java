@@ -171,6 +171,8 @@ public class ActivityDriverMain extends AppCompatActivity implements View.OnClic
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        //TODO: Ubaciti stringove iz resursa, da ne bude hardkodirano
+
         builder.setTitle("Closing Activity");
         builder.setMessage("Are you sure you want to close? You will be logged out.");
         builder.setPositiveButton("Yes", this);

@@ -2,13 +2,17 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +28,8 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
 
     private Button registerBtn;
     private TextView toLoginLabel;
+    private ImageView profilePictureView;
+    private Bitmap profileBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,19 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
 
         this.toLoginLabel = (TextView)findViewById(R.id.gotoLoginLabel);
         this.toLoginLabel.setOnClickListener(this);
+
+        this.profilePictureView = (ImageView) findViewById(R.id.register_profile_image);
+
+        //Click on profile picture
+        this.profilePictureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, 1);
+                }
+            }
+        });
 
         //Get language
         LanguageChange.getMyLanguage(this);
@@ -75,7 +94,7 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
                         }
                         else
                         {
-                            Toast.makeText(this, "Error to store driver. Try in a few minutes again", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, R.string.error_to_store_driver_message, Toast.LENGTH_SHORT).show();
                         }
                     }
                     else
@@ -156,7 +175,7 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
         editText = (EditText)findViewById(R.id.etRegName);
         if (editText.getText().toString().equals(""))
         {
-            toastString += "Enter your name";
+            toastString += R.string.enter_first_name_message;
             retValue = false;
         }
 
@@ -168,7 +187,7 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
                 toastString += "\n";
             }
 
-            toastString += "Enter your surname";
+            toastString += R.string.enter_last_name_message;
             retValue = false;
         }
 
@@ -180,7 +199,7 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
                 toastString += "\n";
             }
 
-            toastString += "Enter your Username";
+            toastString += R.string.enter_username_message;
             retValue = false;
         }
 
@@ -192,7 +211,7 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
                 toastString += "\n";
             }
 
-            toastString += "Enter your Password";
+            toastString += R.string.enter_password_message;
             retValue = false;
         }
 
@@ -217,5 +236,15 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
         }
 
         return retValue;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            profileBitmap = (Bitmap) extras.get("data");
+
+            profilePictureView.setImageBitmap(profileBitmap);
+        }
     }
 }

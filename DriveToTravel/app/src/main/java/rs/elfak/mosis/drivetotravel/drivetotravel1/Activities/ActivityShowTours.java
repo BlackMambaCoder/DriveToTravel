@@ -72,7 +72,7 @@ public class ActivityShowTours extends AppCompatActivity implements AdapterView.
     {
         Tour selectedTour = this.upcomingTourList.get(position);
 
-        Intent intent = new Intent(this, ActivityTourDetails.class);
+        Intent intent = new Intent(ActivityShowTours.this, ShowTourDetailsActivity.class);
         intent.putExtra("tour", selectedTour);
 
         startActivity(intent);
