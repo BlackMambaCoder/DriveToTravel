@@ -33,10 +33,10 @@ public class StringManipulator {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            //Toast.makeText(context, "Error inputStreamToString: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            total = null;
         }
 
-        return total.toString();
+        return total != null ? total.toString() : null;
     }
 
     public static List<String> jsonArrayToStringList (String inputString)
@@ -59,6 +59,24 @@ public class StringManipulator {
         }
 
         return returnArray;
+    }
+
+    public static JSONArray stringToJSONArray (String inputString)
+    {
+        JSONObject object;
+        JSONArray array;
+
+        try
+        {
+            object = new JSONObject(inputString);
+            array = object.getJSONArray("locations");
+        }
+        catch (JSONException e)
+        {
+            array = null;
+        }
+
+        return  array;
     }
 
 }

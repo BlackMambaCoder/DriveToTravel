@@ -9,6 +9,11 @@
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/passanger_main_menu_activate_location_notification"
+        android:title="LocNotify"
+        android:orderInCategory="0"
+        app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/passanger_main_menu_logout_action"
         android:title="Logout"
         android:orderInCategory="0"
