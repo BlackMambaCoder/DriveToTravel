@@ -46,7 +46,11 @@
             android:label="@string/title_activity_activity_tour_details"
             android:theme="@style/AppTheme" />
         <activity android:name=".Activities.PassangerMainActivity" />
-        <activity android:name=".Activities.SearchRideActivity"></activity>
+        <activity android:name=".Activities.SearchRideActivity" />
+
+        <service
+            android:name=".Services.LocationUpdateIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

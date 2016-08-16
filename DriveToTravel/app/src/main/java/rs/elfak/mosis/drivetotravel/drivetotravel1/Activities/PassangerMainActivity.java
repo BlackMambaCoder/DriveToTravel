@@ -1,7 +1,10 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Activities;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,13 +16,26 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.CustomListAdapter;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.Location;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.LocationUpdateService;
 
 public class PassangerMainActivity extends AppCompatActivity {
 
     ListView listaVoznji;
     String start,stop;
+
+    boolean toggleLocationNotification      = false;
+    private String locations                = "";
+    ArrayList<Location> locationsList       = null;
+
+    public static Handler publicHandler            = null;
 
     String[] drive = {"Zaječar - Niš", "Niš - Zaječar","Beograd - Novi Sad","Negotin - Bor","Bor - Negotin"};
     String[] date  = {"08/08/2016","08/08/2016","10/08/2016","09/08/2016","09/08/2016"};
@@ -36,7 +52,9 @@ public class PassangerMainActivity extends AppCompatActivity {
 
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this android.R.layout.simple_list_item_1, android.R.id.text1, mobileArray);
 
-        listaVoznji.setAdapter(new CustomListAdapter(PassangerMainActivity.this,drive,date,time));
+        listaVoznji.setAdapter(new CustomListAdapter(PassangerMainActivity.this, drive, date, time));
+
+//        this.startLocationUpdateService();
     }
 
     private void showSearchDialog()
@@ -70,14 +88,11 @@ public class PassangerMainActivity extends AppCompatActivity {
                 start = start_text.getText().toString();
                 stop = stop_text.getText().toString();
 
-                if(!start.isEmpty() && !stop.isEmpty())
-                {
-                    Toast.makeText(PassangerMainActivity.this,"Podaci za pretragu: "+start+" - "+stop,Toast.LENGTH_SHORT).show();
+                if (!start.isEmpty() && !stop.isEmpty()) {
+                    Toast.makeText(PassangerMainActivity.this, "Podaci za pretragu: " + start + " - " + stop, Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                }
-                else
-                {
-                    Toast.makeText(PassangerMainActivity.this,"Nisu unešeni svi podaci!!!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(PassangerMainActivity.this, "Nisu unešeni svi podaci!!!", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -105,10 +120,32 @@ public class PassangerMainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, SearchRideActivity.class);
                 startActivityForResult(intent,SearchRideActivity.REQUEST_CODE);
 
+                break;
+
+            case R.id.passanger_main_menu_activate_location_notification:
+
+                if (!this.toggleLocationNotification)
+                {
+                    this.toggleLocationNotification = true;
+                    this.startLocationUpdateService();
+                    Toast.makeText(this, "Location update activated", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    this.toggleLocationNotification = false;
+                    this.stopLocationUpdateService();
+                    Toast.makeText(this, "Location update deactivated", Toast.LENGTH_LONG).show();
+                }
+
+                break;
+
             default:
-                return super.onOptionsItemSelected(item);
         }
+
+        return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -121,5 +158,38 @@ public class PassangerMainActivity extends AppCompatActivity {
             Toast.makeText(PassangerMainActivity.this,"Search: "+message,Toast.LENGTH_SHORT).show();
             //textView1.setText(message);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        this.stopLocationUpdateService();
+    }
+
+    private void startLocationUpdateService()
+    {
+        Intent intent = new Intent(this, LocationUpdateService.class);
+        startService(intent);
+    }
+
+    private void stopLocationUpdateService()
+    {
+        stopService(new Intent(this, LocationUpdateService.class));
+    }
+
+    private void getReceiveLocationMessages()
+    {
+        final Context context = this;
+        publicHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                locations = (String)msg.obj;
+
+                JSONArray arrayWithLocations = StringManipulator.stringToJSONArray(locations);
+                locationsList = Location.getLocationsFromJSONArray(arrayWithLocations);
+
+                // update UI
+            }
+        };
     }
 }

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -65,33 +66,33 @@ public class FetchTourDataAsyncTask extends AsyncTask<String, Void, Void>
         {
             String controller = "";
 
-            switch (_fetchType)
-            {
-                case 1: // fetch by driver id
-
-                    controller = "fetchTourByDriverId.php/";
-                    data.put("id", postValue);
-
-                    break;
-
-                case 2:
-
-                    controller = "fetchTourByDriverUsername.php";
-                    data.put("username", postValue);
-                    break;
-
-                case 3:
-                    /**
-                     * fetch by destination location
-                     */
-                    break;
-
-                case 4:
-                    /**
-                     * fetch by start and end location
-                     */
-                    break;
-            }
+//            switch (_fetchType)
+//            {
+//                case 1: // fetch by driver id
+//
+//                    controller = "fetchTourByDriverId.php/";
+//                    data.put("id", postValue);
+//
+//                    break;
+//
+//                case 2:
+//
+//                    controller = "fetchTourByDriverUsername.php";
+//                    data.put("username", postValue);
+//                    break;
+//
+//                case 3:
+//                    /**
+//                     * fetch by destination location
+//                     */
+//                    break;
+//
+//                case 4:
+//                    /**
+//                     * fetch by start and end location
+//                     */
+//                    break;
+//            }
 
 
             URL url = new URL(ServerStaticAttributes._serverAddress
@@ -111,6 +112,7 @@ public class FetchTourDataAsyncTask extends AsyncTask<String, Void, Void>
 
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
 
+            // Sending JSONArray to server
             bufferedWriter.write(postValue);
             bufferedWriter.flush();
             bufferedWriter.close();
