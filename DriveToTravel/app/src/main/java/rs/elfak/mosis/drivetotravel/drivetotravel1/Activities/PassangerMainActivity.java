@@ -3,12 +3,9 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Activities;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-<<<<<<< HEAD
 import android.os.Parcelable;
-=======
 import android.os.Handler;
 import android.os.Message;
->>>>>>> refs/remotes/origin/master
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,14 +18,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
-=======
 import org.json.JSONArray;
 
 import java.util.ArrayList;
 
->>>>>>> refs/remotes/origin/master
+
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.CustomListAdapter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.Location;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
@@ -41,20 +36,12 @@ public class PassangerMainActivity extends AppCompatActivity {
     CustomListAdapter listAdapter;
     String start,stop;
 
-<<<<<<< HEAD
     Tour[] tours;
-=======
     boolean toggleLocationNotification      = false;
     private String locations                = "";
     ArrayList<Location> locationsList       = null;
 
     public static Handler publicHandler            = null;
-
-    String[] drive = {"Zaječar - Niš", "Niš - Zaječar","Beograd - Novi Sad","Negotin - Bor","Bor - Negotin"};
-    String[] date  = {"08/08/2016","08/08/2016","10/08/2016","09/08/2016","09/08/2016"};
-    String[] time =  {"05:30","14:00","10:00","05:30","16:00"};
->>>>>>> refs/remotes/origin/master
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,18 +53,9 @@ public class PassangerMainActivity extends AppCompatActivity {
 
         tours = new  Tour[3];
 
-<<<<<<< HEAD
         tours[0] = new Tour("Nis","Beograd","08-12-2016","23:9");
         tours[1] = new Tour("Zajecar","Bor","08-12-2016","23:9");
         tours[2] = new Tour("Negotin","Kladovo","08-12-2016","23:9");
-=======
-        listaVoznji.setAdapter(new CustomListAdapter(PassangerMainActivity.this, drive, date, time));
-
-//        this.startLocationUpdateService();
-    }
->>>>>>> refs/remotes/origin/master
-
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this android.R.layout.simple_list_item_1, android.R.id.text1, mobileArray);
 
         listAdapter = new CustomListAdapter(PassangerMainActivity.this,tours);
         listaVoznji.setAdapter(listAdapter);
@@ -98,18 +76,18 @@ public class PassangerMainActivity extends AppCompatActivity {
         });
 
 
-<<<<<<< HEAD
+
         //Long klik na item
         /*
         listaVoznji.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-=======
+
                 if (!start.isEmpty() && !stop.isEmpty()) {
                     Toast.makeText(PassangerMainActivity.this, "Podaci za pretragu: " + start + " - " + stop, Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 } else {
                     Toast.makeText(PassangerMainActivity.this, "Nisu unešeni svi podaci!!!", Toast.LENGTH_SHORT).show();
                 }
->>>>>>> refs/remotes/origin/master
+
 
             public boolean onItemLongClick(AdapterView<?> adapterView, View v,
                                            int index, long arg3) {
@@ -143,8 +121,7 @@ public class PassangerMainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, SearchRideActivity.class);
                 startActivityForResult(intent,SearchRideActivity.REQUEST_CODE);
 
-<<<<<<< HEAD
-=======
+
                 break;
 
             case R.id.passanger_main_menu_activate_location_notification:
@@ -163,7 +140,6 @@ public class PassangerMainActivity extends AppCompatActivity {
                 }
 
                 break;
->>>>>>> refs/remotes/origin/master
 
             default:
         }

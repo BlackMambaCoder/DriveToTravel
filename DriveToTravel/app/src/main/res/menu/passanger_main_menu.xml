@@ -12,6 +12,7 @@
     <item android:id="@+id/passanger_main_menu_activate_location_notification"
         android:title="LocNotify"
         android:orderInCategory="0"
+        android:icon="@android:drawable/ic_menu_compass"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/passanger_main_menu_logout_action"
