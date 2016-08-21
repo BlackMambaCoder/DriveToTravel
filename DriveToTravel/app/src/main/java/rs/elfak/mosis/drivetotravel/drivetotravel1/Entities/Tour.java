@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.MyConverter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.TourStaticAttributes;
 
 /**
@@ -32,37 +33,40 @@ public class Tour implements Parcelable
     private Date startDateAndTime;
     private String tourDriverId;
     private List<String> passengers;
+    private double rank;
 
     public Tour ()
     {
-        this.startLocation = "";
-        this.destinationLocation = "";
-        this.startDateAndTime = null;
-        this.tourDriverId = "";
-        this.passengers = null;
+        this.startLocation              = "";
+        this.destinationLocation        = "";
+        this.startDateAndTime           = null;
+        this.tourDriverId               = "";
+        this.passengers                 = null;
+        this.rank                       = -1.0;
     }
 
     public Tour (String startArg, String destArg, String startDateArg, String startTimeArg)
     {
-        this.startLocation = startArg;
-        this.destinationLocation = destArg;
+        this.startLocation              = startArg;
+        this.destinationLocation        = destArg;
 
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("d-M-yyyy-hh:mm", Locale.ENGLISH);
+        Date date                       = new Date();
+        DateFormat dateFormat           = new SimpleDateFormat("d-M-yyyy-hh:mm", Locale.ENGLISH);
 
         try
         {
-            date = dateFormat.parse(startDateArg + "-" + startTimeArg);
+            date                            = dateFormat.parse(startDateArg + "-" + startTimeArg);
         }
         catch (ParseException e)
         {
             e.printStackTrace();
         }
 
-        this.startDateAndTime = date;
+        this.startDateAndTime           = date;
 
-        this.tourDriverId = "";
-        this.passengers = null;
+        this.tourDriverId               = "";
+        this.passengers                 = new ArrayList<>();
+        this.rank                       = -1.0;
     }
 
     // === GETTER === //
@@ -97,6 +101,11 @@ public class Tour implements Parcelable
         return this.passengers.get(position);
     }
 
+    public double getRank()
+    {
+        return this.rank;
+    }
+
     // === SETTER === //
     public void setStartLocation(String parameter)
     {
@@ -123,7 +132,7 @@ public class Tour implements Parcelable
         this.passengers = parameter;
     }
 
-    public void setPassenger(String passenger)
+    public void addPassenger(String passenger)
     {
         this.passengers.add(passenger);
     }
@@ -131,6 +140,15 @@ public class Tour implements Parcelable
     public void setDriver(String driverUsername)
     {
         this.tourDriverId = driverUsername;
+    }
+
+    public double setRank(int rankParam)
+    {
+        ServerRequest request = new ServerRequest();
+        List<Double> ranks = request.updateTourRank((double) rankParam);
+        this.rank = ranks.get(0);
+
+        return ranks.get(1);
     }
 
     // === STATIC METHODS === //

@@ -2,6 +2,7 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
@@ -25,6 +26,7 @@ import java.util.List;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.ServerStaticAttributes;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
 
@@ -34,6 +36,8 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttri
 public class FetchTourDataAsyncTask extends AsyncTask<String, Void, Void>
 {
     public static int _fetchType = -1;
+    public static String successMessage = "OK";
+
     private List<Tour> tours;
     private ProgressDialog progressDialog;
 
@@ -60,12 +64,12 @@ public class FetchTourDataAsyncTask extends AsyncTask<String, Void, Void>
 
         String postValue = params[0];
 
-        JSONObject data = new JSONObject();
+        Resources res = Resources.getSystem();
+
+        String routeUrl = res.getString(R.string.servers_url) + res.getString(R.string.fetch_tour_data);
 
         try
         {
-            String controller = "";
-
 //            switch (_fetchType)
 //            {
 //                case 1: // fetch by driver id
@@ -93,11 +97,7 @@ public class FetchTourDataAsyncTask extends AsyncTask<String, Void, Void>
 //                     */
 //                    break;
 //            }
-
-
-            URL url = new URL(ServerStaticAttributes._serverAddress
-                    + ServerStaticAttributes._serverPath
-                    + controller);
+            URL url = new URL(routeUrl);
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
@@ -112,7 +112,7 @@ public class FetchTourDataAsyncTask extends AsyncTask<String, Void, Void>
 
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
 
-            // Sending JSONArray to server
+            // Sending JSONArray as string to server
             bufferedWriter.write(postValue);
             bufferedWriter.flush();
             bufferedWriter.close();
@@ -166,32 +166,44 @@ public class FetchTourDataAsyncTask extends AsyncTask<String, Void, Void>
         }
         catch (MalformedURLException e)
         {
-            Log.e("*****BREAK_POINT*****", "ServerRequest FetchDriverDataAsyncTask doInBackGround: " + e.getMessage());
+            successMessage = "FetchTourDataAsyncTask: ParseException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
             this.tours = null;
         }
         catch (ProtocolException e)
         {
-            Log.e("*****BREAK_POINT*****", "ServerRequest FetchDriverDataAsyncTask doInBackGround: " + e.getMessage());
+            successMessage = "FetchTourDataAsyncTask: ProtocolException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
             this.tours = null;
         }
         catch (JSONException e)
         {
-            Log.e("*****BREAK_POINT*****", "ServerRequest FetchDriverDataAsyncTask doInBackGround: " + e.getMessage());
+            successMessage = "FetchTourDataAsyncTask: JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
             this.tours = null;
         }
         catch (IOException e)
         {
-            Log.e("*****BREAK_POINT*****", "ServerRequest FetchDriverDataAsyncTask doInBackGround: " + e.getMessage());
+            successMessage = "FetchTourDataAsyncTask: IOException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
             this.tours = null;
         }
-        catch (ParseException e)
-        {
-            Log.e("*****BREAK_POINT*****", "ServerRequest FetchDriverDataAsyncTask doInBackGround: " + e.getMessage());
-            this.tours = null;
-        }
+//        catch (ParseException e)
+//        {
+//            successMessage = "FetchTourDataAsyncTask: ParseException - " + e.getMessage();
+//            Log.e("*****BREAK_POINT*****", successMessage);
+//            e.printStackTrace();
+//            this.tours = null;
+//        }
         catch (Exception e)
         {
-            Log.e("*****BREAK_POINT*****", "ServerRequest FetchDriverDataAsyncTask doInBackGround: " + e.getMessage());
+            successMessage = "FetchTourDataAsyncTask: Exception - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
             this.tours = null;
         }
 

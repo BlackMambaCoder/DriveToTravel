@@ -1,5 +1,6 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Entities;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -90,4 +91,53 @@ public class Driver extends User
 //            e.printStackTrace();
 //        }
 //    }
+
+    public static Driver getDriverFromJSONObject(JSONObject userParam)
+    {
+        Driver user = new Driver();
+
+        if (userParam != null)
+        {
+            try
+            {
+                user.setName(userParam.getString(UserStaticAttributes._name));
+                user.setSurname(userParam.getString(UserStaticAttributes._surname));
+                user.setUsername(userParam.getString(UserStaticAttributes._username));
+                user.setPassword(userParam.getString(UserStaticAttributes._password));
+                user.seteMail(userParam.getString(UserStaticAttributes._eMail));
+                user.setPhoneNumber(userParam.getString(UserStaticAttributes._phoneNumber));
+                user.setCarModel(userParam.getString(UserStaticAttributes._carModel));
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+                user = null;
+            }
+        }
+        else
+        {
+            user = null;
+        }
+
+
+        return user;
+    }
+
+    @Override
+    public JSONObject toJSONObject() throws JSONException
+    {
+        JSONObject retValue = new JSONObject();
+
+        retValue.put(UserStaticAttributes._id, this.id);
+        retValue.put(UserStaticAttributes._name, this.name);
+        retValue.put(UserStaticAttributes._surname, this.surname);
+        retValue.put(UserStaticAttributes._username, this.username);
+        retValue.put(UserStaticAttributes._password, this.password);
+        retValue.put(UserStaticAttributes._phoneNumber, this.phoneNumber);
+        retValue.put(UserStaticAttributes._eMail, this.eMail);
+        retValue.put(UserStaticAttributes._carModel, this.carModel);
+        retValue.put(UserStaticAttributes._userType, UserStaticAttributes._driverType);
+
+        return retValue;
+    }
 }
