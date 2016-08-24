@@ -47,4 +47,14 @@
     <string name="search_error_message">Please provide all data!</string>
     <string name="search_by_data">Search by data</string>
     <string name="search_by_distance">Search by distance</string>
+
+    <!-- ROUTE URLs-->
+    <string name="servers_url">http://location</string>
+    <string name="fetch_tour_data">/tour/search</string>
+    <string name="friend_with">/user/friend</string>
+    <string name="add_friend">/user/add_friend</string>
+    <string name="update_tour_rank">/tour/update_rank</string>
+    <string name="store_user">/user/register</string>
+    <string name="login_user">/user/login</string>
+
 </resources>

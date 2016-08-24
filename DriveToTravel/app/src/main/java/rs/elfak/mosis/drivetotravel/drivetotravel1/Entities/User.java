@@ -1,17 +1,27 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Entities;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
+
 /**
  * Created by LEO on 23.3.2016..
  */
-public class User
+public abstract class User
 {
-    protected String id = "";
-    protected String name = "";
-    protected String surname = "";
-    protected String username = "";
-    protected String password = "";
-    protected String phoneNumber = "";
-    protected String eMail = "";
+    protected String id             =   "";
+    protected String name           =   "";
+    protected String surname        =   "";
+    protected String username       =   "";
+    protected String password       =   "";
+    protected String phoneNumber    =   "";
+    protected String eMail          =   "";
+    protected List<String> friends  = new ArrayList<>();
 
     // === GETTER  === //
     public String getId()
@@ -49,6 +59,10 @@ public class User
         return this.eMail;
     }
 
+    public List<String> getFriends()
+    {
+        return this.friends;
+    }
 
     // === SETTER === //
     public void setId(String id)
@@ -84,5 +98,25 @@ public class User
     public void seteMail (String eMail)
     {
         this.eMail = eMail;
+    }
+
+    public abstract JSONObject toJSONObject () throws JSONException;
+
+    public boolean addFriend(String usernameParam)
+    {
+        ServerRequest serverRequest = new ServerRequest();
+        boolean retValue = false;
+
+        if (serverRequest.addFriend(usernameParam) != null)
+        {
+            if (!this.friends.contains(usernameParam))
+            {
+                this.friends.add(usernameParam);
+            }
+
+            retValue = true;
+        }
+
+        return retValue;
     }
 }

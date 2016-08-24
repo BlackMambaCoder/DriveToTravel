@@ -79,4 +79,8 @@ public class StringManipulator {
         return  array;
     }
 
+    public static JSONObject stringToJSONObject (String inputStringParam) throws JSONException
+    {
+        return new JSONObject(inputStringParam);
+    }
 }
