@@ -102,18 +102,14 @@ public abstract class User
 
     public abstract JSONObject toJSONObject () throws JSONException;
 
-    public boolean addRemoveFriend(String usernameParam)
+    public boolean addFriend(String usernameParam)
     {
         ServerRequest serverRequest = new ServerRequest();
         boolean retValue = false;
 
-        if (serverRequest.addRemoveFriend(usernameParam) != null)
+        if (serverRequest.addFriend(usernameParam) != null)
         {
-            if (this.friends.contains(usernameParam))
-            {
-                this.friends.remove(usernameParam);
-            }
-            else
+            if (!this.friends.contains(usernameParam))
             {
                 this.friends.add(usernameParam);
             }

@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.AddFriendAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchDriverDataAsyncTask;
@@ -246,7 +247,7 @@ public class ServerRequest
         return retValue;
     }
 
-    public String addRemoveFriend(String userFriendParam)
+    public String addFriend(String userFriendParam)
     {
         JSONObject userFriend = new JSONObject();
         String successMessage;

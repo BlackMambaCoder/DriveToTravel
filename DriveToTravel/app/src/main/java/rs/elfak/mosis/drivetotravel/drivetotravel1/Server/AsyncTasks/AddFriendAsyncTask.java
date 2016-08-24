@@ -67,7 +67,7 @@ public class AddFriendAsyncTask extends AsyncTask<String, Void, Void> {
             if (responseCode == HttpURLConnection.HTTP_OK)
             {
                 String responseData = StringManipulator.inputStreamToString(httpURLConnection.getInputStream());
-
+                this.response = true;
             }
 
             else
