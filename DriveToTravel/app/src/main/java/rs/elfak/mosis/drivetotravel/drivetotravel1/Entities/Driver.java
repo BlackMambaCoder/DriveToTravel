@@ -90,4 +90,10 @@ public class Driver extends User
 //            e.printStackTrace();
 //        }
 //    }
+
+
+    @Override
+    public String getUserType() {
+        return "Driver";
+    }
 }

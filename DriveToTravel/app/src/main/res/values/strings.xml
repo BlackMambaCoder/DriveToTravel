@@ -56,4 +56,13 @@
     <string name="search_by_distance">Search by distance</string>
 
     <string name="title_activity_tour_details">Tour details</string>
+
+    <string name="title_menu_friendship">Friendship</string>
+
+    <string name="friendship_activity_title">Friendship</string>
+    <string name="bluetooth_start_message">Bluetooth is currently off. Please turn on bluetooth !</string>
+    <string name="bluetooth_search_start_message">Started searching for nearby devices!</string>
+    <string name="bluetooth_nearby_title">Nearby devices</string>
+    <string name="bluetooth_no_devices">There is no nearby devices!</string>
+    <string name="bluetooth_search_finish_message">Finished searching for nearby devices!</string>
 </resources>

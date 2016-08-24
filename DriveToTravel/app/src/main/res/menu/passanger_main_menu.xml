@@ -7,12 +7,18 @@
         android:title="@string/title_menu_passanger_search_transport"
         android:orderInCategory="0"
         android:icon="@android:drawable/ic_menu_search"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item android:id="@+id/passanger_main_menu_activate_location_notification"
         android:title="LocNotify"
         android:orderInCategory="0"
-        android:icon="@android:drawable/ic_menu_compass"
+        android:icon="@drawable/ic_my_location_white_24dp"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/passanger_main_menu_friendship"
+        android:title="Friendship"
+        android:orderInCategory="0"
+        android:icon="@drawable/ic_group_white_24dp"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/passanger_main_menu_logout_action"

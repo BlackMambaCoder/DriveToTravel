@@ -141,6 +141,11 @@ public class PassangerMainActivity extends AppCompatActivity {
 
                 break;
 
+            case R.id.passanger_main_menu_friendship:
+                Intent intent_fr = new Intent(this, friendshipActivity.class);
+                startActivity(intent_fr);
+                break;
+
             default:
         }
 

@@ -24,4 +24,8 @@ public class Passenger extends User
         this.phoneNumber = user.phoneNumber;
     }
 
+    @Override
+    public String getUserType() {
+        return "Passanger";
+    }
 }

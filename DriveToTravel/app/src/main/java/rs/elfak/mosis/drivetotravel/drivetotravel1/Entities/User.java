@@ -3,7 +3,7 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Entities;
 /**
  * Created by LEO on 23.3.2016..
  */
-public class User
+public abstract class User
 {
     protected String id = "";
     protected String name = "";
@@ -49,6 +49,7 @@ public class User
         return this.eMail;
     }
 
+    public String getUserType() {return "";}
 
     // === SETTER === //
     public void setId(String id)

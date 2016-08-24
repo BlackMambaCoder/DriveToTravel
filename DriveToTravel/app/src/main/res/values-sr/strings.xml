@@ -43,6 +43,14 @@
 
     <string name="title_activity_tour_details">Detalji vožnje</string>
 
+    <string name="title_menu_friendship">Prijatelji</string>
+    <string name="friendship_activity_title">Prijatelji</string>
+    <string name="bluetooth_start_message">Bluetooth je trenutno isključen, molimo Vas uključite bluetooth!</string>
+    <string name="bluetooth_search_start_message">Započeta je pretraga uređaja u okolini!</string>
+    <string name="bluetooth_search_finish_message">Završena je pretraga uređaja u okolini!</string>
+    <string name="bluetooth_nearby_title">Vidljivi uređaji</string>
+    <string name="bluetooth_no_devices">Nema vidljivih uređaja!</string>
+
     <string-array name="lang_select">
         <item>English</item>
         <item>Serbian</item>

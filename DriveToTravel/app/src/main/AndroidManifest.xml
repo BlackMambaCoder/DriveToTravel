@@ -4,7 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERAA"/>
+    <uses-permission android:name="android.permission.CAMERAA" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <application
         android:allowBackup="true"
@@ -44,11 +46,13 @@
         </activity>
         <activity android:name=".Activities.PassangerMainActivity" />
         <activity android:name=".Activities.SearchRideActivity" />
-        <activity android:name=".Activities.ShowTourDetailsActivity"></activity>
+        <activity android:name=".Activities.ShowTourDetailsActivity" />
 
         <service
             android:name=".Services.LocationUpdateIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name=".Activities.friendshipActivity"></activity>
     </application>
 
 </manifest>
