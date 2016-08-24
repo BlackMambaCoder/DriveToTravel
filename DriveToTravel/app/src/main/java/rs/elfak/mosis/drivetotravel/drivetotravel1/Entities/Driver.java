@@ -92,6 +92,11 @@ public class Driver extends User
 //        }
 //    }
 
+    @Override
+    public String getUserType() {
+        return "Driver";
+    }
+
     public static Driver getDriverFromJSONObject(JSONObject userParam)
     {
         Driver user = new Driver();

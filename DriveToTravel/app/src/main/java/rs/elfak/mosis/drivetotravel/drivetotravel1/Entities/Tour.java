@@ -220,15 +220,15 @@ public class Tour implements Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        dest.writeStringArray(
-                new String[] {
-                        this.startLocation,
-                        this.destinationLocation,
-                        this.startDateAndTime.toString(),
-                        this.tourDriverId,
-                        MyConverter._StringList2String(this.passengers)
-                }
-        );
+        String passangerString="/";
+
+        if(this.passengers!=null) {
+           passangerString  = MyConverter._StringList2String(this.passengers);
+        }
+
+        String[] data={this.startLocation,this.destinationLocation,this.startDateAndTime.toString(),this.tourDriverId,passangerString};
+
+        dest.writeStringArray(data);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator()

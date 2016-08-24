@@ -6,7 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 
 /**
@@ -15,33 +21,30 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 
 public class CustomListAdapter extends BaseAdapter {
 
-    String[] driveText;
-    String[] dateText;
-    String[] timeText;
+    Tour[] tour_list;
 
     private static LayoutInflater inflater=null;
 
     Context context;
 
 
-    public CustomListAdapter(Context _context,String[] _drive,String[] _date,String[] _time)
+    public CustomListAdapter(Context _context,Tour[] tours)
     {
         this.context = _context;
-        this.driveText = _drive;
-        this.dateText = _date;
-        this.timeText = _time;
+        this.tour_list = tours;
 
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return driveText.length;
+        return tour_list.length;
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public Object getItem(int position)
+    {
+        return tour_list[position];
     }
 
     @Override
@@ -55,7 +58,7 @@ public class CustomListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         Holder holder=new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.passanger_driving_custom_list, null);
@@ -64,17 +67,16 @@ public class CustomListAdapter extends BaseAdapter {
         holder.date = (TextView) rowView.findViewById(R.id.customlist_date_txt);
         holder.time = (TextView) rowView.findViewById(R.id.customlist_time_txt);
 
-        holder.route.setText(driveText[position]);
-        holder.date.setText(dateText[position]);
-        holder.time.setText(timeText[position]);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d-M-yyyy", Locale.ENGLISH);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm",Locale.ENGLISH);
 
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                //Toast.makeText(context, "You Clicked "+result[position], Toast.LENGTH_LONG).show();
-            }
-        });
+        String Date = dateFormat.format(tour_list[position].getStartDate().getTime());
+        String Time = timeFormat.format(tour_list[position].getStartDate().getTime());
+
+        holder.route.setText(tour_list[position].getStartLocation()+" - "+tour_list[position].getDestinationLocation());
+        holder.date.setText(Date);
+        holder.time.setText(Time);
+
         return rowView;
     }
 }

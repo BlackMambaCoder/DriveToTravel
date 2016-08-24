@@ -9,27 +9,31 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/registerScrollView">
+        android:id="@+id/registerScrollView"
+        android:fillViewport="false">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/name"
         android:id="@+id/tvRegName"
+        android:layout_marginLeft="5dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="46dp" />
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etRegName"
         android:layout_below="@+id/tvRegName"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,14 +41,16 @@
         android:text="@string/surname"
         android:id="@+id/tvRegSurname"
         android:layout_below="@+id/etRegName"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etRegSurname"
         android:layout_below="@+id/tvRegSurname"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,14 +58,16 @@
         android:text="@string/username"
         android:id="@+id/tvRegUsername"
         android:layout_below="@+id/etRegSurname"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etRegUsername"
         android:layout_below="@+id/tvRegUsername"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,36 +75,32 @@
         android:text="@string/password"
         android:id="@+id/tvRegPassword"
         android:layout_below="@+id/etRegUsername"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etRegPassword"
         android:layout_below="@+id/tvRegPassword"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/loginLabeL"
-        android:id="@+id/gotoLoginLabel"
-        android:layout_below="@+id/btnRegister"
-        android:layout_centerHorizontal="true" />
-
-            <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/registerButton"
-        android:id="@+id/btnRegister"
-        android:layout_below="@+id/radioBtnGroupRegisterActivity" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/etRegPassword"
                 android:layout_alignParentStart="true"
-                android:id="@+id/radioBtnGroupRegisterActivity">
+                android:id="@+id/radioBtnGroupRegisterActivity"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Account type"
+                    android:id="@+id/textView2" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -105,7 +109,8 @@
                     android:id="@+id/radioButtonRegisterActivityDriver"
                     android:layout_below="@+id/etRegPassword"
                     android:layout_centerHorizontal="true"
-                    android:checked="true" />
+                    android:checked="true"
+                    android:layout_marginTop="5dp" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -117,7 +122,55 @@
                     android:checked="false" />
             </RadioGroup>
 
-        </RelativeLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Profile picture"
+                android:id="@+id/textView3"
+                android:layout_above="@+id/btnRegister"
+                android:layout_toStartOf="@+id/gotoLoginLabel"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp" />
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/register_profile_image"
+                android:src="@drawable/profile"
+                android:layout_above="@+id/textView3"
+                android:layout_toLeftOf="@+id/gotoLoginLabel"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center" />
+
+            <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/registerButton"
+        android:id="@+id/btnRegister"
+                android:layout_above="@+id/gotoLoginLabel"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loginLabeL"
+                android:id="@+id/gotoLoginLabel"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginBottom="64dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
     </ScrollView>
 
 </RelativeLayout>

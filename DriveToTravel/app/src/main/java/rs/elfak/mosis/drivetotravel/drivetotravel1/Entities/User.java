@@ -59,6 +59,8 @@ public abstract class User
         return this.eMail;
     }
 
+    public abstract String getUserType();
+
     public List<String> getFriends()
     {
         return this.friends;

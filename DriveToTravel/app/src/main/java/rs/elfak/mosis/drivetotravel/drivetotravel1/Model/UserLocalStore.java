@@ -33,6 +33,7 @@ public class UserLocalStore {
         this.sharedPreferencesEditor.putString(UserStaticAttributes._eMail, user.getName());
         this.sharedPreferencesEditor.putString(UserStaticAttributes._phoneNumber, user.getName());
         this.sharedPreferencesEditor.putString(UserStaticAttributes._carModel, user.getCarModel());
+        this.sharedPreferencesEditor.putString(UserStaticAttributes._userType, user.getUserType());
 
         this.sharedPreferencesEditor.commit();
     }
@@ -46,6 +47,7 @@ public class UserLocalStore {
         this.sharedPreferencesEditor.putString(UserStaticAttributes._password, user.getName());
         this.sharedPreferencesEditor.putString(UserStaticAttributes._eMail, user.getName());
         this.sharedPreferencesEditor.putString(UserStaticAttributes._phoneNumber, user.getName());
+        this.sharedPreferencesEditor.putString(UserStaticAttributes._userType, user.getUserType());
 
         this.sharedPreferencesEditor.commit();
     }
@@ -99,6 +101,11 @@ public class UserLocalStore {
 //        return retValue;
 
         return this.userLocalSharedPrefferences.getBoolean(UserStaticAttributes._loggedIn, true);
+    }
+
+    public String getTypeOfLoggedUser()
+    {
+        return this.userLocalSharedPrefferences.getString(UserStaticAttributes._userType,"");
     }
 
     public void clearUserData()

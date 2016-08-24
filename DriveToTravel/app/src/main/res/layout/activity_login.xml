@@ -13,16 +13,19 @@
         android:layout_height="wrap_content"
         android:text="@string/username"
         android:id="@+id/tvUsername"
-        android:layout_marginTop="129dp"
+        android:layout_marginTop="178dp"
+        android:layout_marginLeft="5dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignStart="@+id/etLoginActivityUsername" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etLoginActivityUsername"
         android:layout_below="@+id/tvUsername"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,20 +33,24 @@
         android:text="@string/password"
         android:id="@+id/tvPassword"
         android:layout_below="@+id/etLoginActivityUsername"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etLoginActivityPassword"
         android:layout_below="@+id/tvPassword"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/loginButton"
         android:id="@+id/loginBtn"
+        android:layout_marginTop="15dp"
         android:layout_below="@+id/etLoginActivityPassword"
         android:layout_centerHorizontal="true" />
 
@@ -54,7 +61,8 @@
         android:id="@+id/registerLabel"
         android:layout_below="@+id/testUser_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp" />
+        android:layout_marginTop="27dp"
+        android:textColor="@color/colorPrimaryDark" />
 
     <Button
         android:layout_width="150dp"
@@ -63,4 +71,5 @@
         android:id="@+id/testUser_button"
         android:layout_below="@+id/loginBtn"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

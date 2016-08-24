@@ -14,14 +14,17 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="0/0/0000"
-            android:id="@+id/customlist_date_txt" />
+            android:id="@+id/customlist_date_txt"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +32,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="00:00"
             android:id="@+id/customlist_time_txt"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center" />
     </LinearLayout>
 
 </LinearLayout>

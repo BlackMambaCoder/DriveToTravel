@@ -30,6 +30,9 @@ public class Passenger extends User
     }
 
     @Override
+    public String getUserType() {
+        return "Passenger";
+    }
     public JSONObject toJSONObject() throws JSONException
     {
         JSONObject retValue = new JSONObject();
