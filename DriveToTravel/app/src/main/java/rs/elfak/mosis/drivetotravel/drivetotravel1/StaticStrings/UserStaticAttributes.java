@@ -14,4 +14,5 @@ public class UserStaticAttributes {
     public static String _eMail = "eMail";
     public static String _carModel = "carModel";
     public static String _loggedIn = "loggedIn";
+    public static String _userType = "userType";
 }
