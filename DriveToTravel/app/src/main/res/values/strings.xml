@@ -74,5 +74,6 @@
     <string name="update_tour_rank">/tour/update_rank</string>
     <string name="store_user">/user/register</string>
     <string name="login_user">/user/login</string>
+    <string name="update_user_location">/user/update_location</string>
 
 </resources>

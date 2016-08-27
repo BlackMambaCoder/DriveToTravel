@@ -1,5 +1,6 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks;
 
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -17,12 +18,13 @@ import java.net.URL;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Exception.HttpConnectionException;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.ServerStaticAttributes;
 
 /**
  * Created by LEO on 13.8.2016..
  */
-public class SendDeviceLocationDataAsyncTask extends AsyncTask<Double, Void, Void>
+public class SendDeviceLocationDataAsyncTask extends AsyncTask<String, Void, Void>
 {
     public static String successMessage = "OK";
 
@@ -34,18 +36,18 @@ public class SendDeviceLocationDataAsyncTask extends AsyncTask<Double, Void, Voi
     }
 
     @Override
-    protected Void doInBackground(Double... params)
+    protected Void doInBackground(String... params)
     {
-        double lat                          = params[0];
-        double lon                          = params[1];
-        double alt                          = params[2];
-        double speed                        = params[3];
-
+        Resources res           = Resources.getSystem();
+        String postValue        = params[0];
+        String successMessage;
+        String routeUrl         = res.getString(R.string.servers_url) + res.getString(R.string.update_user_location);
         try
         {
-            URL url = new URL("ipAddress");
+            URL url                 = new URL(routeUrl);
 
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection httpURLConnection
+                                    = (HttpURLConnection) url.openConnection();
 
             httpURLConnection.setReadTimeout(ServerStaticAttributes._readTimeOut);
             httpURLConnection.setConnectTimeout(ServerStaticAttributes._connectTimeOut);
@@ -53,19 +55,12 @@ public class SendDeviceLocationDataAsyncTask extends AsyncTask<Double, Void, Voi
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
 
-            JSONArray sendData = new JSONArray();
-
-            sendData.put(lat);
-            sendData.put(lon);
-            sendData.put(alt);
-            sendData.put(speed);
-
             OutputStream outputStream = httpURLConnection.getOutputStream();
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);//, "UTF-8");
 
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
 
-            bufferedWriter.write(sendData.toString());
+            bufferedWriter.write(postValue);
             bufferedWriter.flush();
             bufferedWriter.close();
 
@@ -100,12 +95,6 @@ public class SendDeviceLocationDataAsyncTask extends AsyncTask<Double, Void, Voi
         catch (IOException e)
         {
             successMessage = "SendDeviceLocationDataAsyncTask: IOException - " + e.getMessage();
-            Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-        }
-        catch (JSONException e)
-        {
-            successMessage = "SendDeviceLocationDataAsyncTask: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
         }

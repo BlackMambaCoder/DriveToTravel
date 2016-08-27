@@ -21,8 +21,17 @@ public class LocationUpdateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        this.locationThread = new SendLocationThread();
-        this.locationThread.run();
+        int userId = intent.getIntExtra("userid", -1);
+
+        if (userId != -1)
+        {
+            this.locationThread = new SendLocationThread(userId);
+            this.locationThread.run();
+        }
+        else
+        {
+            this.onDestroy();
+        }
 
         return 0;
     }
