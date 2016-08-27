@@ -377,16 +377,22 @@ public class ServerRequest
         }
         catch (JSONException e)
         {
+            String successMessage = "ServerRequest::storeUser : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
             user = null;
         }
         catch (InterruptedException e)
         {
+            String successMessage = "ServerRequest::storeUser : InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
             user = null;
         }
         catch (ExecutionException e)
         {
+            String successMessage = "ServerRequest::storeUser : ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
             user = null;
         }
