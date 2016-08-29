@@ -75,5 +75,6 @@
     <string name="store_user">/user/register</string>
     <string name="login_user">/user/login</string>
     <string name="update_user_location">/user/update_location</string>
+    <string name="remove_friend">/user/remove_friend</string>
 
 </resources>

@@ -292,6 +292,51 @@ public class ServerRequest
         return retValue;
     }
 
+    public String removeFriend(String userFriendParam)
+    {
+        JSONObject userFriend = new JSONObject();
+        String successMessage;
+        String retValue;
+
+        AddFriendAsyncTask task = new AddFriendAsyncTask();
+
+        try {
+            userFriend.put("username", userFriendParam);
+            task.execute(userFriend.toString()).get();
+            if (task.getResponse())
+            {
+                retValue = userFriendParam;
+            }
+            else
+            {
+                retValue = null;
+            }
+        }
+        catch (InterruptedException e)
+        {
+            successMessage = "ServerRequestRemoveFriend: InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
+            retValue = null;
+        }
+        catch (ExecutionException e)
+        {
+            successMessage = "ServerRequestRemoveFriend: ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
+            retValue = null;
+        }
+        catch (JSONException e)
+        {
+            successMessage = "ServerRequestRemoveFriend: JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
+            retValue = null;
+        }
+
+        return retValue;
+    }
+
     public List<Double> updateTourRank(double rankParam)
     {
         String successMessage;

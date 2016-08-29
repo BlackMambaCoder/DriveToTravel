@@ -107,15 +107,31 @@ public abstract class User
     public boolean addFriend(String usernameParam)
     {
         ServerRequest serverRequest = new ServerRequest();
+        boolean retValue            = false;
+
+        if (
+                !this.friends.contains(usernameParam) &&
+                serverRequest.addFriend(usernameParam) != null
+            )
+        {
+            this.friends.add(usernameParam);
+            retValue                = true;
+        }
+
+        return retValue;
+    }
+
+    public boolean removeFriend(String usernameParam)
+    {
+        ServerRequest serverRequest = new ServerRequest();
         boolean retValue = false;
 
-        if (serverRequest.addFriend(usernameParam) != null)
+        if (
+                this.friends.contains(usernameParam) &&
+                serverRequest.removeFriend(usernameParam) != null
+            )
         {
-            if (!this.friends.contains(usernameParam))
-            {
-                this.friends.add(usernameParam);
-            }
-
+            this.friends.remove(usernameParam);
             retValue = true;
         }
 
