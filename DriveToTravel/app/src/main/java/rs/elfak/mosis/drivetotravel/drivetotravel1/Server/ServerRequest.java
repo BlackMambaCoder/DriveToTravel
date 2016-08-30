@@ -338,7 +338,7 @@ public class ServerRequest
         return retValue;
     }
 
-    public List<Double> updateTourRank(double rankParam)
+    public List<Double> updateTourRank(double rankParam,int tourid)
     {
         String successMessage;
 
@@ -350,6 +350,7 @@ public class ServerRequest
         try
         {
             requestData.put("rank", rankParam);
+            requestData.put("tourid",tourid);
 
             task.execute(requestData.toString()).get();
 

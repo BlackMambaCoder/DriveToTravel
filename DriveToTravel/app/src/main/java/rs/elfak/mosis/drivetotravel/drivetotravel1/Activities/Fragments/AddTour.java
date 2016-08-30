@@ -182,7 +182,7 @@ public class AddTour extends Fragment implements View.OnClickListener, View.OnTo
         String startTime = etStartTime.getText().toString();
         String startDate = etStartDate.getText().toString();
 
-        return new Tour(startLoc, destLoc, startDate, startTime);
+        return new Tour(startLoc, destLoc, startDate, startTime,1234);
     }
 
     @Override

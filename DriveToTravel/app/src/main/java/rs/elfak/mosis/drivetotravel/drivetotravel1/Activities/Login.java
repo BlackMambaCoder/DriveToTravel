@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.LanguageChange;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
@@ -60,6 +61,16 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
         switch (onClickId) {
             case R.id.loginBtn:
 
+                Driver loggedInDriver = new Driver();
+
+                intent = new Intent(this, PassangerMainActivity.class);
+
+                UserLocalStore userLocalStoreDriver = new UserLocalStore(this);
+                userLocalStoreDriver.storeUser(loggedInDriver);
+                userLocalStoreDriver.setUserLoggedIn(true);
+
+                startActivity(intent);
+                /*
                 if (this.connectedToInternet() && this.checkFields())
                 {
                     String username = "leorado"; //this.usernameET.getText().toString();
@@ -94,6 +105,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                     startActivity(intent);
                     finish();
                 }
+                */
 
                 break;
 
@@ -107,7 +119,14 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 break;
 
             case R.id.testUser_button:
-                    intent = new Intent(this, PassangerMainActivity.class);
+                intent = new Intent(this, PassangerMainActivity.class);
+
+                Passenger loggedInPassanger = new Passenger();
+
+                UserLocalStore userLocalStore = new UserLocalStore(this);
+                userLocalStore.storeUser(loggedInPassanger);
+                userLocalStore.setUserLoggedIn(true);
+
                 startActivity(intent);
                 finish();
                 break;

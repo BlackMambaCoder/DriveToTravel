@@ -66,6 +66,16 @@
     <string name="bluetooth_no_devices">There is no nearby devices!</string>
     <string name="bluetooth_search_finish_message">Finished searching for nearby devices!</string>
 
+    <!-- BLUETOOTH -->
+    <string name="bluetooth_async_task_client_connecting">Connecting</string>
+    <string name="bluetooth_async_task_client_connected">Connected</string>
+    <string name="bluetooth_async_task_client_sending_request">Sending request</string>
+    <string name="bluetooth_async_task_client_friendship_ok">U are now friends</string>
+    <string name="bluetooth_async_task_client_friendship_already">U are already friends</string>
+    <string name="bluetooth_async_task_client_friendship_cancel">Canceling</string>
+
+    <string name="bluetooth_async_task_title">Friendship request</string>
+
     <!-- ROUTE URLs-->
     <string name="servers_url">http://location</string>
     <string name="fetch_tour_data">/tour/search</string>
