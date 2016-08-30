@@ -4,9 +4,6 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,38 +13,32 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Exception.HttpConnectionException;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.ServerStaticAttributes;
 
 /**
- * Created by LEO on 13.8.2016..
+ * Created by LEO on 29.8.2016..
  */
-public class SendDeviceLocationDataAsyncTask extends AsyncTask<String, Void, Void>
-{
-    public static String successMessage = "OK";
+public class RemoveFriendAsyncTask extends AsyncTask<String, Void, Void> {
 
-    private String JSONUsersLocationArray = null;
-
-    public String getJSONUsersLocationArray()
-    {
-        return this.JSONUsersLocationArray;
-    }
+    private boolean response;
+    private String successMessage;
 
     @Override
-    protected Void doInBackground(String... params)
-    {
-        Resources res           = Resources.getSystem();
-        String postValue        = params[0];
-        String successMessage;
-        String routeUrl         = res.getString(R.string.servers_url) + res.getString(R.string.update_user_location);
+    protected Void doInBackground(String... params) {
+
+         String postValue = params[0];
+
+        Resources res = Resources.getSystem();
+
+        String routeUrl = res.getString(R.string.servers_url) + res.getString(R.string.remove_friend);
+
         try
         {
-            URL url                 = new URL(routeUrl);
+            URL url = new URL(routeUrl);
 
-            HttpURLConnection httpURLConnection
-                                    = (HttpURLConnection) url.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
             httpURLConnection.setReadTimeout(ServerStaticAttributes._readTimeOut);
             httpURLConnection.setConnectTimeout(ServerStaticAttributes._connectTimeOut);
@@ -60,6 +51,7 @@ public class SendDeviceLocationDataAsyncTask extends AsyncTask<String, Void, Voi
 
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
 
+            // Sending JSONArray as string to server
             bufferedWriter.write(postValue);
             bufferedWriter.flush();
             bufferedWriter.close();
@@ -70,40 +62,44 @@ public class SendDeviceLocationDataAsyncTask extends AsyncTask<String, Void, Voi
 
             if (responseCode == HttpURLConnection.HTTP_OK)
             {
-                this.JSONUsersLocationArray = StringManipulator.inputStreamToString(
-                        httpURLConnection.getInputStream()
-                );
-            }
-            else
-            {
-                throw new HttpConnectionException("Dismissed connection: " + responseCode);
+                String responseData = StringManipulator.inputStreamToString(httpURLConnection.getInputStream());
+                this.response = true;
             }
 
+            else
+            {
+                throw new Exception("Not valid request. Response code: " + responseCode);
+            }
         }
         catch (MalformedURLException e)
         {
-            successMessage = "SendDeviceLocationDataAsyncTask: MalformedURLException - " + e.getMessage();
+            successMessage = "RemoveFriendAsyncTask: MalformedURLException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
+            this.response = false;
         }
         catch (ProtocolException e)
         {
-            successMessage = "SendDeviceLocationDataAsyncTask: ProtocolException - " + e.getMessage();
+            successMessage = "RemoveFriendAsyncTask: ProtocolException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
+            this.response = false;
         }
         catch (IOException e)
         {
-            successMessage = "SendDeviceLocationDataAsyncTask: IOException - " + e.getMessage();
+            successMessage = "RemoveFriendAsyncTask: IOException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
+            this.response = false;
         }
-        catch (HttpConnectionException e)
+        catch (Exception e)
         {
-            successMessage = "SendDeviceLocationDataAsyncTask: HttpConnectionException - " + e.getMessage();
+            successMessage = "RemoveFriendAsyncTask: Exception - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
+            this.response = false;
         }
+
         return null;
     }
 }

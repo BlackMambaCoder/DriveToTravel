@@ -129,7 +129,11 @@ public class PassangerMainActivity extends AppCompatActivity {
                 if (!this.toggleLocationNotification)
                 {
                     this.toggleLocationNotification = true;
-                    this.startLocationUpdateService();
+
+                    /**
+                     *  User id
+                     */
+                    this.startLocationUpdateService(-1);
                     Toast.makeText(this, "Location update activated", Toast.LENGTH_LONG).show();
                 }
                 else
@@ -177,9 +181,10 @@ public class PassangerMainActivity extends AppCompatActivity {
 //        this.stopLocationUpdateService();
     }
 
-    private void startLocationUpdateService()
+    private void startLocationUpdateService(int userId)
     {
         Intent intent = new Intent(this, LocationUpdateService.class);
+        intent.putExtra("userid", userId);
         startService(intent);
     }
 

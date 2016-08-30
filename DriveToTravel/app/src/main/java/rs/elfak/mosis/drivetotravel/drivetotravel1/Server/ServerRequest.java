@@ -35,6 +35,7 @@ public class ServerRequest
 
 //    public static int DISTANCE_SEARCH           = 345;
 //    public static int LOCATION_TIME_SEARCH      = 346;
+    //
 
     private UserLocalStore userLocalStore;
     private Driver classDriver;
@@ -292,6 +293,51 @@ public class ServerRequest
         return retValue;
     }
 
+    public String removeFriend(String userFriendParam)
+    {
+        JSONObject userFriend = new JSONObject();
+        String successMessage;
+        String retValue;
+
+        AddFriendAsyncTask task = new AddFriendAsyncTask();
+
+        try {
+            userFriend.put("username", userFriendParam);
+            task.execute(userFriend.toString()).get();
+            if (task.getResponse())
+            {
+                retValue = userFriendParam;
+            }
+            else
+            {
+                retValue = null;
+            }
+        }
+        catch (InterruptedException e)
+        {
+            successMessage = "ServerRequestRemoveFriend: InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
+            retValue = null;
+        }
+        catch (ExecutionException e)
+        {
+            successMessage = "ServerRequestRemoveFriend: ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
+            retValue = null;
+        }
+        catch (JSONException e)
+        {
+            successMessage = "ServerRequestRemoveFriend: JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
+            retValue = null;
+        }
+
+        return retValue;
+    }
+
     public List<Double> updateTourRank(double rankParam,int tourid)
     {
         String successMessage;
@@ -378,16 +424,22 @@ public class ServerRequest
         }
         catch (JSONException e)
         {
+            String successMessage = "ServerRequest::storeUser : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
             user = null;
         }
         catch (InterruptedException e)
         {
+            String successMessage = "ServerRequest::storeUser : InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
             user = null;
         }
         catch (ExecutionException e)
         {
+            String successMessage = "ServerRequest::storeUser : ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
             user = null;
         }
