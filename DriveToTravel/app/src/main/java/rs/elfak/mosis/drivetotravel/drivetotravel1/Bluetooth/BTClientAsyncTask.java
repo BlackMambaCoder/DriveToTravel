@@ -193,6 +193,8 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
     protected void onCancelled(String s) {
         super.onCancelled(s);
 
+        finishWork();
+
         if (this.progressDialog.isShowing())
             this.progressDialog.dismiss();
 
