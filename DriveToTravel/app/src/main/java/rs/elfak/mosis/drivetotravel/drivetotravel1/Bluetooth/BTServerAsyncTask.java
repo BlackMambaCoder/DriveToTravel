@@ -176,7 +176,7 @@ public class BTServerAsyncTask extends AsyncTask<Void,String,String>
                             //Obrada procitane poruke
                             Log.d("[SERVER]", "Received: "+receivedMsg);
 
-                            String myID = userLocalStore.getDriver().getId(); //Get ID of Passenger or Driver
+                            String myID = userLocalStore.getDriver().getUsername(); //Get username of driver
 
                             if(myID.isEmpty())
                             {

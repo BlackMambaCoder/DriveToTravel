@@ -132,15 +132,14 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
                 try {
 
                     //Send my ID to server side
-                    String myID = userLocalStore.getPassenger().getId(); //Get ID of Passenger or Driver
-                    if(!myID.isEmpty())
+                    String myID = userLocalStore.getPassenger().getUsername(); //Get UserName of passanger
+
+                    if(myID.isEmpty())
                     {
-                        this.writeMessage(myID);
+                        myID="-1";
                     }
-                    else
-                    {
-                        this.writeMessage("-1");
-                    }
+
+                    this.writeMessage(myID);
 
                     bytesRead = mmInStream.read(buffer);
 
