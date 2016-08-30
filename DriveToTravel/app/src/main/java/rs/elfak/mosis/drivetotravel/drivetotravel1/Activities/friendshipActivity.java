@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +23,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTClientAsyncTask;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTClientThread;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTServerAsyncTask;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTServerThread;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
@@ -36,6 +42,7 @@ public class friendshipActivity extends AppCompatActivity {
     private ListView lista;
     private Context context;
     private Set<BluetoothDevice> pairedDevices;
+    UserLocalStore userLocalStore;
 
     private boolean zavrsena_pretraga=false;
 
@@ -49,6 +56,8 @@ public class friendshipActivity extends AppCompatActivity {
 
         context = this;
         lista = (ListView) findViewById(R.id.friendship_bt_list);
+
+        userLocalStore = new UserLocalStore(context);
 
         //BT liste
         deviceList = new ArrayList();
@@ -137,13 +146,46 @@ public class friendshipActivity extends AppCompatActivity {
 
             case R.id.friendship_add_button:
                 //Dodavanje prijatelja preko bluetooth-a
-                checkBluetooth();
-                BA.startDiscovery();
+
+                String loggedUser = userLocalStore.getTypeOfLoggedUser();
+
+                if(loggedUser.equals("Driver"))
+                {
+                    /*
+                    //Show progress bar
+                    showAlertDialogWithCustomMessage("Friendship","Waiting for connection...");
+                    //Start server
+
+                    BTServerThread serverThread = new BTServerThread("Drive2Travel");
+                    serverThread.run();
+                    */
+
+                    BTServerAsyncTask task = new BTServerAsyncTask(context,"Drive2Travel");
+                    task.execute();
+                }
+                else if(loggedUser.equals("Passenger"))
+                {
+                    checkBluetooth();
+                    BA.startDiscovery();
+                }
 
             default:
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showAlertDialogWithCustomMessage(String title,String message)
+    {
+        //Build dialog
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle(title);
+        dialogBuilder.setMessage(message);
+
+        //Create alert dialog object via builder
+        AlertDialog alertDialogObject = dialogBuilder.create();
+        //Show the dialog
+        alertDialogObject.show();
     }
 
     public void ShowAlertDialogWithListview(String title, ArrayList<String> data)
@@ -157,39 +199,32 @@ public class friendshipActivity extends AppCompatActivity {
         //Build dialog
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle(title);
-        dialogBuilder.setItems(DataSequence, dialogItemClick);
+        dialogBuilder.setItems(DataSequence, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(deviceList.size()>0) {
+                    Log.d("[KLIJENT]",DataSequence[which].toString());
+
+
+                    //Show progress bar
+                    //showAlertDialogWithCustomMessage("Friendship","Connecting ...");
+
+                    //Start thread
+                    //BTClientThread clientThread = new BTClientThread(deviceList.get(which).toString(),addressList.get(which).toString());
+                    //clientThread.run();
+
+                    BTClientAsyncTask task = new BTClientAsyncTask(context,deviceList.get(which).toString(),addressList.get(which).toString());
+                    task.execute();
+
+                }
+            }
+        });
         //Create alert dialog object via builder
         AlertDialog alertDialogObject = dialogBuilder.create();
         //Show the dialog
         alertDialogObject.show();
     }
 
-
-    //Click on button
-    private DialogInterface.OnClickListener dialogItemClick = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-
-            String selectedText = deviceList.get(which).toString();    //Selected item in listview
-            Toast.makeText(friendshipActivity.this,"Selected device: "+selectedText,Toast.LENGTH_SHORT).show();
-
-            //Provera da li je korisnik vozac ili putnik
-
-            //TODO: Proveri putnik/vozac i pokreni odredjenu komponentu
-            UserLocalStore userLocalStore = new UserLocalStore(context);
-
-            String loggedUser = userLocalStore.getTypeOfLoggedUser();
-
-            if(loggedUser.equals("Driver"))
-            {
-                //Start server
-            }
-            else if(loggedUser.equals("Passanger"))
-            {
-                //Start client
-            }
-        }
-    };
 
     @Override
     protected void onDestroy() {
@@ -212,7 +247,7 @@ public class friendshipActivity extends AppCompatActivity {
         if(!BA.isEnabled())
         {
             Toast.makeText(context,R.string.bluetooth_start_message,Toast.LENGTH_SHORT).show();
-            Intent turnOnBluetooth = new Intent(BA.ACTION_REQUEST_ENABLE);
+            Intent turnOnBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(turnOnBluetooth,0);
         }
     }

@@ -51,6 +51,15 @@
     <string name="bluetooth_nearby_title">Vidljivi uređaji</string>
     <string name="bluetooth_no_devices">Nema vidljivih uređaja!</string>
 
+
+    <string name="bluetooth_async_task_client_connecting">Povezivanje u toku</string>
+    <string name="bluetooth_async_task_client_connected">Povezan</string>
+    <string name="bluetooth_async_task_client_sending_request">Šaljem zahtev za prijateljstvo</string>
+    <string name="bluetooth_async_task_client_friendship_ok">Zahtev je uspešno prihvaćen</string>
+    <string name="bluetooth_async_task_client_friendship_already">Već ste prijatelji</string>
+    <string name="bluetooth_async_task_client_friendship_cancel">Prekidanje zahteva</string>
+    <string name="bluetooth_async_task_title">Zahtev za prijateljstvo</string>
+
     <string-array name="lang_select">
         <item>English</item>
         <item>Serbian</item>

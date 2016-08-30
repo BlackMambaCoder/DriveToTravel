@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.LanguageChange;
@@ -30,6 +31,7 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
     private TextView toLoginLabel;
     private ImageView profilePictureView;
     private Bitmap profileBitmap;
+    private RadioButton selectedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
 
         this.registerBtn = (Button)findViewById(R.id.btnRegister);
         this.registerBtn.setOnClickListener(this);
+        this.selectedUser = (RadioButton) findViewById(R.id.radioButtonRegisterActivityPassenger);
 
         this.toLoginLabel = (TextView)findViewById(R.id.gotoLoginLabel);
         this.toLoginLabel.setOnClickListener(this);
@@ -120,7 +123,17 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
     {
         EditText editText;
         String textFromLayout = "";
-        User user = new User();
+
+        User user;
+
+        if(selectedUser.isChecked())
+        {
+          user = new Passenger();
+        }
+        else
+        {
+            user = new Driver();
+        }
 
         editText = (EditText)findViewById(R.id.etRegName);
         textFromLayout = editText.getText().toString();

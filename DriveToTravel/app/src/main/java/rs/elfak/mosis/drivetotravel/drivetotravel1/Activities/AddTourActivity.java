@@ -171,7 +171,7 @@ public class AddTourActivity extends AppCompatActivity implements
         String startTime = etStartTime.getText().toString();
         String startDate = etStartDate.getText().toString();
 
-        Tour retValue = new Tour(startLoc, destLoc, startDate, startTime);
+        Tour retValue = new Tour(startLoc, destLoc, startDate, startTime,1234);
         UserLocalStore store = new UserLocalStore(this);
         retValue.setDriver(store.getDriver().getId());
 

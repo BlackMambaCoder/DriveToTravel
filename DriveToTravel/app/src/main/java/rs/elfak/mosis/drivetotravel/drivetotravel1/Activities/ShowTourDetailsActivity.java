@@ -30,7 +30,7 @@ public class ShowTourDetailsActivity extends AppCompatActivity {
         tourDriver = (TextView) findViewById(R.id.tour_details_driver_name_text);
 
         Bundle savedTourBundle = getIntent().getExtras();
-        Tour tour = (Tour)savedTourBundle.getParcelable("tour");
+        Tour tour = savedTourBundle.getParcelable("tour");
 
         startLocation.setText(tour.getStartLocation());
         endLocation.setText(tour.getDestinationLocation());

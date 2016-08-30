@@ -28,12 +28,14 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.TourStaticAttri
  */
 public class Tour implements Parcelable
 {
+    private int id;
     private String startLocation;
     private String destinationLocation;
     private Date startDateAndTime;
     private String tourDriverId;
     private List<String> passengers;
     private double rank;
+
 
     public Tour ()
     {
@@ -43,9 +45,10 @@ public class Tour implements Parcelable
         this.tourDriverId               = "";
         this.passengers                 = null;
         this.rank                       = -1.0;
+        this.id                         =-1;
     }
 
-    public Tour (String startArg, String destArg, String startDateArg, String startTimeArg)
+    public Tour (String startArg, String destArg, String startDateArg, String startTimeArg,int tourID)
     {
         this.startLocation              = startArg;
         this.destinationLocation        = destArg;
@@ -67,6 +70,7 @@ public class Tour implements Parcelable
         this.tourDriverId               = "";
         this.passengers                 = new ArrayList<>();
         this.rank                       = -1.0;
+        this.id                         = tourID;
     }
 
     // === GETTER === //
@@ -142,13 +146,18 @@ public class Tour implements Parcelable
         this.tourDriverId = driverUsername;
     }
 
-    public double setRank(int rankParam)
+    public Double setRank(int rankParam)
     {
         ServerRequest request = new ServerRequest();
-        List<Double> ranks = request.updateTourRank((double) rankParam);
-        this.rank = ranks.get(0);
+        List<Double> ranks = request.updateTourRank((double) rankParam,this.id);
 
-        return ranks.get(1);
+        if (ranks != null) {
+            this.rank = ranks.get(0);
+            return ranks.get(1);
+        }
+        else {
+            return null;
+        }
     }
 
     // === STATIC METHODS === //
