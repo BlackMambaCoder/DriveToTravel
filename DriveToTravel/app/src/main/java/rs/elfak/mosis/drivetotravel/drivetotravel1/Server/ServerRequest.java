@@ -35,6 +35,7 @@ public class ServerRequest
 
 //    public static int DISTANCE_SEARCH           = 345;
 //    public static int LOCATION_TIME_SEARCH      = 346;
+    //
 
     private UserLocalStore userLocalStore;
     private Driver classDriver;
