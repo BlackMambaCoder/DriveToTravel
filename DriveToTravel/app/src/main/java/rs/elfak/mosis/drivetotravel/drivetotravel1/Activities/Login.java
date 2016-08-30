@@ -48,9 +48,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
         //Get language
         LanguageChange.getMyLanguage(this);
     }
-
-
-
+    
     @Override
     public void onClick(View v) {
 
@@ -62,6 +60,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
             case R.id.loginBtn:
 
                 Driver loggedInDriver = new Driver();
+                loggedInDriver.setUsername("Pera");
 
                 intent = new Intent(this, PassangerMainActivity.class);
 
@@ -122,6 +121,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 intent = new Intent(this, PassangerMainActivity.class);
 
                 Passenger loggedInPassanger = new Passenger();
+                loggedInPassanger.setUsername("Mika");
 
                 UserLocalStore userLocalStore = new UserLocalStore(this);
                 userLocalStore.storeUser(loggedInPassanger);
