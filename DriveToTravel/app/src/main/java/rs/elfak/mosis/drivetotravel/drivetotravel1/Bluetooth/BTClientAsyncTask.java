@@ -144,6 +144,7 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
                     bytesRead = mmInStream.read(buffer);
 
                     if (bytesRead != -1) {
+
                         //Citanje podataka u string result
                         String receivedMsg = "";
 

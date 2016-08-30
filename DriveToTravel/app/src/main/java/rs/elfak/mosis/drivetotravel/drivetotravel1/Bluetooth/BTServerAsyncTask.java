@@ -137,6 +137,7 @@ public class BTServerAsyncTask extends AsyncTask<Void,String,String>
             if (socket != null) {
 
                 //Komunikacija
+                
                 BluetoothDevice user = socket.getRemoteDevice();
                 COMMUNICATE=true;
 
