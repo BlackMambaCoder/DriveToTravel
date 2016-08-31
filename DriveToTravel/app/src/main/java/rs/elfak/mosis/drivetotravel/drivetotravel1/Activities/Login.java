@@ -12,12 +12,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.LanguageChange;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
 
 public class Login extends ActionBarActivity implements View.OnClickListener{
 
@@ -58,54 +63,58 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
         Intent intent;
 
-        switch (onClickId) {
+        switch (onClickId)
+        {
             case R.id.loginBtn:
 
-                Driver loggedInDriver = new Driver();
-
-                intent = new Intent(this, PassangerMainActivity.class);
-
-                UserLocalStore userLocalStoreDriver = new UserLocalStore(this);
-                userLocalStoreDriver.storeUser(loggedInDriver);
-                userLocalStoreDriver.setUserLoggedIn(true);
-
-                startActivity(intent);
-                /*
                 if (this.connectedToInternet() && this.checkFields())
                 {
-                    String username = "leorado"; //this.usernameET.getText().toString();
+                    int responseUserType;
 
-                    String password = "password";//this.passwordET.getText().toString();
+                    String username                 = this.usernameET.getText().toString();
+                    String password                 = this.passwordET.getText().toString();
+                    ServerRequest serverRequest     = new ServerRequest(this);
+                    JSONObject responseUser         = serverRequest.loginUser(username, password);
+                    UserLocalStore userLocalStore   = new UserLocalStore(this);
 
-                    ServerRequest serverRequest = new ServerRequest(this);
 
-                    if (serverRequest.connectToServer(username, password))
+                    try
                     {
-                        Driver loggedInDriver = serverRequest.getDriver();
+                        responseUserType = responseUser.getInt(UserStaticAttributes._userType);
+                    }
+                    catch (JSONException e)
+                    {
+                        responseUserType = -1;
+                        e.printStackTrace();
+                    }
 
-                        intent = new Intent(this, ActivityDriverMain.class);
+                    if (responseUserType == User.USER_TYPE_DRIVER)
+                    {
+                        Driver loggedInUser =
+                                Driver.getDriverFromJSONObject(responseUser);
 
-                        UserLocalStore userLocalStore = new UserLocalStore(this);
-                        userLocalStore.storeUser(loggedInDriver);
-                        userLocalStore.setUserLoggedIn(true);
+                        userLocalStore.storeUser(loggedInUser);
 
+                        intent = new Intent(this, PassangerMainActivity.class);
                         startActivity(intent);
                         finish();
                     }
+                    else if (responseUserType == User.USER_TYPE_PASSENGER)
+                    {
+                        Passenger loggedInUser =
+                                Passenger.getUserFromJSONObject(responseUser);
 
+                        userLocalStore.storeUser(loggedInUser);
+
+                        intent = new Intent(this, PassangerMainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                     else
                     {
-                        if (serverRequest.getDriver() != null)
-                        {
-                            Toast.makeText(this, "false password", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(this, "False credentials", Toast.LENGTH_LONG).show();
                     }
-
-                    intent = new Intent(this, ActivityDriverMain.class);
-                    startActivity(intent);
-                    finish();
                 }
-                */
 
                 break;
 

@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -32,10 +33,8 @@ public class ServerRequest
     /**
      *  STATIC VARIABLES
      */
-
-//    public static int DISTANCE_SEARCH           = 345;
-//    public static int LOCATION_TIME_SEARCH      = 346;
-    //
+    public static int SEARCH_FOR_DRIVER     = 35;
+    public static int SEARCH_FOR_LOCATION   = 36;
 
     private UserLocalStore userLocalStore;
     private Driver classDriver;
@@ -168,37 +167,88 @@ public class ServerRequest
 //        fetchTourDataAsyncTask.execute(dataArrayForPostRequest);
 //    }
 
-    public List<Tour> searchTour(String... params)
+    private List<Tour> searchTour(JSONObject jsonObject) throws ExecutionException, InterruptedException
     {
-        List<Tour> tours;
-        String successMessage;
-        JSONArray JSONDataArray         = new JSONArray();
-
-        for (String param : params)
-        {
-            JSONDataArray.put(param);
-        }
-
-        String dataArrayForPostRequest  = JSONDataArray.toString();
-
         FetchTourDataAsyncTask fetchTourDataAsyncTask
                                         = new FetchTourDataAsyncTask(this.context);
 
+        fetchTourDataAsyncTask.execute(jsonObject.toString()).get();
+
+        return fetchTourDataAsyncTask.getTours();
+    }
+
+    public List<Tour> searchTour(int searchCriteria, String... searchAttribute)
+    {
+        List<Tour> tours;
+        JSONObject jsonObject = new JSONObject();
+
         try
         {
-            fetchTourDataAsyncTask.execute(dataArrayForPostRequest).get();
-            tours                           = fetchTourDataAsyncTask.getTours();
+            if (searchCriteria == ServerRequest.SEARCH_FOR_DRIVER)
+            {
+                jsonObject.put("username", searchAttribute[0]);
+            }
+            else if (searchCriteria == ServerRequest.SEARCH_FOR_LOCATION)
+            {
+                jsonObject.put("startlocation", searchAttribute[0]);
+                jsonObject.put("destlocation", searchAttribute[1]);
+            }
+
+            tours = this.searchTour(jsonObject);
+        }
+        catch (JSONException e)
+        {
+            String successMessage = "ServerRequestSearchTour: JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
+            tours = null;
         }
         catch (InterruptedException e)
         {
-            successMessage = "ServerRequestSearchTour: InterruptedException - " + e.getMessage();
+            String successMessage = "ServerRequestSearchTour: InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
             tours = null;
         }
         catch (ExecutionException e)
         {
-            successMessage = "ServerRequestSearchTour: ExecutionException - " + e.getMessage();
+            String successMessage = "ServerRequestSearchTour: ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
+            tours = null;
+        }
+
+        return tours;
+    }
+
+    public List<Tour> searchTour(Date searchAttribute)
+    {
+        List<Tour> tours;
+        JSONObject jsonObject = new JSONObject();
+
+        try
+        {
+            jsonObject.put("username", searchAttribute);
+
+            tours = this.searchTour(jsonObject);
+        }
+        catch (JSONException e)
+        {
+            String successMessage = "ServerRequestSearchTourForDate: JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
+            tours = null;
+        }
+        catch (InterruptedException e)
+        {
+            String successMessage = "ServerRequestSearchTourForDate: InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            e.printStackTrace();
+            tours = null;
+        }
+        catch (ExecutionException e)
+        {
+            String successMessage = "ServerRequestSearchTourForDate: ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
             tours = null;

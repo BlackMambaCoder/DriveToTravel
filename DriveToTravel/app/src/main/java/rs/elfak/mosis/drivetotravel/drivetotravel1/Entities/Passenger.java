@@ -15,24 +15,26 @@ public class Passenger extends User
 {
     public Passenger()
     {
-
+        this.userType                   = User.USER_TYPE_PASSENGER;
     }
 
     public Passenger(User user)
     {
-        this.id = user.id;
-        this.name = user.name;
-        this.surname = user.surname;
-        this.username = user.username;
-        this.password = user.password;
-        this.eMail = user.eMail;
-        this.phoneNumber = user.phoneNumber;
+        this.id                         = user.id;
+        this.name                       = user.name;
+        this.surname                    = user.surname;
+        this.username                   = user.username;
+        this.password                   = user.password;
+        this.eMail                      = user.eMail;
+        this.phoneNumber                = user.phoneNumber;
+        this.userType                   = User.USER_TYPE_PASSENGER;
     }
 
     @Override
-    public String getUserType() {
-        return "Passenger";
+    public int getUserType() {
+        return User.USER_TYPE_PASSENGER;
     }
+
     public JSONObject toJSONObject() throws JSONException
     {
         JSONObject retValue = new JSONObject();

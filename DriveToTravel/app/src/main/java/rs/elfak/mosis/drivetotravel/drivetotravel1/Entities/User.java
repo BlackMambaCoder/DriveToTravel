@@ -14,14 +14,18 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
  */
 public abstract class User
 {
-    protected String id             =   "";
-    protected String name           =   "";
-    protected String surname        =   "";
-    protected String username       =   "";
-    protected String password       =   "";
-    protected String phoneNumber    =   "";
-    protected String eMail          =   "";
-    protected List<String> friends  = new ArrayList<>();
+    public static int USER_TYPE_DRIVER      =    65;
+    public static int USER_TYPE_PASSENGER   =    66;
+
+    protected String id                     =    "";
+    protected String name                   =    "";
+    protected String surname                =    "";
+    protected String username               =    "";
+    protected String password               =    "";
+    protected String phoneNumber            =    "";
+    protected String eMail                  =    "";
+    protected int userType                  =    -1;
+    protected List<String> friends          = new ArrayList<>();
 
     // === GETTER  === //
     public String getId()
@@ -59,7 +63,7 @@ public abstract class User
         return this.eMail;
     }
 
-    public abstract String getUserType();
+    public abstract int getUserType();
 
     public List<String> getFriends()
     {
@@ -101,6 +105,7 @@ public abstract class User
     {
         this.eMail = eMail;
     }
+
 
     public abstract JSONObject toJSONObject () throws JSONException;
 

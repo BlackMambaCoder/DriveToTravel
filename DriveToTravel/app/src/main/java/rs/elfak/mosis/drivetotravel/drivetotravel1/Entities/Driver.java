@@ -14,44 +14,23 @@ public class Driver extends User
 {
     private String carModel = "";
 
-//    private static Driver instance = null;
-//
-//    protected Driver() {}
-//
-//    public static Driver getInstance()
-//    {
-//        if (instance == null)
-//        {
-//            instance = new Driver();
-//        }
-//
-//        return instance;
-//    }
-//
-//    public static void setInstanceNull()
-//    {
-//        if (instance != null)
-//        {
-//            instance = null;
-//        }
-//    }
-
     // === GETTER === //
 
     public Driver()
     {
-
+        this.userType                   = User.USER_TYPE_DRIVER;
     }
 
     public Driver (User user)
     {
-        this.id = user.id;
-        this.name = user.name;
-        this.surname = user.surname;
-        this.username = user.username;
-        this.password = user.password;
-        this.eMail = user.eMail;
-        this.phoneNumber = user.phoneNumber;
+        this.id                         = user.id;
+        this.name                       = user.name;
+        this.surname                    = user.surname;
+        this.username                   = user.username;
+        this.password                   = user.password;
+        this.eMail                      = user.eMail;
+        this.phoneNumber                = user.phoneNumber;
+        this.userType                   = User.USER_TYPE_DRIVER;
     }
 
     public String getCarModel()
@@ -63,43 +42,17 @@ public class Driver extends User
 
     public void setCarModel (String carModel)
     {
-        this.carModel = carModel;
+        this.carModel                   = carModel;
     }
 
-//    public static Driver getDriverFromJSONString (String jsonString)
-//    {
-//        Driver returnValue = new Driver();
-//        try
-//        {
-//            JSONObject jsonObject = new JSONObject(jsonString);
-//
-//            returnValue.setId(
-//                    jsonObject.getLong("_id"));
-//            returnValue.setName(
-//                    jsonObject.getString(UserStaticAttributes._name));
-//            returnValue.setSurname(
-//                    jsonObject.getString(UserStaticAttributes._surname));
-//            returnValue.setUsername(
-//                    jsonObject.getString(UserStaticAttributes._username));
-//            returnValue.setName(
-//                    jsonObject.getString(UserStaticAttributes._name));
-//            returnValue.setName(
-//                    jsonObject.getString(UserStaticAttributes._name));
-//            returnValue.setName(
-//                    jsonObject.getString(UserStaticAttributes._name));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     @Override
-    public String getUserType() {
-        return "Driver";
+    public int getUserType() {
+        return User.USER_TYPE_DRIVER;
     }
 
     public static Driver getDriverFromJSONObject(JSONObject userParam)
     {
-        Driver user = new Driver();
+        Driver user                     = new Driver();
 
         if (userParam != null)
         {
@@ -116,12 +69,12 @@ public class Driver extends User
             catch (JSONException e)
             {
                 e.printStackTrace();
-                user = null;
+                user                        = null;
             }
         }
         else
         {
-            user = null;
+            user                            = null;
         }
 
 

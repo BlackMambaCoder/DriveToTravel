@@ -88,10 +88,12 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
                     {
                         Driver driver = new Driver(user);
 
-                        if (serverRequest.connectToServer(driver) && this.storeUserToLocalStore(driver))
+                        driver = serverRequest.storeUser(driver);
+
+                        if (driver != null && this.storeUserToLocalStore(driver))
                         {
                             //this.storeUserToLocalStore(driver);
-                            intent = new Intent(this, ActivityDriverMain.class);
+                            intent = new Intent(this, PassangerMainActivity.class);
                             startActivity(intent);
                             finish();
                         }
@@ -103,6 +105,20 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
                     else
                     {
                         // Store passenger
+                        Passenger passenger = new Passenger(user);
+
+                        passenger = serverRequest.storeUser(passenger);
+
+                        if (passenger != null && this.storeUserToLocalStore(passenger))
+                        {
+                            intent = new Intent(this, PassangerMainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else
+                        {
+                            Toast.makeText(this, R.string.error_to_store_driver_message, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
 
@@ -236,14 +252,29 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
         return retValue;
     }
 
-    private boolean storeUserToLocalStore(Driver driverToStore)
+    private boolean storeUserToLocalStore(Driver userToStore)
     {
         boolean retValue = false;
         UserLocalStore userLocalStore = new UserLocalStore(this);
 
         if (!userLocalStore.getUserLoggedIn())
         {
-            userLocalStore.storeUser(driverToStore);
+            userLocalStore.storeUser(userToStore);
+            userLocalStore.setUserLoggedIn(true);
+            retValue = true;
+        }
+
+        return retValue;
+    }
+
+    private boolean storeUserToLocalStore(Passenger userToStore)
+    {
+        boolean retValue = false;
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+
+        if (!userLocalStore.getUserLoggedIn())
+        {
+            userLocalStore.storeUser(userToStore);
             userLocalStore.setUserLoggedIn(true);
             retValue = true;
         }
