@@ -25,31 +25,41 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.ServerStaticAtt
  */
 public class LoginUserAsyncTask extends AsyncTask<String, Void, Void> {
 
-    private String responseData;
+    private String responseData = null;
 
     public JSONObject getResponseData()
     {
         JSONObject retValue;
 
-        try
+        if (this.responseData != null)
         {
-            retValue = new JSONObject(this.responseData);
+           try
+            {
+                retValue = new JSONObject(this.responseData);
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+                retValue = null;
+            }
         }
-        catch (JSONException e)
+        else
         {
-            e.printStackTrace();
             retValue = null;
         }
+
 
         return retValue;
     }
 
     @Override
     protected Void doInBackground(String... params) {
-        Resources res           = Resources.getSystem();
+//        Resources res           = Resources.getSystem();
         String postValue        = params[0];
         String successMessage;
-        String routeUrl         = res.getString(R.string.servers_url) + res.getString(R.string.login_user);
+//        String routeUrl         = res.getString(R.string.servers_url) + res.getString(R.string.login_user);
+        String routeUrl         = ServerStaticAttributes.SERVER_ROOT_URL +
+                                    ServerStaticAttributes.LOGIN_URL;
 
         try
         {

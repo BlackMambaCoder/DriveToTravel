@@ -64,39 +64,14 @@ public class FetchTourDataAsyncTask extends AsyncTask<String, Void, Void>
 
         String postValue = params[0];
 
-        Resources res = Resources.getSystem();
+//        Resources res = Resources.getSystem();
 
-        String routeUrl = res.getString(R.string.servers_url) + res.getString(R.string.fetch_tour_data);
+//        String routeUrl = res.getString(R.string.servers_url) + res.getString(R.string.fetch_tour_data);
+        String routeUrl = ServerStaticAttributes.SERVER_ROOT_URL +
+                            ServerStaticAttributes.SEARCH_TOURS_URL;
 
         try
         {
-//            switch (_fetchType)
-//            {
-//                case 1: // fetch by driver id
-//
-//                    controller = "fetchTourByDriverId.php/";
-//                    data.put("id", postValue);
-//
-//                    break;
-//
-//                case 2:
-//
-//                    controller = "fetchTourByDriverUsername.php";
-//                    data.put("username", postValue);
-//                    break;
-//
-//                case 3:
-//                    /**
-//                     * fetch by destination location
-//                     */
-//                    break;
-//
-//                case 4:
-//                    /**
-//                     * fetch by start and end location
-//                     */
-//                    break;
-//            }
             URL url = new URL(routeUrl);
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -168,42 +143,30 @@ public class FetchTourDataAsyncTask extends AsyncTask<String, Void, Void>
         {
             successMessage = "FetchTourDataAsyncTask: ParseException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.tours = null;
         }
         catch (ProtocolException e)
         {
             successMessage = "FetchTourDataAsyncTask: ProtocolException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.tours = null;
         }
         catch (JSONException e)
         {
             successMessage = "FetchTourDataAsyncTask: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.tours = null;
         }
         catch (IOException e)
         {
             successMessage = "FetchTourDataAsyncTask: IOException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.tours = null;
         }
-//        catch (ParseException e)
-//        {
-//            successMessage = "FetchTourDataAsyncTask: ParseException - " + e.getMessage();
-//            Log.e("*****BREAK_POINT*****", successMessage);
-//            e.printStackTrace();
-//            this.tours = null;
-//        }
         catch (Exception e)
         {
             successMessage = "FetchTourDataAsyncTask: Exception - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.tours = null;
         }
 

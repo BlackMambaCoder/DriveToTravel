@@ -21,7 +21,6 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.ServerStaticAtt
  * Created by LEO on 20.8.2016..
  */
 public class AddFriendAsyncTask extends AsyncTask<String, Void, Void> {
-    private String successMessage;
     private boolean response;
 
     public boolean getResponse()
@@ -36,8 +35,11 @@ public class AddFriendAsyncTask extends AsyncTask<String, Void, Void> {
 
         Resources res = Resources.getSystem();
 
-        String routeUrl = res.getString(R.string.servers_url) + res.getString(R.string.add_friend);
 
+        String routeUrl = ServerStaticAttributes.SERVER_ROOT_URL +
+                            ServerStaticAttributes.ADD_FRIEND_URL;
+//        String routeUrl = res.getString(R.string.servers_url) + res.getString(R.string.add_friend);
+        String successMessage;
         try
         {
             URL url = new URL(routeUrl);
@@ -79,28 +81,24 @@ public class AddFriendAsyncTask extends AsyncTask<String, Void, Void> {
         {
             successMessage = "AddFriendAsyncTask: MalformedURLException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.response = false;
         }
         catch (ProtocolException e)
         {
             successMessage = "AddFriendAsyncTask: ProtocolException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.response = false;
         }
         catch (IOException e)
         {
             successMessage = "AddFriendAsyncTask: IOException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.response = false;
         }
         catch (Exception e)
         {
             successMessage = "AddFriendAsyncTask: Exception - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.response = false;
         }
 

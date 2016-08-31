@@ -5,16 +5,19 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings;
  */
 public class UserStaticAttributes {
 
-    public static String _id            = "_id";
-    public static String _name          = "firstname";
-    public static String _surname       = "lastname";
-    public static String _username      = "username";
-    public static String _password      = "password";
-    public static String _phoneNumber   = "phonenumber";
-    public static String _eMail         = "email";
-    public static String _carModel      = "carmodel";
-    public static String _loggedIn      = "loggedIn";
-    public static String _userType      = "usertype";
-    public static String _driverType    = "driver";
-    public static String _passengerType = "passenger";
+    public static String _id                = "_id";
+    public static String _name              = "firstname";
+    public static String _surname           = "lastname";
+    public static String _username          = "username";
+    public static String _password          = "password";
+    public static String _phoneNumber       = "phonenumber";
+    public static String _eMail             = "email";
+    public static String _carModel          = "carmodel";
+    public static String _loggedIn          = "loggedIn";
+    public static String _userType          = "usertype";
+    public static String _driverType        = "driver";
+    public static String _passengerType     = "passenger";
+    public static String FRIENDS_USERNAME   = "friends_username";
+    public static String FIRST_USER         = "first_user";
+    public static String SECOND_USER        = "second_user";
 }

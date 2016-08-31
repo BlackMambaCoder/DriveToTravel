@@ -17,4 +17,11 @@ public class ServerStaticAttributes
     public static int _connectTimeOut = 15000;
     public static String _requestMethod = "POST";
 
+    public static String SERVER_ROOT_URL = "http://192.168.0.103";
+    public static String REGISTER_URL = "/user/register";
+    public static String LOGIN_URL = "/user/login";
+    public static String ADD_FRIEND_URL = "/user/add_friend";
+    public static String FRIEND_WITH_URL = "/user/friend_with";
+    public static String SEARCH_TOURS_URL = "/tour/search_tour";
+
 }

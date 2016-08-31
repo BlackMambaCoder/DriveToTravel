@@ -117,7 +117,7 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
                         }
                         else
                         {
-                            Toast.makeText(this, R.string.error_to_store_driver_message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Error to store user. Try in a few minutes again", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

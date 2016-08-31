@@ -34,9 +34,11 @@ public class FriendWithAsyncTask extends AsyncTask<String, Void, Void> {
 
         String postValue = params[0];
 
-        Resources res = Resources.getSystem();
+//        Resources res = Resources.getSystem();
 
-        String routeUrl = res.getString(R.string.servers_url) + res.getString(R.string.friend_with);
+//        String routeUrl = res.getString(R.string.servers_url) + res.getString(R.string.friend_with);
+        String routeUrl = ServerStaticAttributes.SERVER_ROOT_URL +
+                            ServerStaticAttributes.FRIEND_WITH_URL;
 
         try
         {
@@ -80,28 +82,24 @@ public class FriendWithAsyncTask extends AsyncTask<String, Void, Void> {
         {
             successMessage = "FriendWithAsyncTask: MalformedURLException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.response = false;
         }
         catch (ProtocolException e)
         {
             successMessage = "FriendWithAsyncTask: ProtocolException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.response = false;
         }
         catch (IOException e)
         {
             successMessage = "FriendWithAsyncTask: IOException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.response = false;
         }
         catch (Exception e)
         {
             successMessage = "FriendWithAsyncTask: Exception - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.response = false;
         }
 

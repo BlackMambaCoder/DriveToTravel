@@ -23,6 +23,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.LoginUserAs
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.StoreUserDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.UpdateTourRankAsyncTask;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.TourStaticAttributes;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
 
 /**
@@ -59,84 +60,6 @@ public class ServerRequest
         return this.classDriver;
     }
 
-//    private void storeDriver ()
-//    {
-//        if (this.classDriver != null)
-//        {
-//            try
-//            {
-//                StoreDriverDataAsyncTask storeDriverDataAsyncTask = new StoreDriverDataAsyncTask(this.classDriver, this.context);
-//                storeDriverDataAsyncTask.execute().get();
-//                this.classDriver = storeDriverDataAsyncTask.getDriver();
-//            }
-//            catch (InterruptedException e)
-//            {
-//                Log.e("*****BREAK_POINT*****", "ServerRequest storeDriver: " + e.getMessage());
-//                this.classDriver = null;
-//            }
-//            catch (ExecutionException e)
-//            {
-//                Log.e("*****BREAK_POINT*****", "ServerRequest storeDriver: " + e.getMessage());
-//                this.classDriver = null;
-//            }
-//        }
-//    }
-
-    public void fetchDriverByUsername (String username)
-    {
-        try
-        {
-            FetchDriverDataAsyncTask fetchDriverDataAsyncTask = new FetchDriverDataAsyncTask(this.context);
-            fetchDriverDataAsyncTask.execute(username).get();
-            this.classDriver = fetchDriverDataAsyncTask.getUser();
-        }
-        catch (InterruptedException e)
-        {
-            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
-            e.printStackTrace();
-            this.classDriver = null;
-        }
-        catch (ExecutionException e)
-        {
-            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
-            e.printStackTrace();
-            this.classDriver = null;
-        }
-    }
-
-    public boolean connectToServer(Driver driverP)
-    {
-        boolean returnValue = false;
-
-//        this.classDriver = driverP;
-//        this.storeDriver();
-//
-//        if (this.classDriver != null)
-//        {
-//            returnValue = true; //this.storeUserToLocalStore();
-//        }
-//
-//        else
-//        {
-//            Log.e("/connectToServer", "Driver couldn't be stored");
-//        }
-
-        return returnValue;
-    }
-
-    public boolean connectToServer(String username, String password)
-    {
-        boolean retValue = true;
-
-        this.fetchDriverByUsername(username);
-
-        if (this.classDriver != null && !password.equals(this.classDriver.getPassword()))
-        {
-            retValue = this.storeUserToLocalStore();
-        }
-
-        return retValue;
-    }
 
     private boolean storeUserToLocalStore()
     {
@@ -151,21 +74,6 @@ public class ServerRequest
 
         return retValue;
     }
-
-//    public void searchTour(String startLocationParam, String endLocationParam, String timeParam, String dateParam)
-//    {
-//        JSONArray JSONDataArray = new JSONArray();
-//
-//        JSONDataArray.put(startLocationParam);
-//        JSONDataArray.put(endLocationParam);
-//        JSONDataArray.put(timeParam);
-//        JSONDataArray.put(dateParam);
-//
-//        String dataArrayForPostRequest = JSONDataArray.toString();
-//
-//        FetchTourDataAsyncTask fetchTourDataAsyncTask = new FetchTourDataAsyncTask(this.context);
-//        fetchTourDataAsyncTask.execute(dataArrayForPostRequest);
-//    }
 
     private List<Tour> searchTour(JSONObject jsonObject) throws ExecutionException, InterruptedException
     {
@@ -186,12 +94,12 @@ public class ServerRequest
         {
             if (searchCriteria == ServerRequest.SEARCH_FOR_DRIVER)
             {
-                jsonObject.put("username", searchAttribute[0]);
+                jsonObject.put(UserStaticAttributes._username, searchAttribute[0]);
             }
             else if (searchCriteria == ServerRequest.SEARCH_FOR_LOCATION)
             {
-                jsonObject.put("startlocation", searchAttribute[0]);
-                jsonObject.put("destlocation", searchAttribute[1]);
+                jsonObject.put(TourStaticAttributes._STARTLOCATION, searchAttribute[0]);
+                jsonObject.put(TourStaticAttributes._DESTINATIONLOCATION, searchAttribute[1]);
             }
 
             tours = this.searchTour(jsonObject);
@@ -228,7 +136,7 @@ public class ServerRequest
 
         try
         {
-            jsonObject.put("username", searchAttribute);
+            jsonObject.put(TourStaticAttributes._STARTDATE_AND_TIME, searchAttribute.toString());
 
             tours = this.searchTour(jsonObject);
         }
@@ -259,46 +167,40 @@ public class ServerRequest
 
     public boolean friendWith(String user1, String user2)
     {
-        boolean retValue;
         JSONObject requestData = new JSONObject();
 
         FriendWithAsyncTask task = new FriendWithAsyncTask();
         try
         {
 
-            requestData.put("firstuser", user1);
-            requestData.put("seconduser", user2);
+            requestData.put(UserStaticAttributes.FIRST_USER, user1);
+            requestData.put(UserStaticAttributes.SECOND_USER, user2);
 
             task.execute(requestData.toString()).get();
 
-            retValue = task.getResponse();
+            return task.getResponse();
         }
         catch (InterruptedException e)
         {
             String successMessage = "ServerRequestFriendWith: InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = false;
+            return false;
         }
         catch (ExecutionException e)
         {
             String successMessage = "ServerRequestFriendWith: ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = false;
+            return false;
         }
         catch (JSONException e)
         {
             String successMessage = "ServerRequestFriendWith: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = false;
+            return false;
         }
-
-        return retValue;
     }
 
-    public String addFriend(String userFriendParam)
+    public String addFriend(String userFriendParam, String userNameParam)
     {
         JSONObject userFriend = new JSONObject();
         String successMessage;
@@ -307,43 +209,40 @@ public class ServerRequest
         AddFriendAsyncTask task = new AddFriendAsyncTask();
 
         try {
-            userFriend.put("username", userFriendParam);
+            userFriend.put(UserStaticAttributes.FRIENDS_USERNAME, userFriendParam);
+            userFriend.put(UserStaticAttributes._username, userNameParam);
             task.execute(userFriend.toString()).get();
+
             if (task.getResponse())
             {
-                retValue = userFriendParam;
+                return userFriendParam;
             }
             else
             {
-                retValue = null;
+                return null;
             }
         }
         catch (InterruptedException e)
         {
             successMessage = "ServerRequestAddFriend: InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
+            return null;
         }
         catch (ExecutionException e)
         {
             successMessage = "ServerRequestAddFriend: ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
+            return null;
         }
         catch (JSONException e)
         {
             successMessage = "ServerRequestAddFriend: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
+            return null;
         }
-
-        return retValue;
     }
 
-    public String removeFriend(String userFriendParam)
+    public String removeFriend(String userFriendParam, String usernameParam)
     {
         JSONObject userFriend = new JSONObject();
         String successMessage;
@@ -352,40 +251,37 @@ public class ServerRequest
         AddFriendAsyncTask task = new AddFriendAsyncTask();
 
         try {
-            userFriend.put("username", userFriendParam);
+            userFriend.put(UserStaticAttributes.FRIENDS_USERNAME, userFriendParam);
+            userFriend.put(UserStaticAttributes._username, usernameParam);
             task.execute(userFriend.toString()).get();
+
             if (task.getResponse())
             {
-                retValue = userFriendParam;
+                return userFriendParam;
             }
             else
             {
-                retValue = null;
+                return null;
             }
         }
         catch (InterruptedException e)
         {
             successMessage = "ServerRequestRemoveFriend: InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
+            return null;
         }
         catch (ExecutionException e)
         {
             successMessage = "ServerRequestRemoveFriend: ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
+            return null;
         }
         catch (JSONException e)
         {
             successMessage = "ServerRequestRemoveFriend: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
+            return null;
         }
-
-        return retValue;
     }
 
     public List<Double> updateTourRank(double rankParam,int tourid)
@@ -444,21 +340,29 @@ public class ServerRequest
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
+            String successMessage = "ServerRequest::storeUser : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             user = null;
         }
         catch (InterruptedException e)
         {
-            e.printStackTrace();
+            String successMessage = "ServerRequest::storeUser : InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             user = null;
         }
         catch (ExecutionException e)
         {
-            e.printStackTrace();
+            String successMessage = "ServerRequest::storeUser : ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             user = null;
         }
 
-        return Driver.getDriverFromJSONObject(user);
+        if (user != null)
+        {
+            return Driver.getDriverFromJSONObject(user);
+        }
+
+        return null;
     }
 
     public Passenger storeUser(Passenger userObjectParam)
@@ -476,25 +380,27 @@ public class ServerRequest
         {
             String successMessage = "ServerRequest::storeUser : JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             user = null;
         }
         catch (InterruptedException e)
         {
             String successMessage = "ServerRequest::storeUser : InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             user = null;
         }
         catch (ExecutionException e)
         {
             String successMessage = "ServerRequest::storeUser : ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             user = null;
         }
 
-        return Passenger.getUserFromJSONObject(user);
+        if (user != null)
+        {
+            return Passenger.getUserFromJSONObject(user);
+        }
+
+        return null;
     }
 
     public JSONObject loginUser(String username, String password)
@@ -510,25 +416,20 @@ public class ServerRequest
 
             task.execute(data.toString()).get();
 
-            retValue = task.getResponseData();
+            return task.getResponseData();
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
-            retValue = null;
+            return null;
         }
         catch (InterruptedException e)
         {
-            e.printStackTrace();
-            retValue = null;
+            return null;
         }
         catch (ExecutionException e)
         {
-            e.printStackTrace();
-            retValue = null;
+            return null;
         }
-
-        return retValue;
     }
 
 }
