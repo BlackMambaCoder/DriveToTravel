@@ -25,7 +25,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.LanguageChange;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 
-public class Register extends ActionBarActivity implements View.OnClickListener {
+public class  Register extends ActionBarActivity implements View.OnClickListener {
 
     private Button registerBtn;
     private TextView toLoginLabel;

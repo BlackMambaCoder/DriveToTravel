@@ -33,7 +33,14 @@ public class LoginUserAsyncTask extends AsyncTask<String, Void, Void> {
 
         try
         {
-            retValue = new JSONObject(this.responseData);
+            if (this.responseData != null)
+            {
+                retValue = new JSONObject(this.responseData);
+            }
+            else
+            {
+                retValue = null;
+            }
         }
         catch (JSONException e)
         {
@@ -49,8 +56,8 @@ public class LoginUserAsyncTask extends AsyncTask<String, Void, Void> {
         Resources res           = Resources.getSystem();
         String postValue        = params[0];
         String successMessage;
-        String routeUrl         = res.getString(R.string.servers_url) + res.getString(R.string.login_user);
-
+//        String routeUrl         = res.getString(R.string.servers_url) + res.getString(R.string.login_user);
+        String routeUrl         = ServerStaticAttributes._SERVER_ROOT_URL + ServerStaticAttributes._LOGIN_URL;
         try
         {
             URL url = new URL(routeUrl);
@@ -91,28 +98,28 @@ public class LoginUserAsyncTask extends AsyncTask<String, Void, Void> {
         {
             successMessage = "LoginUserAsyncTask: MalformedURLException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
+//            e.printStackTrace();
             this.responseData = null;
         }
         catch (ProtocolException e)
         {
             successMessage = "LoginUserAsyncTask: ProtocolException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
+//            e.printStackTrace();
             this.responseData = null;
         }
         catch (IOException e)
         {
             successMessage = "LoginUserAsyncTask: IOException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
+//            e.printStackTrace();
             this.responseData = null;
         }
         catch (Exception e)
         {
             successMessage = "LoginUserAsyncTask: Exception - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
+//            e.printStackTrace();
             this.responseData = null;
         }
 

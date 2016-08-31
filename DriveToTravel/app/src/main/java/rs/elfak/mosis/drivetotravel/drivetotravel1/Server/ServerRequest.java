@@ -501,7 +501,7 @@ public class ServerRequest
     {
         JSONObject data = new JSONObject();
         LoginUserAsyncTask task = new LoginUserAsyncTask();
-        JSONObject retValue;
+        JSONObject retValue = null;
 
         try
         {
@@ -514,17 +514,14 @@ public class ServerRequest
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
             retValue = null;
         }
         catch (InterruptedException e)
         {
-            e.printStackTrace();
             retValue = null;
         }
         catch (ExecutionException e)
         {
-            e.printStackTrace();
             retValue = null;
         }
 
