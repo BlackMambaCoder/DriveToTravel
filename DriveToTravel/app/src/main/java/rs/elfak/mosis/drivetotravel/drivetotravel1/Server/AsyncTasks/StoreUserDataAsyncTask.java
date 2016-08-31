@@ -79,7 +79,7 @@ public class StoreUserDataAsyncTask extends AsyncTask<String, Void, Void>
 
         String postValue = params[0];
 
-        Resources res = Resources.getSystem();
+//        Resources res = Resources.getSystem();
 
 //        String routeUrl = res.getString(R.string.servers_url) + res.getString(R.string.store_user);
         String routeUrl = ServerStaticAttributes.SERVER_ROOT_URL +

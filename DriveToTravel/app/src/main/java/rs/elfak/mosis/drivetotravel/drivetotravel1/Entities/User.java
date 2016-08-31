@@ -106,7 +106,6 @@ public abstract class User
         this.eMail = eMail;
     }
 
-
     public abstract JSONObject toJSONObject () throws JSONException;
 
     public boolean addFriend(String usernameParam)

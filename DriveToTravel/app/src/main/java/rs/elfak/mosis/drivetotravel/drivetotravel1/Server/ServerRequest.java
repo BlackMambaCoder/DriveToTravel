@@ -246,7 +246,6 @@ public class ServerRequest
     {
         JSONObject userFriend = new JSONObject();
         String successMessage;
-        String retValue;
 
         AddFriendAsyncTask task = new AddFriendAsyncTask();
 

@@ -24,7 +24,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.TourStaticAttri
 /**
  * Created by LEO on 6.4.2016..
  */
-public class StoreTourDataAsyncTask extends AsyncTask<Void, Void, Void>
+public class StoreTourDataAsyncTask extends AsyncTask<String, Void, Void>
 {
     private Tour tour;
     private ProgressDialog progressDialog;
@@ -48,14 +48,16 @@ public class StoreTourDataAsyncTask extends AsyncTask<Void, Void, Void>
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected Void doInBackground(String... params) {
+
+        String postValue = params[0];
+        String routeUrl = ServerStaticAttributes.SERVER_ROOT_URL +
+                            ServerStaticAttributes.STORE_TOUR;
 
         try
         {
 
-            URL url = new URL(ServerStaticAttributes._serverAddress
-                    + ServerStaticAttributes._serverPath
-                    + ServerStaticAttributes._CREATE_TOUR_SCRIPT);
+            URL url = new URL(routeUrl);
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
@@ -65,20 +67,12 @@ public class StoreTourDataAsyncTask extends AsyncTask<Void, Void, Void>
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
 
-            JSONObject data = new JSONObject();
-
-            data.put(TourStaticAttributes._DESTINATIONLOCATION, this.tour.getDestinationLocation());
-            data.put(TourStaticAttributes._STARTLOCATION, this.tour.getStartLocation());
-            data.put(TourStaticAttributes._STARTDATE_AND_TIME, this.tour.getStartDate());
-            data.put(TourStaticAttributes._TOUR_DRIVER, this.tour.getTourDriver());
-            data.put(TourStaticAttributes._PASSENGERS, this.tour.getPassengers());
-
             OutputStream outputStream = httpURLConnection.getOutputStream();
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);//, "UTF-8");
 
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
 
-            bufferedWriter.write(data.toString());
+            bufferedWriter.write(postValue);
             bufferedWriter.flush();
             bufferedWriter.close();
 
@@ -103,22 +97,22 @@ public class StoreTourDataAsyncTask extends AsyncTask<Void, Void, Void>
         }
         catch (MalformedURLException e)
         {
-            Log.e("*****BREAK_POINT*****", "\nTourDataAsync: \n" + e.getMessage() + "\n======================");
+            Log.e("*****BREAK_POINT*****", "TourDataAsync: " + e.getMessage());
             this.tour = null;
         }
         catch (IOException e)
         {
-            Log.e("*****BREAK_POINT*****", "\nTourDataAsync: \n" + e.getMessage() + "\n======================");
+            Log.e("*****BREAK_POINT*****", "TourDataAsync: " + e.getMessage());
             this.tour = null;
         }
         catch (JSONException e)
         {
-            Log.e("*****BREAK_POINT*****", "\nTourDataAsync: \n" + e.getMessage() + "\n======================");
+            Log.e("*****BREAK_POINT*****", "TourDataAsync: " + e.getMessage());
             this.tour = null;
         }
         catch (Exception e)
         {
-            Log.e("*****BREAK_POINT*****", "\nTourDataAsync: \n" + e.getMessage() + "\n======================");
+            Log.e("*****BREAK_POINT*****", "TourDataAsync: " + e.getMessage());
             this.tour = null;
         }
 
