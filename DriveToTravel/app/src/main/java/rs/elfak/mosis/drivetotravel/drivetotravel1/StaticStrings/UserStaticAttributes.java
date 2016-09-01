@@ -17,4 +17,5 @@ public class UserStaticAttributes {
     public static String _userType      = "usertype";
     public static String _driverType    = "driver";
     public static String _passengerType = "passenger";
+    public static String FRIENDS        = "friends";
 }

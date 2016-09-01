@@ -25,7 +25,7 @@ public class UserLocalStore {
 
     public void storeUser (Driver user)
     {
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._id, user.getId());
+        this.sharedPreferencesEditor.putInt(UserStaticAttributes._id, user.getId());
         this.sharedPreferencesEditor.putString(UserStaticAttributes._name, user.getName());
         this.sharedPreferencesEditor.putString(UserStaticAttributes._surname, user.getName());
         this.sharedPreferencesEditor.putString(UserStaticAttributes._username, user.getName());
@@ -40,7 +40,7 @@ public class UserLocalStore {
 
     public void storeUser (Passenger user)
     {
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._id, user.getId());
+        this.sharedPreferencesEditor.putInt(UserStaticAttributes._id, user.getId());
         this.sharedPreferencesEditor.putString(UserStaticAttributes._name, user.getName());
         this.sharedPreferencesEditor.putString(UserStaticAttributes._surname, user.getName());
         this.sharedPreferencesEditor.putString(UserStaticAttributes._username, user.getName());
@@ -56,7 +56,7 @@ public class UserLocalStore {
     {
         Driver user = new Driver();
 
-        user.setId(this.userLocalSharedPrefferences.getString(UserStaticAttributes._id, ""));
+        user.setId(this.userLocalSharedPrefferences.getInt(UserStaticAttributes._id, -1));
         user.setName(this.userLocalSharedPrefferences.getString(UserStaticAttributes._name, ""));
         user.setSurname(this.userLocalSharedPrefferences.getString(UserStaticAttributes._surname, ""));
         user.setUsername(this.userLocalSharedPrefferences.getString(UserStaticAttributes._username, ""));
@@ -72,7 +72,7 @@ public class UserLocalStore {
     {
         Passenger user = new Passenger();
 
-        user.setId(this.userLocalSharedPrefferences.getString(UserStaticAttributes._id, ""));
+        user.setId(this.userLocalSharedPrefferences.getInt(UserStaticAttributes._id, -1));
         user.setName(this.userLocalSharedPrefferences.getString(UserStaticAttributes._name, ""));
         user.setSurname(this.userLocalSharedPrefferences.getString(UserStaticAttributes._surname, ""));
         user.setUsername(this.userLocalSharedPrefferences.getString(UserStaticAttributes._username, ""));

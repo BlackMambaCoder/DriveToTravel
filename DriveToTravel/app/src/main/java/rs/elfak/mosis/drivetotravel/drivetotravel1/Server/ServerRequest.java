@@ -16,7 +16,6 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.AddFriendAsyncTask;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchDriverDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchTourDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FriendWithAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.LoginUserAsyncTask;
@@ -82,27 +81,27 @@ public class ServerRequest
 //        }
 //    }
 
-    public void fetchDriverByUsername (String username)
-    {
-        try
-        {
-            FetchDriverDataAsyncTask fetchDriverDataAsyncTask = new FetchDriverDataAsyncTask(this.context);
-            fetchDriverDataAsyncTask.execute(username).get();
-            this.classDriver = fetchDriverDataAsyncTask.getUser();
-        }
-        catch (InterruptedException e)
-        {
-            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
-            e.printStackTrace();
-            this.classDriver = null;
-        }
-        catch (ExecutionException e)
-        {
-            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
-            e.printStackTrace();
-            this.classDriver = null;
-        }
-    }
+//    public void fetchDriverByUsername (String username)
+//    {
+//        try
+//        {
+//            FetchDriverDataAsyncTask fetchDriverDataAsyncTask = new FetchDriverDataAsyncTask(this.context);
+//            fetchDriverDataAsyncTask.execute(username).get();
+//            this.classDriver = fetchDriverDataAsyncTask.getUser();
+//        }
+//        catch (InterruptedException e)
+//        {
+//            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
+//            e.printStackTrace();
+//            this.classDriver = null;
+//        }
+//        catch (ExecutionException e)
+//        {
+//            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
+//            e.printStackTrace();
+//            this.classDriver = null;
+//        }
+//    }
 
     public boolean connectToServer(Driver driverP)
     {
@@ -124,19 +123,19 @@ public class ServerRequest
         return returnValue;
     }
 
-    public boolean connectToServer(String username, String password)
-    {
-        boolean retValue = true;
-
-        this.fetchDriverByUsername(username);
-
-        if (this.classDriver != null && !password.equals(this.classDriver.getPassword()))
-        {
-            retValue = this.storeUserToLocalStore();
-        }
-
-        return retValue;
-    }
+//    public boolean connectToServer(String username, String password)
+//    {
+//        boolean retValue = true;
+//
+//        this.fetchDriverByUsername(username);
+//
+//        if (this.classDriver != null && !password.equals(this.classDriver.getPassword()))
+//        {
+//            retValue = this.storeUserToLocalStore();
+//        }
+//
+//        return retValue;
+//    }
 
     private boolean storeUserToLocalStore()
     {
@@ -444,17 +443,14 @@ public class ServerRequest
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
             user = null;
         }
         catch (InterruptedException e)
         {
-            e.printStackTrace();
             user = null;
         }
         catch (ExecutionException e)
         {
-            e.printStackTrace();
             user = null;
         }
 

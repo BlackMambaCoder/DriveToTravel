@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
 
 /**
@@ -58,13 +60,18 @@ public class Driver extends User
         {
             try
             {
-                user.setName(userParam.getString(UserStaticAttributes._name));
-                user.setSurname(userParam.getString(UserStaticAttributes._surname));
                 user.setUsername(userParam.getString(UserStaticAttributes._username));
                 user.setPassword(userParam.getString(UserStaticAttributes._password));
-                user.seteMail(userParam.getString(UserStaticAttributes._eMail));
-                user.setPhoneNumber(userParam.getString(UserStaticAttributes._phoneNumber));
-                user.setCarModel(userParam.getString(UserStaticAttributes._carModel));
+                user.setId(userParam.getInt(UserStaticAttributes._id));
+//                user.friends = Arrays.asList(userParam.get(UserStaticAttributes.FRIENDS));
+
+                JSONObject metaData = userParam.getJSONObject("meta_data");
+
+                user.setName(metaData.getString(UserStaticAttributes._name));
+                user.setSurname(metaData.getString(UserStaticAttributes._surname));
+                user.seteMail(metaData.getString(UserStaticAttributes._eMail));
+                user.setPhoneNumber(metaData.getString(UserStaticAttributes._phoneNumber));
+                user.setCarModel(metaData.getString(UserStaticAttributes._carModel));
             }
             catch (JSONException e)
             {

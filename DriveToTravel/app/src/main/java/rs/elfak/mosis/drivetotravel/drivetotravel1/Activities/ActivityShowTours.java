@@ -58,7 +58,7 @@ public class ActivityShowTours extends AppCompatActivity implements AdapterView.
 
     private void getTours ()
     {
-        this.upcomingTourList = TourServerRequest.getTours(this);
+//        this.upcomingTourList = TourServerRequest.getTours(this);
 
         for (Tour currentTour :
                 this.upcomingTourList) {
