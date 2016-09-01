@@ -17,7 +17,6 @@ import java.util.List;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.TourServerRequest;
 
 public class ActivityShowTours extends AppCompatActivity implements AdapterView.OnItemClickListener {
 

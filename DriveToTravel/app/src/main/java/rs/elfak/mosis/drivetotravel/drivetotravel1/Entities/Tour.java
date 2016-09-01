@@ -39,16 +39,23 @@ public class Tour implements Parcelable
 
     public Tour ()
     {
-        this.startLocation              = "";
-        this.destinationLocation        = "";
-        this.startDateAndTime           = null;
-        this.tourDriverUsername               = "";
-        this.passengers                 = null;
-        this.rank                       = -1.0;
-        this.id                         =-1;
+        this.id                         =    -1;
+        this.startLocation              =    "";
+        this.destinationLocation        =    "";
+        this.startDateAndTime           =  null;
+        this.tourDriverUsername         =    "";
+        this.passengers                 =  new ArrayList<>();
+        this.rank                       =  -1.0;
     }
 
-    public Tour (String startArg, String destArg, String startDateArg, String startTimeArg,int tourID)
+    public Tour (
+            String startArg,
+            String destArg,
+            String startDateArg,
+            String startTimeArg,
+            String tourDriverUsername,
+            int tourID
+    )
     {
         this.startLocation              = startArg;
         this.destinationLocation        = destArg;
@@ -67,7 +74,7 @@ public class Tour implements Parcelable
 
         this.startDateAndTime           = date;
 
-        this.tourDriverUsername               = "";
+        this.tourDriverUsername         = "";
         this.passengers                 = new ArrayList<>();
         this.rank                       = -1.0;
         this.id                         = tourID;

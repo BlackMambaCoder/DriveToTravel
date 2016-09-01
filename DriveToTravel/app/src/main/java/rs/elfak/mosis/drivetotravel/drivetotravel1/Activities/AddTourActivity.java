@@ -22,7 +22,6 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.MyConverter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.TourServerRequest;
 
 public class AddTourActivity extends AppCompatActivity implements
         View.OnClickListener,
@@ -37,16 +36,7 @@ public class AddTourActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tour);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        setSupportActionBar(toolbar);
 
 //        Button setDate = (Button)findViewById(R.id.btnSetStartdate);
 //        setDate.setOnClickListener(this);
@@ -70,35 +60,30 @@ public class AddTourActivity extends AppCompatActivity implements
         {
             case R.id.btnAddTour:
 
-                Tour tour = this.AddTourFromInput();
-//                EditText startLocation = (EditText) findViewById(R.id.etAddTourBeginLocation);
-//                EditText destinationLocation = (EditText) findViewById(R.id.etAddTourDestinationLocation);
-//                EditText etstartDate = (EditText) findViewById(R.id.etStartDate);
-//                EditText startTime = (EditText) findViewById(R.id.etStartTime);
-//                tour.setStartLocation(startLocation.getText().toString());
-//                tour.setDestinationLocation(destinationLocation.getText().toString());
-
-//                Date startDate = MyConverter._String2Date(etstartDate.getText().toString());
+                Tour tour                       = this.AddTourFromInput();
+//
+//                EditText etStartLocation        = (EditText) findViewById(R.id.etAddTourBeginLocation);
+//                EditText etDestinationLocation  = (EditText) findViewById(R.id.etAddTourDestinationLocation);
+//                EditText etStartDate            = (EditText) findViewById(R.id.etStartDate);
+//                EditText etStartTime            = (EditText) findViewById(R.id.etStartTime);
+//
+//                String msg                      = etStartLocation.getText() + "; "
+//                                                    + etDestinationLocation.getText() + "; "
+//                                                    + etStartDate.getText() + "; "
+//                                                    + etStartTime.getText();
+//
+//                tour.setStartLocation(etStartLocation.getText().toString());
+//                tour.setDestinationLocation(etDestinationLocation.getText().toString());
+//
+//                Date startDate = MyConverter._String2Date(etStartDate.getText().toString());
 //                if (startDate == null)
 //                {
-//                    // error
+//                    Toast.makeText(this, "Date error", Toast.LENGTH_SHORT).show();
+//                    return;
 //                }
 
-                //tour.setStartDateAndTime(startDate);
-//                if (!TourServerRequest.AddTour(tour, this))
-//                {
-//                    Toast.makeText(this,
-//                            "Couldn't add tour to DB",
-//                            Toast.LENGTH_LONG).show();
-//                }
-//
-//                else
-//                {
-//                    Toast.makeText(this,
-//                            "Tour added to DB",
-//                            Toast.LENGTH_LONG).show();
-//                }
-                Toast.makeText(this, "add tour", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, tour.toString(), Toast.LENGTH_SHORT).show();
 
                 break;
         }
@@ -161,18 +146,29 @@ public class AddTourActivity extends AppCompatActivity implements
 
     private Tour AddTourFromInput ()
     {
-        EditText etStartLoc = (EditText) findViewById(R.id.etAddTourBeginLocation);
-        EditText etDestLoc = (EditText) findViewById(R.id.etAddTourDestinationLocation);
-        EditText etStartTime = (EditText) findViewById(R.id.etStartTime);
-        EditText etStartDate = (EditText) findViewById(R.id.etStartDate);
+        EditText etStartLoc     = (EditText) findViewById(R.id.etAddTourBeginLocation);
+        EditText etDestLoc      = (EditText) findViewById(R.id.etAddTourDestinationLocation);
+        EditText etStartTime    = (EditText) findViewById(R.id.etStartTime);
+        EditText etStartDate    = (EditText) findViewById(R.id.etStartDate);
 
-        String startLoc = etStartLoc.getText().toString();
-        String destLoc = etDestLoc.getText().toString();
-        String startTime = etStartTime.getText().toString();
-        String startDate = etStartDate.getText().toString();
+        String startLoc         = etStartLoc.getText().toString();
+        String destLoc          = etDestLoc.getText().toString();
+        String startTimeStr     = etStartTime.getText().toString();
+        String startDateStr     = etStartDate.getText().toString();
 
-        Tour retValue = new Tour(startLoc, destLoc, startDate, startTime,1234);
-        UserLocalStore store = new UserLocalStore(this);
+        Tour retValue           = new Tour();
+        UserLocalStore store    = new UserLocalStore(this);
+
+        retValue.setStartLocation(startLoc);
+        retValue.setDestinationLocation(destLoc);
+
+        Date startDate = MyConverter._String2Date(startDateStr);
+        if (startDate == null)
+        {
+            Toast.makeText(this, "Date error", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
         retValue.setDriver(store.getDriver().getUsername());
 
         return retValue;
