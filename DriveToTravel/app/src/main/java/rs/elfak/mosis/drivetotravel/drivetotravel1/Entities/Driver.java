@@ -101,7 +101,7 @@ public class Driver extends User
         retValue.put(UserStaticAttributes._phoneNumber, this.phoneNumber);
         retValue.put(UserStaticAttributes._eMail, this.eMail);
         retValue.put(UserStaticAttributes._carModel, this.carModel);
-        retValue.put(UserStaticAttributes._userType, UserStaticAttributes._driverType);
+        retValue.put(UserStaticAttributes._userType, User.USER_TYPE_DRIVER);
 
         return retValue;
     }

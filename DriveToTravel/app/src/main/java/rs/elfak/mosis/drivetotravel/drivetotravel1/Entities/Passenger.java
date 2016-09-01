@@ -46,7 +46,7 @@ public class Passenger extends User
         retValue.put(UserStaticAttributes._surname, this.surname);
         retValue.put(UserStaticAttributes._phoneNumber, this.phoneNumber);
         retValue.put(UserStaticAttributes._eMail, this.eMail);
-        retValue.put(UserStaticAttributes._userType, UserStaticAttributes._passengerType);
+        retValue.put(UserStaticAttributes._userType, User.USER_TYPE_PASSENGER);
 
         // friends
 

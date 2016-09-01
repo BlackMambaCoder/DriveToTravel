@@ -23,6 +23,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.LoginUserAs
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.StoreUserDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.UpdateTourRankAsyncTask;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.ServerStaticAttributes;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
 
 /**
@@ -531,21 +532,56 @@ public class ServerRequest
             task.execute(data.toString()).get();
 
             retValue = task.getResponseData();
+
+            if (retValue == null)
+                return null;
+
+            if (retValue.getBoolean(
+                    String.valueOf(ServerStaticAttributes.USER_NAME_ERROR)
+            ))
+            {
+                Toast.makeText(
+                        this.context,
+                        "Incorrect username",
+                        Toast.LENGTH_LONG
+                ).show();
+
+                return null;
+            }
+
+            if (retValue.getBoolean(
+                    String.valueOf(ServerStaticAttributes.PASSWORD_ERROR)
+            ))
+            {
+                Toast.makeText(
+                        this.context,
+                        "Incorrect password",
+                        Toast.LENGTH_LONG
+                ).show();
+
+                return null;
+            }
+
+            return retValue;
         }
         catch (JSONException e)
         {
-            retValue = null;
+            String successMessage = "ServerRequest::loginUser : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
         }
         catch (InterruptedException e)
         {
-            retValue = null;
+            String successMessage = "ServerRequest::loginUser : InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
         }
         catch (ExecutionException e)
         {
-            retValue = null;
+            String successMessage = "ServerRequest::loginUser : ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
         }
-
-        return retValue;
     }
 
 }

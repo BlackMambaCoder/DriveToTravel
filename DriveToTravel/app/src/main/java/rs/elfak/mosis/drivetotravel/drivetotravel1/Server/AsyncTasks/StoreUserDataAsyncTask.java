@@ -137,25 +137,25 @@ public class StoreUserDataAsyncTask extends AsyncTask<String, Void, Void>
         }
         catch (MalformedURLException e)
         {
-            successMessage = "AddFriendAsyncTask: MalformedURLException - " + e.getMessage();
+            successMessage = "StoreUserAsyncTask: MalformedURLException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             this.responseUser = null;
         }
         catch (ProtocolException e)
         {
-            successMessage = "AddFriendAsyncTask: ProtocolException - " + e.getMessage();
+            successMessage = "StoreUserAsyncTask: ProtocolException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             this.responseUser = null;
         }
         catch (IOException e)
         {
-            successMessage = "AddFriendAsyncTask: IOException - " + e.getMessage();
+            successMessage = "StoreUserAsyncTask: IOException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             this.responseUser = null;
         }
         catch (Exception e)
         {
-            successMessage = "AddFriendAsyncTask: Exception - " + e.getMessage();
+            successMessage = "StoreUserAsyncTask: Exception - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             this.responseUser = null;
         }
