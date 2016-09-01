@@ -5,7 +5,7 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings;
  */
 public class UserStaticAttributes {
 
-    public static String _id            = "_id";
+    public static String _id            = "id";
     public static String _name          = "firstname";
     public static String _surname       = "lastname";
     public static String _username      = "username";
@@ -18,4 +18,5 @@ public class UserStaticAttributes {
     public static String _driverType    = "driver";
     public static String _passengerType = "passenger";
     public static String FRIENDS        = "friends";
+    public static String USER_EXISTS    = "user_exists";
 }

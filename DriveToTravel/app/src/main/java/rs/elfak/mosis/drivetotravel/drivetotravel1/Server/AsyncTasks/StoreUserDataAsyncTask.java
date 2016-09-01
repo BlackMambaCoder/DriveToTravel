@@ -52,15 +52,25 @@ public class StoreUserDataAsyncTask extends AsyncTask<String, Void, Void>
     {
         JSONObject user = null;
 
-        if (responseUser != null)
+        if (this.responseUser != null)
         {
             try
             {
+
+                if (this.responseUser.equals("user exists"))
+                {
+                    user = new JSONObject();
+                    user.put(UserStaticAttributes.USER_EXISTS, true);
+
+                    return user;
+                }
+
                 user = new JSONObject(this.responseUser);
+
+                user.put(UserStaticAttributes.USER_EXISTS, false);
             }
             catch (JSONException e)
             {
-                e.printStackTrace();
                 user = null;
             }
         }
@@ -113,6 +123,11 @@ public class StoreUserDataAsyncTask extends AsyncTask<String, Void, Void>
             if (responseCode == HttpURLConnection.HTTP_OK)
             {
                 this.responseUser           = StringManipulator.inputStreamToString(httpURLConnection.getInputStream());
+            }
+
+            else if (responseCode == HttpURLConnection.HTTP_CONFLICT)
+            {
+                this.responseUser           = "user exists";
             }
 
             else

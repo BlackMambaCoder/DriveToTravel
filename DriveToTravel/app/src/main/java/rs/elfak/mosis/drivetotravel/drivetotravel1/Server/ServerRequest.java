@@ -2,6 +2,7 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Server;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -440,17 +441,33 @@ public class ServerRequest
             user = userObjectParam.toJSONObject();
             task.execute(user.toString()).get();
             user = task.getStoredUser();
+
+            if (user.getBoolean(UserStaticAttributes.USER_EXISTS))
+            {
+                Toast.makeText(
+                        this.context,
+                        "Username exists",
+                        Toast.LENGTH_LONG
+                ).show();
+                return null;
+            }
         }
         catch (JSONException e)
         {
+            String successMessage = "ServerRequest::storeUser : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             user = null;
         }
         catch (InterruptedException e)
         {
+            String successMessage = "ServerRequest::storeUser : InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             user = null;
         }
         catch (ExecutionException e)
         {
+            String successMessage = "ServerRequest::storeUser : ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             user = null;
         }
 
@@ -467,26 +484,33 @@ public class ServerRequest
             user = userObjectParam.toJSONObject();
             task.execute(user.toString()).get();
             user = task.getStoredUser();
+
+            if (user.getBoolean(UserStaticAttributes.USER_EXISTS))
+            {
+                Toast.makeText(
+                        this.context,
+                        "Username exists",
+                        Toast.LENGTH_LONG
+                ).show();
+                return null;
+            }
         }
         catch (JSONException e)
         {
             String successMessage = "ServerRequest::storeUser : JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             user = null;
         }
         catch (InterruptedException e)
         {
             String successMessage = "ServerRequest::storeUser : InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             user = null;
         }
         catch (ExecutionException e)
         {
             String successMessage = "ServerRequest::storeUser : ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             user = null;
         }
 
