@@ -52,15 +52,25 @@ public class StoreUserDataAsyncTask extends AsyncTask<String, Void, Void>
     {
         JSONObject user = null;
 
-        if (responseUser != null)
+        if (this.responseUser != null)
         {
             try
             {
+
+                if (this.responseUser.equals("user exists"))
+                {
+                    user = new JSONObject();
+                    user.put(UserStaticAttributes.USER_EXISTS, true);
+
+                    return user;
+                }
+
                 user = new JSONObject(this.responseUser);
+
+                user.put(UserStaticAttributes.USER_EXISTS, false);
             }
             catch (JSONException e)
             {
-                e.printStackTrace();
                 user = null;
             }
         }
@@ -68,27 +78,26 @@ public class StoreUserDataAsyncTask extends AsyncTask<String, Void, Void>
         return user;
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        this.progressDialog.setMessage("Wait...Register");
-        this.progressDialog.show();
-    }
+//    @Override
+//    protected void onPreExecute() {
+//        super.onPreExecute();
+//        this.progressDialog.setMessage("Wait...Register");
+//        this.progressDialog.show();
+//    }
 
     @Override
     protected Void doInBackground(String... params) {
 
-        String postValue = params[0];
-
-        Resources res = Resources.getSystem();
-
-        String routeUrl = res.getString(R.string.servers_url) + res.getString(R.string.store_user);
+        String postValue            = params[0];
+        String routeUrl             = ServerStaticAttributes._SERVER_ROOT_URL
+                                        + ServerStaticAttributes._REGISTER_URL;
 
         try
         {
-            URL url = new URL(routeUrl);
+            URL url                     = new URL(routeUrl);
 
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection httpURLConnection
+                                        = (HttpURLConnection) url.openConnection();
 
             httpURLConnection.setReadTimeout(ServerStaticAttributes._readTimeOut);
             httpURLConnection.setConnectTimeout(ServerStaticAttributes._connectTimeOut);
@@ -96,23 +105,29 @@ public class StoreUserDataAsyncTask extends AsyncTask<String, Void, Void>
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
 
-            OutputStream outputStream = httpURLConnection.getOutputStream();
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);//, "UTF-8");
+            OutputStream outputStream   = httpURLConnection.getOutputStream();
+            OutputStreamWriter outputStreamWriter
+                                        = new OutputStreamWriter(outputStream);
 
-            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+            BufferedWriter bufferedWriter
+                                        = new BufferedWriter(outputStreamWriter);
 
-            // Sending JSONArray as string to server
             bufferedWriter.write(postValue);
             bufferedWriter.flush();
             bufferedWriter.close();
 
             outputStream.close();
 
-            int responseCode = httpURLConnection.getResponseCode();
+            int responseCode            = httpURLConnection.getResponseCode();
 
             if (responseCode == HttpURLConnection.HTTP_OK)
             {
-                this.responseUser = StringManipulator.inputStreamToString(httpURLConnection.getInputStream());
+                this.responseUser           = StringManipulator.inputStreamToString(httpURLConnection.getInputStream());
+            }
+
+            else if (responseCode == HttpURLConnection.HTTP_CONFLICT)
+            {
+                this.responseUser           = "user exists";
             }
 
             else
@@ -124,40 +139,36 @@ public class StoreUserDataAsyncTask extends AsyncTask<String, Void, Void>
         {
             successMessage = "AddFriendAsyncTask: MalformedURLException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.responseUser = null;
         }
         catch (ProtocolException e)
         {
             successMessage = "AddFriendAsyncTask: ProtocolException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.responseUser = null;
         }
         catch (IOException e)
         {
             successMessage = "AddFriendAsyncTask: IOException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.responseUser = null;
         }
         catch (Exception e)
         {
             successMessage = "AddFriendAsyncTask: Exception - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             this.responseUser = null;
         }
 
         return null;
     }
 
-    @Override
-    protected void onPostExecute(Void aVoid)
-    {
-        super.onPostExecute(aVoid);
-
-        if (this.progressDialog.isShowing())
-            this.progressDialog.dismiss();
-    }
+//    @Override
+//    protected void onPostExecute(Void aVoid)
+//    {
+//        super.onPostExecute(aVoid);
+//
+//        if (this.progressDialog.isShowing())
+//            this.progressDialog.dismiss();
+//    }
 }

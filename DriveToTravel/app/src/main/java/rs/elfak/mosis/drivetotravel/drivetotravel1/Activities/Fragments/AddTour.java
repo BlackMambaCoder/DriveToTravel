@@ -136,19 +136,19 @@ public class AddTour extends Fragment implements View.OnClickListener, View.OnTo
                 else
                 {
                     tour.setStartDateAndTime(startDate);
-                    if (!TourServerRequest.AddTour(tour, this.myView.getContext()))
-                    {
-                        Toast.makeText(this.myView.getContext(),
-                                "Couldn't add tour to DB",
-                                Toast.LENGTH_LONG).show();
-                    }
-
-                    else
-                    {
-                        Toast.makeText(this.myView.getContext(),
-                                "Tour added to DB",
-                                Toast.LENGTH_LONG).show();
-                    }
+//                    if (!TourServerRequest.AddTour(tour, this.myView.getContext()))
+//                    {
+//                        Toast.makeText(this.myView.getContext(),
+//                                "Couldn't add tour to DB",
+//                                Toast.LENGTH_LONG).show();
+//                    }
+//
+//                    else
+//                    {
+//                        Toast.makeText(this.myView.getContext(),
+//                                "Tour added to DB",
+//                                Toast.LENGTH_LONG).show();
+//                    }
                 }
 
                 /**

@@ -2,6 +2,7 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Server;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +17,6 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.AddFriendAsyncTask;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchDriverDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchTourDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FriendWithAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.LoginUserAsyncTask;
@@ -82,27 +82,27 @@ public class ServerRequest
 //        }
 //    }
 
-    public void fetchDriverByUsername (String username)
-    {
-        try
-        {
-            FetchDriverDataAsyncTask fetchDriverDataAsyncTask = new FetchDriverDataAsyncTask(this.context);
-            fetchDriverDataAsyncTask.execute(username).get();
-            this.classDriver = fetchDriverDataAsyncTask.getUser();
-        }
-        catch (InterruptedException e)
-        {
-            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
-            e.printStackTrace();
-            this.classDriver = null;
-        }
-        catch (ExecutionException e)
-        {
-            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
-            e.printStackTrace();
-            this.classDriver = null;
-        }
-    }
+//    public void fetchDriverByUsername (String username)
+//    {
+//        try
+//        {
+//            FetchDriverDataAsyncTask fetchDriverDataAsyncTask = new FetchDriverDataAsyncTask(this.context);
+//            fetchDriverDataAsyncTask.execute(username).get();
+//            this.classDriver = fetchDriverDataAsyncTask.getUser();
+//        }
+//        catch (InterruptedException e)
+//        {
+//            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
+//            e.printStackTrace();
+//            this.classDriver = null;
+//        }
+//        catch (ExecutionException e)
+//        {
+//            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
+//            e.printStackTrace();
+//            this.classDriver = null;
+//        }
+//    }
 
     public boolean connectToServer(Driver driverP)
     {
@@ -124,19 +124,19 @@ public class ServerRequest
         return returnValue;
     }
 
-    public boolean connectToServer(String username, String password)
-    {
-        boolean retValue = true;
-
-        this.fetchDriverByUsername(username);
-
-        if (this.classDriver != null && !password.equals(this.classDriver.getPassword()))
-        {
-            retValue = this.storeUserToLocalStore();
-        }
-
-        return retValue;
-    }
+//    public boolean connectToServer(String username, String password)
+//    {
+//        boolean retValue = true;
+//
+//        this.fetchDriverByUsername(username);
+//
+//        if (this.classDriver != null && !password.equals(this.classDriver.getPassword()))
+//        {
+//            retValue = this.storeUserToLocalStore();
+//        }
+//
+//        return retValue;
+//    }
 
     private boolean storeUserToLocalStore()
     {
@@ -441,20 +441,33 @@ public class ServerRequest
             user = userObjectParam.toJSONObject();
             task.execute(user.toString()).get();
             user = task.getStoredUser();
+
+            if (user.getBoolean(UserStaticAttributes.USER_EXISTS))
+            {
+                Toast.makeText(
+                        this.context,
+                        "Username exists",
+                        Toast.LENGTH_LONG
+                ).show();
+                return null;
+            }
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
+            String successMessage = "ServerRequest::storeUser : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             user = null;
         }
         catch (InterruptedException e)
         {
-            e.printStackTrace();
+            String successMessage = "ServerRequest::storeUser : InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             user = null;
         }
         catch (ExecutionException e)
         {
-            e.printStackTrace();
+            String successMessage = "ServerRequest::storeUser : ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
             user = null;
         }
 
@@ -471,26 +484,33 @@ public class ServerRequest
             user = userObjectParam.toJSONObject();
             task.execute(user.toString()).get();
             user = task.getStoredUser();
+
+            if (user.getBoolean(UserStaticAttributes.USER_EXISTS))
+            {
+                Toast.makeText(
+                        this.context,
+                        "Username exists",
+                        Toast.LENGTH_LONG
+                ).show();
+                return null;
+            }
         }
         catch (JSONException e)
         {
             String successMessage = "ServerRequest::storeUser : JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             user = null;
         }
         catch (InterruptedException e)
         {
             String successMessage = "ServerRequest::storeUser : InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             user = null;
         }
         catch (ExecutionException e)
         {
             String successMessage = "ServerRequest::storeUser : ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             user = null;
         }
 

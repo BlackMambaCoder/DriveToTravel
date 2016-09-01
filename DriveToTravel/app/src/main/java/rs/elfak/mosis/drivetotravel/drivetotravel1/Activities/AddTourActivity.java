@@ -85,19 +85,19 @@ public class AddTourActivity extends AppCompatActivity implements
 //                }
 
                 //tour.setStartDateAndTime(startDate);
-                if (!TourServerRequest.AddTour(tour, this))
-                {
-                    Toast.makeText(this,
-                            "Couldn't add tour to DB",
-                            Toast.LENGTH_LONG).show();
-                }
-
-                else
-                {
-                    Toast.makeText(this,
-                            "Tour added to DB",
-                            Toast.LENGTH_LONG).show();
-                }
+//                if (!TourServerRequest.AddTour(tour, this))
+//                {
+//                    Toast.makeText(this,
+//                            "Couldn't add tour to DB",
+//                            Toast.LENGTH_LONG).show();
+//                }
+//
+//                else
+//                {
+//                    Toast.makeText(this,
+//                            "Tour added to DB",
+//                            Toast.LENGTH_LONG).show();
+//                }
                 Toast.makeText(this, "add tour", Toast.LENGTH_SHORT).show();
 
                 break;
@@ -173,7 +173,7 @@ public class AddTourActivity extends AppCompatActivity implements
 
         Tour retValue = new Tour(startLoc, destLoc, startDate, startTime,1234);
         UserLocalStore store = new UserLocalStore(this);
-        retValue.setDriver(store.getDriver().getId());
+        retValue.setDriver(store.getDriver().getUsername());
 
         return retValue;
     }

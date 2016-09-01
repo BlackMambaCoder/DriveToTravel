@@ -32,7 +32,7 @@ public class Tour implements Parcelable
     private String startLocation;
     private String destinationLocation;
     private Date startDateAndTime;
-    private String tourDriverId;
+    private String tourDriverUsername;
     private List<String> passengers;
     private double rank;
 
@@ -42,7 +42,7 @@ public class Tour implements Parcelable
         this.startLocation              = "";
         this.destinationLocation        = "";
         this.startDateAndTime           = null;
-        this.tourDriverId               = "";
+        this.tourDriverUsername               = "";
         this.passengers                 = null;
         this.rank                       = -1.0;
         this.id                         =-1;
@@ -67,7 +67,7 @@ public class Tour implements Parcelable
 
         this.startDateAndTime           = date;
 
-        this.tourDriverId               = "";
+        this.tourDriverUsername               = "";
         this.passengers                 = new ArrayList<>();
         this.rank                       = -1.0;
         this.id                         = tourID;
@@ -92,7 +92,7 @@ public class Tour implements Parcelable
 
     public String getTourDriver()
     {
-        return this.tourDriverId;
+        return this.tourDriverUsername;
     }
 
     public List<String> getPassengers()
@@ -143,7 +143,7 @@ public class Tour implements Parcelable
 
     public void setDriver(String driverUsername)
     {
-        this.tourDriverId = driverUsername;
+        this.tourDriverUsername = driverUsername;
     }
 
     public Double setRank(int rankParam)
@@ -217,7 +217,7 @@ public class Tour implements Parcelable
         this.startLocation = data[0];
         this.destinationLocation = data[1];
         this.startDateAndTime = MyConverter._String2Date(data[2]);
-        this.tourDriverId = data[3];
+        this.tourDriverUsername = data[3];
         this.passengers = MyConverter._String2StringList(data[4]);
     }
 
@@ -235,7 +235,7 @@ public class Tour implements Parcelable
            passangerString  = MyConverter._StringList2String(this.passengers);
         }
 
-        String[] data={this.startLocation,this.destinationLocation,this.startDateAndTime.toString(),this.tourDriverId,passangerString};
+        String[] data={this.startLocation,this.destinationLocation,this.startDateAndTime.toString(),this.tourDriverUsername,passangerString};
 
         dest.writeStringArray(data);
     }

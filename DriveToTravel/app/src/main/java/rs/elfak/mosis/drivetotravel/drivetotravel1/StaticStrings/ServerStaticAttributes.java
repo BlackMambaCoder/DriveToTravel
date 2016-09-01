@@ -5,13 +5,13 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings;
  */
 public class ServerStaticAttributes
 {
-    public static String _serverAddress = "http://192.168.0.103/";
+    public static String _serverAddress = "http://192.168.0.107";
     public static String _serverPath = "ProjectsPHP/DriveToTravel/mongoDB/";
     public static String _createDriverScript = "createDriver.php?";
     public static String _fetchDriverByUsername = "getDriverByUsername.php?";
 
 
-    public static String _SERVER_ROOT_URL = "http://192.168.0.103/";
+    public static String _SERVER_ROOT_URL = "http://192.168.0.107";
     public static String _LOGIN_URL = "/user/login";
     public static String _REGISTER_URL = "/user/register";
 

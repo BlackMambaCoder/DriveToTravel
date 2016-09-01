@@ -17,56 +17,56 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.StoreTourDa
  */
 public class TourServerRequest
 {
-    public static boolean AddTour (Tour tourArg, Context context)
-    {
-        boolean retValue = false;
-
-        StoreTourDataAsyncTask storeTour = new StoreTourDataAsyncTask(tourArg, context);
-
-        try
-        {
-            storeTour.execute().get();
-
-            if (storeTour.getTour() != null)
-            {
-                retValue = true;
-            }
-        }
-        catch (InterruptedException e)
-        {
-            Log.e("*****BREAK_POINT*****", "\nServerRequest store tour: \n" + e.getMessage() + "\n======================");
-        }
-        catch (ExecutionException e)
-        {
-            Log.e("*****BREAK_POINT*****", "\nServerRequest store tour: \n" + e.getMessage() + "\n======================");
-        }
-
-        return retValue;
-    }
-
-    public static List<Tour> getTours(Context context)
-    {
-        FetchTourDataAsyncTask fetchTourDataAsyncTask = new FetchTourDataAsyncTask(context);
-
-        List<Tour> returnValue = null;
-
-        try
-        {
-            FetchTourDataAsyncTask._fetchType = 1;
-            fetchTourDataAsyncTask.execute(new UserLocalStore(context).getDriver().getId()).get();
-            returnValue = fetchTourDataAsyncTask.getTours();
-        }
-        catch (InterruptedException e)
-        {
-            Log.e("*****BREAK_POINT*****", "TourServerRequest/getTours: " + e.getMessage());
-            returnValue = null;
-        }
-        catch (ExecutionException e)
-        {
-            Log.e("*****BREAK_POINT*****", "TourServerRequest/getTours: " + e.getMessage());
-            returnValue = null;
-        }
-
-        return returnValue;
-    }
+//    public static boolean AddTour (Tour tourArg, Context context)
+//    {
+//        boolean retValue = false;
+//
+//        StoreTourDataAsyncTask storeTour = new StoreTourDataAsyncTask(tourArg, context);
+//
+//        try
+//        {
+//            storeTour.execute().get();
+//
+//            if (storeTour.getTour() != null)
+//            {
+//                retValue = true;
+//            }
+//        }
+//        catch (InterruptedException e)
+//        {
+//            Log.e("*****BREAK_POINT*****", "\nServerRequest store tour: \n" + e.getMessage() + "\n======================");
+//        }
+//        catch (ExecutionException e)
+//        {
+//            Log.e("*****BREAK_POINT*****", "\nServerRequest store tour: \n" + e.getMessage() + "\n======================");
+//        }
+//
+//        return retValue;
+//    }
+//
+//    public static List<Tour> getTours(Context context)
+//    {
+//        FetchTourDataAsyncTask fetchTourDataAsyncTask = new FetchTourDataAsyncTask(context);
+//
+//        List<Tour> returnValue = null;
+//
+//        try
+//        {
+//            FetchTourDataAsyncTask._fetchType = 1;
+//            fetchTourDataAsyncTask.execute(new UserLocalStore(context).getDriver().getId()).get();
+//            returnValue = fetchTourDataAsyncTask.getTours();
+//        }
+//        catch (InterruptedException e)
+//        {
+//            Log.e("*****BREAK_POINT*****", "TourServerRequest/getTours: " + e.getMessage());
+//            returnValue = null;
+//        }
+//        catch (ExecutionException e)
+//        {
+//            Log.e("*****BREAK_POINT*****", "TourServerRequest/getTours: " + e.getMessage());
+//            returnValue = null;
+//        }
+//
+//        return returnValue;
+//    }
 }
