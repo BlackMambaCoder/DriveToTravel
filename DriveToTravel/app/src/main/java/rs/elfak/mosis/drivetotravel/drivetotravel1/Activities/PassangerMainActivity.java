@@ -18,12 +18,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
 
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.CustomListAdapter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.Location;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
@@ -48,6 +50,15 @@ public class PassangerMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passanger_main);
         setTitle("Home");
+
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        Passenger passenger = userLocalStore.getPassenger();
+
+        Toast.makeText(
+                this,
+                "User logged in: " + passenger.getUsername(),
+                Toast.LENGTH_LONG
+        ).show();
 
         listaVoznji = (ListView)findViewById(R.id.listView);
 

@@ -22,4 +22,6 @@ public class ServerStaticAttributes
     public static int _connectTimeOut = 15000;
     public static String _requestMethod = "POST";
 
+    public static int USER_NAME_ERROR = 125;
+    public static int PASSWORD_ERROR = 126;
 }

@@ -5,8 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERAA" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -52,7 +52,11 @@
             android:name=".Services.LocationUpdateIntentService"
             android:exported="false" />
 
-        <activity android:name=".Activities.friendshipActivity"></activity>
+        <activity android:name=".Activities.friendshipActivity" />
+        <activity
+            android:name=".Activities.DriversMainActivity"
+            android:label="@string/title_activity_drivers_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

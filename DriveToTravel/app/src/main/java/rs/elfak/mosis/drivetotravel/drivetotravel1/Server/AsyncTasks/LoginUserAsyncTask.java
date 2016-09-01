@@ -29,34 +29,63 @@ public class LoginUserAsyncTask extends AsyncTask<String, Void, Void> {
 
     public JSONObject getResponseData()
     {
-        JSONObject retValue;
 
         try
         {
             if (this.responseData != null)
             {
+                JSONObject retValue;
+
+                if (this.responseData.equals(
+                        String.valueOf(ServerStaticAttributes.USER_NAME_ERROR)
+                ))
+                {
+                    retValue = new JSONObject();
+                    retValue.put(
+                            String.valueOf(ServerStaticAttributes.USER_NAME_ERROR),
+                            true
+                    );
+
+                    return retValue;
+                }
+                else if (this.responseData.equals(
+                        String.valueOf(ServerStaticAttributes.PASSWORD_ERROR)
+                ))
+                {
+                    retValue = new JSONObject();
+                    retValue.put(
+                            String.valueOf(ServerStaticAttributes.PASSWORD_ERROR),
+                            true
+                    );
+
+                    return retValue;
+                }
+
                 retValue = new JSONObject(this.responseData);
+                retValue.put(
+                        String.valueOf(ServerStaticAttributes.USER_NAME_ERROR),
+                        false
+                );
+                retValue.put(
+                        String.valueOf(ServerStaticAttributes.PASSWORD_ERROR),
+                        false
+                );
+
+                return retValue;
             }
-            else
-            {
-                retValue = null;
-            }
+
+            return null;
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
-            retValue = null;
+            return null;
         }
-
-        return retValue;
     }
 
     @Override
     protected Void doInBackground(String... params) {
-        Resources res           = Resources.getSystem();
         String postValue        = params[0];
         String successMessage;
-//        String routeUrl         = res.getString(R.string.servers_url) + res.getString(R.string.login_user);
         String routeUrl         = ServerStaticAttributes._SERVER_ROOT_URL + ServerStaticAttributes._LOGIN_URL;
         try
         {
@@ -87,6 +116,14 @@ public class LoginUserAsyncTask extends AsyncTask<String, Void, Void> {
             if (responseCode == HttpURLConnection.HTTP_OK)
             {
                 this.responseData = StringManipulator.inputStreamToString(httpURLConnection.getInputStream());
+            }
+            else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED)
+            {
+                this.responseData = String.valueOf(ServerStaticAttributes.PASSWORD_ERROR);
+            }
+            else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND)
+            {
+                this.responseData = String.valueOf(ServerStaticAttributes.USER_NAME_ERROR);
             }
 
             else

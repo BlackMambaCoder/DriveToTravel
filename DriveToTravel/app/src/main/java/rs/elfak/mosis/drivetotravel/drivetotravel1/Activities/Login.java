@@ -69,12 +69,12 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
                 if (this.connectedToInternet() && this.checkFields())
                 {
-                    int responseUserType=-1;
+                    int responseUserType            = -1;
 
                     String username                 = this.usernameET.getText().toString();
                     String password                 = this.passwordET.getText().toString();
                     ServerRequest serverRequest     = new ServerRequest(this);
-                    JSONObject responseUser         = serverRequest.loginUser(username, password);
+                    JSONObject responseUser;//         = serverRequest.loginUser(username, password);
                     UserLocalStore userLocalStore   = new UserLocalStore(this);
 
 
@@ -82,7 +82,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                     {
                         try
                         {
-                            responseUserType = responseUser.getInt(UserStaticAttributes._userType);
+                            JSONObject meta_data = responseUser.getJSONObject("meta_data");
+                            responseUserType = meta_data.getInt(UserStaticAttributes._userType);
                         }
                         catch (JSONException e)
                         {
@@ -97,7 +98,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
                             userLocalStore.storeUser(loggedInUser);
 
-                            intent = new Intent(this, PassangerMainActivity.class);
+                            intent = new Intent(this, DriversMainActivity.class);
                             startActivity(intent);
                             finish();
                         }
