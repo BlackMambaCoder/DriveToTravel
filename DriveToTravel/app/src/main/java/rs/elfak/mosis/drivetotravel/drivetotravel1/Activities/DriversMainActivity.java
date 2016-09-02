@@ -38,7 +38,7 @@ public class DriversMainActivity extends AppCompatActivity implements View.OnCli
             case R.id.create_tour_button:
                 Intent intent = new Intent(this, AddTourActivity.class);
                 startActivity(intent);
-                finish();
+//                finish();
                 Toast.makeText(this, "create tour", Toast.LENGTH_SHORT).show();
                 break;
         }

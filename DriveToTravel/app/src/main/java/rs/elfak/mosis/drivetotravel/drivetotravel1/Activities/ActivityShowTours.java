@@ -31,16 +31,6 @@ public class ActivityShowTours extends AppCompatActivity implements AdapterView.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         this.upcomingTourList = new ArrayList<>();
         this.upcomingTourNameList = new ArrayList<>();
         
@@ -59,11 +49,11 @@ public class ActivityShowTours extends AppCompatActivity implements AdapterView.
     {
 //        this.upcomingTourList = TourServerRequest.getTours(this);
 
-        for (Tour currentTour :
-                this.upcomingTourList) {
-            this.upcomingTourNameList.add(
-                    currentTour.getStartLocation() + " - " + currentTour.getDestinationLocation());
-        }
+//        for (Tour currentTour :
+//                this.upcomingTourList) {
+//            this.upcomingTourNameList.add(
+//                    currentTour.getStartLocation() + " - " + currentTour.getDestinationLocation());
+//        }
     }
 
     @Override

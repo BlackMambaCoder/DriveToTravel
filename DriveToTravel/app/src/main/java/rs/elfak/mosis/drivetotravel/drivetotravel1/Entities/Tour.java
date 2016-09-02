@@ -80,7 +80,42 @@ public class Tour implements Parcelable
         this.id                         = tourID;
     }
 
+    public JSONObject toJSONObject()
+    {
+        try
+        {
+            JSONObject retValue = new JSONObject();
+
+            retValue.put(TourStaticAttributes._ID, this.id);
+            retValue.put(TourStaticAttributes._STARTLOCATION, this.startLocation);
+            retValue.put(TourStaticAttributes._DESTINATIONLOCATION, this.destinationLocation);
+            retValue.put(TourStaticAttributes._STARTDATE_AND_TIME, this.startDateAndTime);
+            retValue.put(TourStaticAttributes._TOUR_DRIVER, this.tourDriverUsername);
+            retValue.put(TourStaticAttributes._RANK, this.tourDriverUsername);
+
+            JSONArray passengers = new JSONArray();
+
+            for (String passengersUsername :
+                    this.passengers) {
+                passengers.put(passengersUsername);
+            }
+
+            retValue.put(TourStaticAttributes._PASSENGERS, passengers);
+
+            return retValue;
+        }
+        catch (JSONException e)
+        {
+            Log.e("error", e.getMessage());
+            return null;
+        }
+    }
+
     // === GETTER === //
+    public int getId()
+    {
+        return this.id;
+    }
 
     public String getStartLocation()
     {
@@ -118,6 +153,11 @@ public class Tour implements Parcelable
     }
 
     // === SETTER === //
+    public void setId(int parameter)
+    {
+        this.id = parameter;
+    }
+
     public void setStartLocation(String parameter)
     {
         this.startLocation = parameter;
@@ -132,11 +172,6 @@ public class Tour implements Parcelable
     {
         this.startDateAndTime = parameter;
     }
-
-//    public void setTourDriver(Driver parameter)
-//    {
-//        this.tourDriver = parameter;
-//    }
 
     public void setPassengers(List<String> parameter)
     {
@@ -153,18 +188,22 @@ public class Tour implements Parcelable
         this.tourDriverUsername = driverUsername;
     }
 
-    public Double setRank(int rankParam)
+    public Double setRank(double rankParam, boolean update)
     {
+        if (!update) {
+            this.rank = rankParam;
+            return null;
+        }
+
         ServerRequest request = new ServerRequest();
-        List<Double> ranks = request.updateTourRank((double) rankParam,this.id);
+        List<Double> ranks = request.updateTourRank(rankParam,this.id);
 
         if (ranks != null) {
             this.rank = ranks.get(0);
             return ranks.get(1);
         }
-        else {
-            return null;
-        }
+
+        return null;
     }
 
     // === STATIC METHODS === //
@@ -212,6 +251,50 @@ public class Tour implements Parcelable
 //        }
 
         return tourArrayList;
+    }
+
+    public static Tour getTourFromJSONObject(JSONObject tourJsonObject)
+    {
+        if (tourJsonObject == null)
+        {
+            return null;
+        }
+
+        Tour retValue = new Tour();
+
+        try {
+            retValue.setId(tourJsonObject.getInt(TourStaticAttributes._ID));
+            retValue.setStartLocation(tourJsonObject.getString(TourStaticAttributes._STARTLOCATION));
+            retValue.setDestinationLocation(tourJsonObject.getString(TourStaticAttributes._DESTINATIONLOCATION));
+            String dateString = tourJsonObject.getString(TourStaticAttributes._STARTDATE_AND_TIME);
+
+            Date date = MyConverter._String2Date(dateString);
+
+            if (date == null)
+            {
+                return null;
+            }
+
+            retValue.setStartDateAndTime(date);
+            retValue.setDriver(tourJsonObject.getString(TourStaticAttributes._TOUR_DRIVER));
+            retValue.setRank(tourJsonObject.getDouble(TourStaticAttributes._RANK), false);
+
+            JSONArray passengers = tourJsonObject.getJSONArray(TourStaticAttributes._PASSENGERS);
+
+            for (int i = 0; i < passengers.length(); i++)
+            {
+                retValue.passengers.add(passengers.getString(i));
+            }
+
+        }
+        catch (JSONException e)
+        {
+            String successMessage = "Tour::getTourFromJSONObject : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+
+        return retValue;
     }
 
     // === Methods for parsing (PARCELABLE) === //

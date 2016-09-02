@@ -18,16 +18,17 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.MyConverter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 
 public class AddTourActivity extends AppCompatActivity implements
         View.OnClickListener,
         View.OnTouchListener
 {
-
     private EditText startDate;
     private EditText startTime;
 
@@ -35,11 +36,6 @@ public class AddTourActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tour);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-//        Button setDate = (Button)findViewById(R.id.btnSetStartdate);
-//        setDate.setOnClickListener(this);
 
         Button btnAddTour = (Button) findViewById(R.id.btnAddTour);
         btnAddTour.setOnClickListener(this);
@@ -83,8 +79,22 @@ public class AddTourActivity extends AppCompatActivity implements
 //                }
 
 //                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, tour.toString(), Toast.LENGTH_SHORT).show();
+                if (tour != null)
+                {
+                    ServerRequest serverRequest = new ServerRequest(this);
+                    tour = serverRequest.storeTour(tour);
 
+                    if (tour == null)
+                    {
+                        Toast.makeText(this, "Tour = null", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(this, tour.getId(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                finish();
                 break;
         }
     }
@@ -162,13 +172,14 @@ public class AddTourActivity extends AppCompatActivity implements
         retValue.setStartLocation(startLoc);
         retValue.setDestinationLocation(destLoc);
 
-        Date startDate = MyConverter._String2Date(startDateStr);
+        Date startDate = MyConverter._String2Date(startDateStr + " " + startTimeStr);
         if (startDate == null)
         {
             Toast.makeText(this, "Date error", Toast.LENGTH_SHORT).show();
             return null;
         }
 
+        retValue.setStartDateAndTime(startDate);
         retValue.setDriver(store.getDriver().getUsername());
 
         return retValue;

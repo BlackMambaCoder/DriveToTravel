@@ -7,14 +7,6 @@ public class ServerStaticAttributes
 {
     public static String _serverAddress = "http://192.168.0.107";
     public static String _serverPath = "ProjectsPHP/DriveToTravel/mongoDB/";
-    public static String _createDriverScript = "createDriver.php?";
-    public static String _fetchDriverByUsername = "getDriverByUsername.php?";
-
-
-    public static String _SERVER_ROOT_URL = "http://192.168.0.107";
-    public static String _LOGIN_URL = "/user/login";
-    public static String _REGISTER_URL = "/user/register";
-
     public static String _CREATE_TOUR_SCRIPT = "createTour.php";
 
 
@@ -24,4 +16,9 @@ public class ServerStaticAttributes
 
     public static int USER_NAME_ERROR = 125;
     public static int PASSWORD_ERROR = 126;
+
+    public static String _SERVER_ROOT_URL = "http://192.168.0.104";
+    public static String _LOGIN_URL = "/user/login";
+    public static String _REGISTER_URL = "/user/register";
+    public static String CREATE_TOUR_URL = "/tour/create";
 }

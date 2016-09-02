@@ -117,11 +117,11 @@ public class LoginUserAsyncTask extends AsyncTask<String, Void, Void> {
             {
                 this.responseData = StringManipulator.inputStreamToString(httpURLConnection.getInputStream());
             }
-            else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED)
+            else if (responseCode == 499)
             {
                 this.responseData = String.valueOf(ServerStaticAttributes.PASSWORD_ERROR);
             }
-            else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND)
+            else if (responseCode == 498)
             {
                 this.responseData = String.valueOf(ServerStaticAttributes.USER_NAME_ERROR);
             }
