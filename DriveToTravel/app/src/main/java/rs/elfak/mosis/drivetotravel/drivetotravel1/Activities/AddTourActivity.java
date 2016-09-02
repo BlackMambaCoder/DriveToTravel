@@ -90,7 +90,7 @@ public class AddTourActivity extends AppCompatActivity implements
                     }
                     else
                     {
-                        Toast.makeText(this, tour.getId(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Tour id=" +  String.valueOf(tour.getId()) + " is created", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -180,7 +180,7 @@ public class AddTourActivity extends AppCompatActivity implements
         }
 
         retValue.setStartDateAndTime(startDate);
-        retValue.setDriver(store.getDriver().getUsername());
+        retValue.setDriver(store.getDriver().getId());
 
         return retValue;
     }
