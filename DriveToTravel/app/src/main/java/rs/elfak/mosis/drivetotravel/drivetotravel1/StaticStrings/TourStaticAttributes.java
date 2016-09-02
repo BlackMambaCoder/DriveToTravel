@@ -8,7 +8,7 @@ public class TourStaticAttributes
     public static final String _STARTLOCATION           = "startlocation";
     public static final String _DESTINATIONLOCATION     = "destinationlocation";
     public static final String _STARTDATE_AND_TIME      = "dateandtime";
-    public static final String _TOUR_DRIVER             = "tourdriver";
+    public static final String _TOUR_DRIVER             = "driver_id";
     public static final String _PASSENGERS              = "passengers";
     public static final String _ID                      = "id";
     public static final String _RANK                    = "rank";

@@ -19,6 +19,9 @@ public class MyConverter
     {
         /**
          * dateArg = "2-8-2016 17:35"
+         * dateArg = "Fri Sep 02 21:00:56 CEST 2016"
+         *
+         * format = "E M d H:m:s z y"
          */
         SimpleDateFormat simpleDateFormat =
                 new SimpleDateFormat("d-M-y H:m", Locale.ENGLISH);
@@ -36,6 +39,49 @@ public class MyConverter
         }
 
         return retValue;
+    }
+
+    public static Date _ComplexString2Date(String dateArg)
+    {
+        /**
+         * dateArg = "2-8-2016 17:35"
+         * dateArg = "Fri Sep 02 21:00:56 CEST 2016"
+         *
+         * format = "E M d H:m:s z y"
+         */
+        SimpleDateFormat simpleDateFormat =
+                new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH);
+
+        Date retValue = new Date();
+
+        try
+        {
+            retValue = simpleDateFormat.parse(dateArg);
+        }
+        catch (ParseException e)
+        {
+            Log.e("Error _String2Date: ", e.getMessage());
+            retValue = null;
+        }
+
+        return retValue;
+    }
+
+    public static String _Date2String(Date dateArg)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(dateArg.getDay());
+        stringBuilder.append("-");
+        stringBuilder.append(dateArg.getMonth());
+        stringBuilder.append("-");
+        stringBuilder.append(dateArg.getYear());
+        stringBuilder.append(" ");
+        stringBuilder.append(dateArg.getHours());
+        stringBuilder.append(":");
+        stringBuilder.append(dateArg.getMinutes());
+
+        return stringBuilder.toString();
     }
 
     public static String _StringList2String (List<String> stringListArg)

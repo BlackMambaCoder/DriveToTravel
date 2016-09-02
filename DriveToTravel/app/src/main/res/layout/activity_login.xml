@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/username"
         android:id="@+id/tvUsername"
-        android:layout_marginTop="178dp"
+        android:layout_marginTop="47dp"
         android:layout_marginLeft="5dp"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/etLoginActivityUsername" />
@@ -59,17 +59,25 @@
         android:layout_height="wrap_content"
         android:text="@string/registerLabel"
         android:id="@+id/registerLabel"
+        android:layout_marginTop="67dp"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_below="@+id/testUser_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
-        android:textColor="@color/colorPrimaryDark" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Test user"
+        android:text="Test passenger"
         android:id="@+id/testUser_button"
         android:layout_below="@+id/loginBtn"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Test driver"
+        android:id="@+id/testDriver_button"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/testUser_button" />
 
 </RelativeLayout>

@@ -64,9 +64,9 @@ public class PassangerMainActivity extends AppCompatActivity {
 
         tours = new  Tour[3];
 
-        tours[0] = new Tour("Nis","Beograd","08-12-2016","23:9","", 0);
-        tours[1] = new Tour("Zajecar","Bor","08-12-2016","23:9","", 1);
-        tours[2] = new Tour("Negotin","Kladovo","08-12-2016","23:9","", 2);
+        tours[0] = new Tour("Nis","Beograd","08-12-2016","23:9",0, 0);
+        tours[1] = new Tour("Zajecar","Bor","08-12-2016","23:9",0, 1);
+        tours[2] = new Tour("Negotin","Kladovo","08-12-2016","23:9",0, 2);
 
         listAdapter = new CustomListAdapter(PassangerMainActivity.this,tours);
         listaVoznji.setAdapter(listAdapter);

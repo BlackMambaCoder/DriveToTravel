@@ -32,7 +32,7 @@ public class Tour implements Parcelable
     private String startLocation;
     private String destinationLocation;
     private Date startDateAndTime;
-    private String tourDriverUsername;
+    private int driverId;
     private List<String> passengers;
     private double rank;
 
@@ -43,7 +43,7 @@ public class Tour implements Parcelable
         this.startLocation              =    "";
         this.destinationLocation        =    "";
         this.startDateAndTime           =  null;
-        this.tourDriverUsername         =    "";
+        this.driverId                   =    -1;
         this.passengers                 =  new ArrayList<>();
         this.rank                       =  -1.0;
     }
@@ -53,7 +53,7 @@ public class Tour implements Parcelable
             String destArg,
             String startDateArg,
             String startTimeArg,
-            String tourDriverUsername,
+            int driverId,
             int tourID
     )
     {
@@ -74,7 +74,7 @@ public class Tour implements Parcelable
 
         this.startDateAndTime           = date;
 
-        this.tourDriverUsername         = "";
+        this.driverId                   = driverId;
         this.passengers                 = new ArrayList<>();
         this.rank                       = -1.0;
         this.id                         = tourID;
@@ -89,9 +89,11 @@ public class Tour implements Parcelable
             retValue.put(TourStaticAttributes._ID, this.id);
             retValue.put(TourStaticAttributes._STARTLOCATION, this.startLocation);
             retValue.put(TourStaticAttributes._DESTINATIONLOCATION, this.destinationLocation);
-            retValue.put(TourStaticAttributes._STARTDATE_AND_TIME, this.startDateAndTime);
-            retValue.put(TourStaticAttributes._TOUR_DRIVER, this.tourDriverUsername);
-            retValue.put(TourStaticAttributes._RANK, this.tourDriverUsername);
+
+            retValue.put(TourStaticAttributes._STARTDATE_AND_TIME, this.startDateAndTime.toString());
+
+            retValue.put(TourStaticAttributes._TOUR_DRIVER, this.driverId);
+            retValue.put(TourStaticAttributes._RANK, this.rank);
 
             JSONArray passengers = new JSONArray();
 
@@ -132,9 +134,9 @@ public class Tour implements Parcelable
         return this.startDateAndTime;
     }
 
-    public String getTourDriver()
+    public int getTourDriver()
     {
-        return this.tourDriverUsername;
+        return this.driverId;
     }
 
     public List<String> getPassengers()
@@ -183,9 +185,9 @@ public class Tour implements Parcelable
         this.passengers.add(passenger);
     }
 
-    public void setDriver(String driverUsername)
+    public void setDriver(int driverIdParam)
     {
-        this.tourDriverUsername = driverUsername;
+        this.driverId = driverIdParam;
     }
 
     public Double setRank(double rankParam, boolean update)
@@ -228,7 +230,7 @@ public class Tour implements Parcelable
                 Date date = MyConverter._String2Date(dateFromJson);
                 tour.setStartDateAndTime(date);
 
-                tour.setDriver(jsonObject.getString(TourStaticAttributes._TOUR_DRIVER));
+                tour.setDriver(jsonObject.getInt(TourStaticAttributes._TOUR_DRIVER));
 
                 List<String> passengerList = StringManipulator.jsonArrayToStringList(
                         jsonObject.getString(TourStaticAttributes._PASSENGERS)
@@ -264,11 +266,16 @@ public class Tour implements Parcelable
 
         try {
             retValue.setId(tourJsonObject.getInt(TourStaticAttributes._ID));
-            retValue.setStartLocation(tourJsonObject.getString(TourStaticAttributes._STARTLOCATION));
-            retValue.setDestinationLocation(tourJsonObject.getString(TourStaticAttributes._DESTINATIONLOCATION));
-            String dateString = tourJsonObject.getString(TourStaticAttributes._STARTDATE_AND_TIME);
+            retValue.setDriver(tourJsonObject.getInt(TourStaticAttributes._TOUR_DRIVER));
 
-            Date date = MyConverter._String2Date(dateString);
+            JSONObject metaData = tourJsonObject.getJSONObject("meta_data");
+            retValue.setStartLocation(metaData.getString(TourStaticAttributes._STARTLOCATION));
+            retValue.setDestinationLocation(metaData.getString(TourStaticAttributes._DESTINATIONLOCATION));
+            retValue.setRank(metaData.getDouble(TourStaticAttributes._RANK), false);
+
+            String dateString = metaData.getString(TourStaticAttributes._STARTDATE_AND_TIME);
+
+            Date date = MyConverter._ComplexString2Date(dateString);
 
             if (date == null)
             {
@@ -276,10 +283,8 @@ public class Tour implements Parcelable
             }
 
             retValue.setStartDateAndTime(date);
-            retValue.setDriver(tourJsonObject.getString(TourStaticAttributes._TOUR_DRIVER));
-            retValue.setRank(tourJsonObject.getDouble(TourStaticAttributes._RANK), false);
 
-            JSONArray passengers = tourJsonObject.getJSONArray(TourStaticAttributes._PASSENGERS);
+            JSONArray passengers = metaData.getJSONArray(TourStaticAttributes._PASSENGERS);
 
             for (int i = 0; i < passengers.length(); i++)
             {
@@ -307,7 +312,7 @@ public class Tour implements Parcelable
         this.startLocation = data[0];
         this.destinationLocation = data[1];
         this.startDateAndTime = MyConverter._String2Date(data[2]);
-        this.tourDriverUsername = data[3];
+        this.driverId = Integer.parseInt(data[3]);
         this.passengers = MyConverter._String2StringList(data[4]);
     }
 
@@ -325,7 +330,7 @@ public class Tour implements Parcelable
            passangerString  = MyConverter._StringList2String(this.passengers);
         }
 
-        String[] data={this.startLocation,this.destinationLocation,this.startDateAndTime.toString(),this.tourDriverUsername,passangerString};
+        String[] data={this.startLocation,this.destinationLocation,this.startDateAndTime.toString(),String.valueOf(this.driverId),passangerString};
 
         dest.writeStringArray(data);
     }
