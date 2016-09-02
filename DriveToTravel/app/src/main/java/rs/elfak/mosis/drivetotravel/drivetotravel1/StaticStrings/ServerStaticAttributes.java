@@ -21,4 +21,5 @@ public class ServerStaticAttributes
     public static String _LOGIN_URL = "/user/login";
     public static String _REGISTER_URL = "/user/register";
     public static String CREATE_TOUR_URL = "/tour/create";
+    public static String FETCH_DRIVERS_TOURS = "/tour/drivers";
 }
