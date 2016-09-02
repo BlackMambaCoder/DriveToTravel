@@ -12,4 +12,9 @@
     tools:context="rs.elfak.mosis.drivetotravel.drivetotravel1.Activities.DriversMainActivity"
     tools:showIn="@layout/activity_drivers_main">
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tourListDriver"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

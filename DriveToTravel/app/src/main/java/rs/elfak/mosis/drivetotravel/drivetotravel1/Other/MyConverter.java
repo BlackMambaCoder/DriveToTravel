@@ -1,5 +1,7 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Other;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,10 +18,10 @@ public class MyConverter
     public static Date _String2Date(String dateArg)
     {
         /**
-         * dateArg = "Sat Apr 16 11:51:00 CEST 2016"
+         * dateArg = "2-8-2016 17:35"
          */
         SimpleDateFormat simpleDateFormat =
-                new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH);
+                new SimpleDateFormat("d-M-y H:m", Locale.ENGLISH);
 
         Date retValue = new Date();
 
@@ -29,7 +31,8 @@ public class MyConverter
         }
         catch (ParseException e)
         {
-            e.printStackTrace();
+            Log.e("Error _String2Date: ", e.getMessage());
+            retValue = null;
         }
 
         return retValue;
