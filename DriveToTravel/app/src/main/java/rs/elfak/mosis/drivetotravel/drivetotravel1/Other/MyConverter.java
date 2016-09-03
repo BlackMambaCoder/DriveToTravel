@@ -2,6 +2,9 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Other;
 
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -111,5 +114,28 @@ public class MyConverter
         }
 
         return retValue;
+    }
+
+    public static List<Double> JSONString2DoubleValueList(String stringArg)
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(stringArg);
+            List<Double> retValue = new ArrayList<>();
+
+            double tourRank = jsonObject.getDouble("tourrank");
+            double driverRank = jsonObject.getDouble("driverrank");
+
+            retValue.add(tourRank);
+            retValue.add(driverRank);
+
+            return retValue;
+        }
+        catch (JSONException e)
+        {
+            String successMessage = "MyConverter::JSONString2DoubleValueList: JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
     }
 }
