@@ -26,4 +26,5 @@ public class ServerStaticAttributes
     public static String FETCH_ALL_TOURS = "/tour/all";
     public static String UPDATE_TOUR_RANK = "/tour/update_rank";
     public static String SEARCH_TOUR_BY_LOCATION = "/tour/search_by_location";
+    public static String ADD_PASSENGER_TO_TOUR = "/tour/add_passenger";
 }

@@ -585,4 +585,44 @@ public class ServerRequest {
             return null;
         }
     }
+
+    public Passenger addPassengerToTour (int passengerIdParam, int tourIdParam)
+    {
+
+        try
+        {
+            JSONObject requestJSONObject = new JSONObject();
+            requestJSONObject.put(TourStaticAttributes.PASSENGER_ID, passengerIdParam);
+            requestJSONObject.put(TourStaticAttributes.TOUR_ID, tourIdParam);
+
+            String route = ServerStaticAttributes.ADD_PASSENGER_TO_TOUR;
+            String requestData = requestJSONObject.toString();
+            String[] requestDataArray = { route , requestData };
+
+            ServerRequestAsyncTask task = new ServerRequestAsyncTask(this.context, null);
+            task.execute(requestDataArray).get();
+
+            String responseData = task.getResponseData();
+
+            if (responseData != null)
+            {
+                JSONObject responseJSONObject = new JSONObject(responseData);
+                return Passenger.getUserFromJSONObject(responseJSONObject);
+            }
+
+            return null;
+        }
+        catch (JSONException e)
+        {
+            return null;
+        }
+        catch (InterruptedException e)
+        {
+            return null;
+        }
+        catch (ExecutionException e)
+        {
+            return null;
+        }
+    }
 }
