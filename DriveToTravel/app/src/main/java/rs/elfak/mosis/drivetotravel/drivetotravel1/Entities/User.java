@@ -12,6 +12,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 /**
  * Created by LEO on 23.3.2016..
  */
+
 public abstract class User
 {
     public static int USER_TYPE_DRIVER      =    65;
@@ -71,6 +72,7 @@ public abstract class User
     }
 
     // === SETTER === //
+
     public void setId(int id)
     {
         this.id = id;
@@ -105,7 +107,6 @@ public abstract class User
     {
         this.eMail = eMail;
     }
-
 
     public abstract JSONObject toJSONObject () throws JSONException;
 

@@ -1,9 +1,7 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Activities;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,6 +26,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.CustomListAdapter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.Location;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.GPSTracker;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.LocationUpdateService;
 
@@ -45,7 +42,6 @@ public class PassangerMainActivity extends AppCompatActivity {
     ArrayList<Location> locationsList       = null;
 
     public static Handler publicHandler            = null;
-
     private Passenger user;
 
     @Override
@@ -191,14 +187,29 @@ public class PassangerMainActivity extends AppCompatActivity {
 
     private void startLocationUpdateService(int userId)
     {
+
         Intent intent = new Intent(this, LocationUpdateService.class);
         intent.putExtra("userid", userId);
         startService(intent);
+
+        /*
+        if(gps.canGetLocation())
+        {
+            Toast.makeText(this,"Location: "+gps.getLatitude()+" - "+gps.getLongitude(),Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(this,"Can't get location",zNToast.LENGTH_SHORT).show();
+        }
+        */
+
     }
 
     private void stopLocationUpdateService()
     {
         stopService(new Intent(this, LocationUpdateService.class));
+        //stopService(new Intent(this,GPSTracker.class));
+        //gps.stopUsingGPS();
     }
 
     private void getReceiveLocationMessages()
@@ -213,6 +224,7 @@ public class PassangerMainActivity extends AppCompatActivity {
                 locationsList = Location.getLocationsFromJSONArray(arrayWithLocations);
 
                 // update UI
+                Toast.makeText(PassangerMainActivity.this,"Location: "+locationsList.get(0),Toast.LENGTH_SHORT).show();
             }
         };
     }

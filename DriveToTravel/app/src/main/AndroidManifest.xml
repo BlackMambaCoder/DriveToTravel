@@ -2,11 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="rs.elfak.mosis.drivetotravel.drivetotravel1">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERAA" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -18,45 +22,65 @@
         <activity android:name=".Activities.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".Activities.Register" />
+        <!--
         <activity
             android:name=".Activities.DriverMain"
             android:label="@string/title_activity_driver_main"
             android:theme="@style/AppTheme" />
+
+            -->
         <activity
             android:name=".Activities.AddTourActivity"
             android:label="@string/title_activity_add_tour"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".Activities.ActivityDriverMain"
-            android:label="@string/title_activity_activity_driver_main"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".Activities.ActivityShowTours"
-            android:label="@string/title_activity_activity_show_tours"
-            android:parentActivityName=".Activities.ActivityDriverMain"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="rs.elfak.mosis.drivetotravel.drivetotravel1.Activities.ActivityDriverMain" />
-        </activity>
+
+        <!--<activity-->
+            <!--android:name=".Activities.ActivityShowTours"-->
+            <!--android:label="@string/title_activity_activity_show_tours"-->
+            <!--android:parentActivityName=".Activities.ActivityDriverMain"-->
+            <!--android:theme="@style/AppTheme">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="rs.elfak.mosis.drivetotravel.drivetotravel1.Activities.ActivityDriverMain" />-->
+        <!--</activity>-->
+
         <activity android:name=".Activities.PassangerMainActivity" />
         <activity android:name=".Activities.SearchRideActivity" />
         <activity android:name=".Activities.ShowTourDetailsActivity" />
 
-        <service
-            android:name=".Services.LocationUpdateIntentService"
-            android:exported="false" />
+
+        <!--<service-->
+            <!--android:name=".Services.LocationUpdateIntentService"-->
+            <!--android:exported="false" />-->
 
         <activity android:name=".Activities.friendshipActivity" />
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity
-            android:name=".Activities.DriversMainActivity"
-            android:label="@string/title_activity_drivers_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".Activities.tourMap"
+            android:label="@string/title_activity_tour_map"
+            android:theme="@style/AppTheme"
+            />
+
+        <!---->
+        <!--<service-->
+            <!--android:name=".Services.GPSTracker"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="false"></service>-->
+
+        <!--<activity-->
+            <!--android:name=".Activities.DriversMainActivity"-->
+            <!--android:label="@string/title_activity_drivers_main"-->
+            <!--android:theme="@style/AppTheme.NoActionBar"></activity>-->
+
     </application>
 
 </manifest>

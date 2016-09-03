@@ -106,4 +106,13 @@
         android:layout_alignTop="@+id/textView11"
         android:layout_alignStart="@+id/tour_details_start_time_text" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show on map"
+        android:id="@+id/tour_details_show_on_map_btn"
+        android:layout_below="@+id/tour_details_driver_name_text"
+        android:layout_toEndOf="@+id/textView11"
+        android:layout_marginTop="65dp" />
+
 </RelativeLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="120dp">
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:id="@+id/infowindow_acc_image"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:src="@color/colorPrimary"
+        android:layout_alignBottom="@+id/infowindow_phone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Username"
+        android:id="@+id/infowindow_username"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/infowindow_acc_image"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="First and last name"
+        android:id="@+id/infowindow_name"
+        android:layout_below="@+id/infowindow_username"
+        android:layout_alignStart="@+id/infowindow_username"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Account type"
+        android:id="@+id/infowindow_account"
+        android:layout_below="@+id/infowindow_name"
+        android:layout_alignStart="@+id/infowindow_name"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Phone number"
+        android:id="@+id/infowindow_phone"
+        android:layout_below="@+id/infowindow_account"
+        android:layout_alignStart="@+id/infowindow_account"
+        android:layout_marginTop="5dp" />
+
+</RelativeLayout>
