@@ -72,6 +72,7 @@ public class Driver extends User
                 user.seteMail(metaData.getString(UserStaticAttributes._eMail));
                 user.setPhoneNumber(metaData.getString(UserStaticAttributes._phoneNumber));
                 user.setCarModel(metaData.getString(UserStaticAttributes._carModel));
+                user.setProfileImage(metaData.getString(UserStaticAttributes.PROFILE_IMAGE));
             }
             catch (JSONException e)
             {

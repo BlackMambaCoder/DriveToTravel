@@ -19,4 +19,5 @@ public class UserStaticAttributes {
     public static String _passengerType = "passenger";
     public static String FRIENDS        = "friends";
     public static String USER_EXISTS    = "user_exists";
+    public static String PROFILE_IMAGE  = "profileimage";
 }

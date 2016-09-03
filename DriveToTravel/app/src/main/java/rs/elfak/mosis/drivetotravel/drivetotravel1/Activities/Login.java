@@ -178,23 +178,6 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
         JSONObject responseUser;//         = serverRequest.loginUser(username, password);
         UserLocalStore userLocalStore   = new UserLocalStore(this);
 
-        Passenger myPassenger = new Passenger();
-        myPassenger.setUsername("Tester username");
-        myPassenger.setSurname("Test surname");
-        myPassenger.setName("Test name");
-        myPassenger.seteMail("test@test");
-        myPassenger.setId(123456);
-        myPassenger.setId(123456);
-        myPassenger.setPhoneNumber("123-456");
-
-        userLocalStore.storeUser(myPassenger);
-        userLocalStore.setUserLoggedIn(true);
-
-        Intent intent1;
-        intent1 = new Intent(this, PassangerMainActivity.class);
-        startActivity(intent1);
-        finish();
-
         if ((responseUser = serverRequest.loginUser(username, password)) != null)
         {
             int responseUserType;
