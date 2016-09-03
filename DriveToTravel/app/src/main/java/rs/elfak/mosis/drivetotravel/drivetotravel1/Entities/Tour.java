@@ -32,23 +32,30 @@ public class Tour implements Parcelable
     private String startLocation;
     private String destinationLocation;
     private Date startDateAndTime;
-    private String tourDriverId;
+    private int driverId;
     private List<String> passengers;
     private double rank;
 
 
     public Tour ()
     {
-        this.startLocation              = "";
-        this.destinationLocation        = "";
-        this.startDateAndTime           = null;
-        this.tourDriverId               = "";
-        this.passengers                 = null;
-        this.rank                       = -1.0;
-        this.id                         =-1;
+        this.id                         =    -1;
+        this.startLocation              =    "";
+        this.destinationLocation        =    "";
+        this.startDateAndTime           =  null;
+        this.driverId                   =    -1;
+        this.passengers                 =  new ArrayList<>();
+        this.rank                       =  -1.0;
     }
 
-    public Tour (String startArg, String destArg, String startDateArg, String startTimeArg,int tourID)
+    public Tour (
+            String startArg,
+            String destArg,
+            String startDateArg,
+            String startTimeArg,
+            int driverId,
+            int tourID
+    )
     {
         this.startLocation              = startArg;
         this.destinationLocation        = destArg;
@@ -67,13 +74,50 @@ public class Tour implements Parcelable
 
         this.startDateAndTime           = date;
 
-        this.tourDriverId               = "";
+        this.driverId                   = driverId;
         this.passengers                 = new ArrayList<>();
         this.rank                       = -1.0;
         this.id                         = tourID;
     }
 
+    public JSONObject toJSONObject()
+    {
+        try
+        {
+            JSONObject retValue = new JSONObject();
+
+            retValue.put(TourStaticAttributes._ID, this.id);
+            retValue.put(TourStaticAttributes._STARTLOCATION, this.startLocation);
+            retValue.put(TourStaticAttributes._DESTINATIONLOCATION, this.destinationLocation);
+
+            retValue.put(TourStaticAttributes._STARTDATE_AND_TIME, this.startDateAndTime.toString());
+
+            retValue.put(TourStaticAttributes._TOUR_DRIVER, this.driverId);
+            retValue.put(TourStaticAttributes._RANK, this.rank);
+
+            JSONArray passengers = new JSONArray();
+
+            for (String passengersUsername :
+                    this.passengers) {
+                passengers.put(passengersUsername);
+            }
+
+            retValue.put(TourStaticAttributes._PASSENGERS, passengers);
+
+            return retValue;
+        }
+        catch (JSONException e)
+        {
+            Log.e("error", e.getMessage());
+            return null;
+        }
+    }
+
     // === GETTER === //
+    public int getId()
+    {
+        return this.id;
+    }
 
     public String getStartLocation()
     {
@@ -90,9 +134,9 @@ public class Tour implements Parcelable
         return this.startDateAndTime;
     }
 
-    public String getTourDriver()
+    public int getTourDriver()
     {
-        return this.tourDriverId;
+        return this.driverId;
     }
 
     public List<String> getPassengers()
@@ -111,6 +155,11 @@ public class Tour implements Parcelable
     }
 
     // === SETTER === //
+    public void setId(int parameter)
+    {
+        this.id = parameter;
+    }
+
     public void setStartLocation(String parameter)
     {
         this.startLocation = parameter;
@@ -126,11 +175,6 @@ public class Tour implements Parcelable
         this.startDateAndTime = parameter;
     }
 
-//    public void setTourDriver(Driver parameter)
-//    {
-//        this.tourDriver = parameter;
-//    }
-
     public void setPassengers(List<String> parameter)
     {
         this.passengers = parameter;
@@ -141,70 +185,111 @@ public class Tour implements Parcelable
         this.passengers.add(passenger);
     }
 
-    public void setDriver(String driverUsername)
+    public void setDriver(int driverIdParam)
     {
-        this.tourDriverId = driverUsername;
+        this.driverId = driverIdParam;
     }
 
-    public Double setRank(int rankParam)
+    public Double setRank(double rankParam, boolean update)
     {
+        if (!update) {
+            this.rank = rankParam;
+            return null;
+        }
+
         ServerRequest request = new ServerRequest();
-        List<Double> ranks = request.updateTourRank((double) rankParam,this.id);
+        List<Double> ranks = request.updateTourRank(rankParam,this.id);
 
         if (ranks != null) {
             this.rank = ranks.get(0);
             return ranks.get(1);
         }
-        else {
-            return null;
-        }
+
+        return null;
     }
 
     // === STATIC METHODS === //
 
     public static ArrayList<Tour> getToursFromJsonArray(String jsonString)
     {
-        ArrayList<Tour> tourArrayList = new ArrayList<>();
-
         try {
+            ArrayList<Tour> tourArrayList = new ArrayList<>();
             JSONArray jsonArray = new JSONArray(jsonString);
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-
-                Tour tour = new Tour();
-
+            for (int i = 0; i < jsonArray.length(); i++)
+            {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                tour.setStartLocation(jsonObject.getString(TourStaticAttributes._STARTLOCATION));
-                tour.setDestinationLocation(jsonObject.getString(TourStaticAttributes._DESTINATIONLOCATION));
-
-                String dateFromJson = jsonObject.getString(TourStaticAttributes._STARTDATE_AND_TIME);
-                Date date = MyConverter._String2Date(dateFromJson);
-                tour.setStartDateAndTime(date);
-
-                tour.setDriver(jsonObject.getString(TourStaticAttributes._TOUR_DRIVER));
-
-                List<String> passengerList = StringManipulator.jsonArrayToStringList(
-                        jsonObject.getString(TourStaticAttributes._PASSENGERS)
-                );
-
-                tour.setPassengers(passengerList);
-
-                tourArrayList.add(tour);
+                tourArrayList.add(Tour.getTourFromJSONObject(jsonObject));
             }
+
+            return tourArrayList;
         }
         catch (JSONException ex)
         {
             Log.e("*****BREAK_POINT*****", "Tour getToursFromJSONArray: " + ex.getMessage());
-            tourArrayList = null;
+            return null;
         }
-//        catch (ParseException e)
-//        {
-//            e.printStackTrace();
-//            tourArrayList = null;
-//        }
+    }
 
-        return tourArrayList;
+    public static Tour getTourFromJSONObject(JSONObject tourJsonObject)
+    {
+        if (tourJsonObject == null)
+        {
+            return null;
+        }
+
+        Tour retValue = new Tour();
+
+        try {
+            retValue.setId(tourJsonObject.getInt(TourStaticAttributes._ID));
+            retValue.setDriver(tourJsonObject.getInt(TourStaticAttributes._TOUR_DRIVER));
+
+            JSONObject metaData = tourJsonObject.getJSONObject("meta_data");
+            retValue.setStartLocation(metaData.getString(TourStaticAttributes._STARTLOCATION));
+            retValue.setDestinationLocation(metaData.getString(TourStaticAttributes._DESTINATIONLOCATION));
+            retValue.setRank(metaData.getDouble(TourStaticAttributes._RANK), false);
+
+            String dateString = metaData.getString(TourStaticAttributes._STARTDATE_AND_TIME);
+
+            Date date = MyConverter._ComplexString2Date(dateString);
+
+            if (date == null)
+            {
+                return null;
+            }
+
+            retValue.setStartDateAndTime(date);
+
+            JSONArray passengers = metaData.getJSONArray(TourStaticAttributes._PASSENGERS);
+
+            for (int i = 0; i < passengers.length(); i++)
+            {
+                retValue.passengers.add(passengers.getString(i));
+            }
+
+        }
+        catch (JSONException e)
+        {
+            String successMessage = "Tour::getTourFromJSONObject : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+
+        return retValue;
+    }
+
+    public static Tour[] getArrayFromList(List<Tour> tourListParam)
+    {
+        int i = 0;
+        Tour[] tours = new Tour[tourListParam.size()];
+
+        for (Tour tour :
+                tourListParam) {
+            tours[i++] = tour;
+        }
+
+        return tours;
     }
 
     // === Methods for parsing (PARCELABLE) === //
@@ -217,7 +302,7 @@ public class Tour implements Parcelable
         this.startLocation = data[0];
         this.destinationLocation = data[1];
         this.startDateAndTime = MyConverter._String2Date(data[2]);
-        this.tourDriverId = data[3];
+        this.driverId = Integer.parseInt(data[3]);
         this.passengers = MyConverter._String2StringList(data[4]);
     }
 
@@ -235,7 +320,7 @@ public class Tour implements Parcelable
            passangerString  = MyConverter._StringList2String(this.passengers);
         }
 
-        String[] data={this.startLocation,this.destinationLocation,this.startDateAndTime.toString(),this.tourDriverId,passangerString};
+        String[] data={this.startLocation,this.destinationLocation,this.startDateAndTime.toString(),String.valueOf(this.driverId),passangerString};
 
         dest.writeStringArray(data);
     }

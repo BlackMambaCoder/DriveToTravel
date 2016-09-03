@@ -9,12 +9,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="rs.elfak.mosis.drivetotravel.drivetotravel1.Activities.ActivityDriverMain"
-    tools:showIn="@layout/activity_activity_driver_main">
+    tools:context="rs.elfak.mosis.drivetotravel.drivetotravel1.Activities.DriversMainActivity"
+    tools:showIn="@layout/activity_drivers_main">
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/lvActivityDriverMain"
-                android:layout_gravity="center_horizontal" />
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tourListDriver"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

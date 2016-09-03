@@ -1,12 +1,8 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -14,66 +10,39 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.ServerStaticAttributes;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.TourStaticAttributes;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
 
 /**
- * Created by LEO on 6.4.2016..
+ * Created by Damjan on 9/3/2016.
  */
-public class StoreTourDataAsyncTask extends AsyncTask<String, Void, Void>
-{
-    private String responseTour;
-    private ProgressDialog progressDialog;
+public class ServerRequestAsyncTask extends AsyncTask<String, Void, Void> {
+    private String responseData;
+    private Context context;
 
-    public StoreTourDataAsyncTask()
+    public ServerRequestAsyncTask(Context context, String progressDialogTextParam)
     {
-        this.progressDialog = null;
+        this.context = context;
     }
 
-    public StoreTourDataAsyncTask(Context contextArg)
+    public String getResponseData()
     {
-        this.progressDialog = new ProgressDialog(contextArg);
+        return this.responseData;
     }
-
-    public JSONObject getTour()
-    {
-        if (this.responseTour != null)
-        {
-            try
-            {
-                return new JSONObject(this.responseTour);
-            }
-            catch (JSONException e)
-            {
-                return null;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    protected void onPreExecute() {
-//        super.onPreExecute();
-//        this.progressDialog.setMessage("Wait...Adding tour");
-//        this.progressDialog.show();
-    }
-
     @Override
     protected Void doInBackground(String... params)
     {
+        String route = params[0];
+        String postValue = params[1];
+
         String routeUrl = ServerStaticAttributes._SERVER_ROOT_URL
-                + ServerStaticAttributes.CREATE_TOUR_URL;
-        String postValue = params[0];
+                            + route;
 
         try
         {
-
             URL url = new URL(routeUrl);
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -99,7 +68,7 @@ public class StoreTourDataAsyncTask extends AsyncTask<String, Void, Void>
 
             if (responseCode == HttpURLConnection.HTTP_OK)
             {
-                this.responseTour = StringManipulator.inputStreamToString(httpURLConnection.getInputStream());
+                this.responseData = StringManipulator.inputStreamToString(httpURLConnection.getInputStream());
             }
 
             else
@@ -107,40 +76,30 @@ public class StoreTourDataAsyncTask extends AsyncTask<String, Void, Void>
                 throw new Exception("Dismissed connection: " + responseCode);
             }
         }
+        catch (ProtocolException e)
+        {
+            String successMessage = "ServerRequestAsyncTask: ProtocolException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            this.responseData = null;
+        }
         catch (MalformedURLException e)
         {
-            String successMessage = "StoreTourDataAsyncTask: MalformedURLException - " + e.getMessage();
+            String successMessage = "ServerRequestAsyncTask: MalformedURLException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            this.responseTour = null;
+            this.responseData = null;
         }
         catch (IOException e)
         {
-            String successMessage = "StoreTourDataAsyncTask: IOException - " + e.getMessage();
+            String successMessage = "ServerRequestAsyncTask: IOException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            this.responseTour = null;
-        }
-        catch (JSONException e)
-        {
-            String successMessage = "StoreTourDataAsyncTask: JSONException - " + e.getMessage();
-            Log.e("*****BREAK_POINT*****", successMessage);
-            this.responseTour = null;
+            this.responseData = null;
         }
         catch (Exception e)
         {
-            String successMessage = "StoreTourDataAsyncTask: Exception - " + e.getMessage();
+            String successMessage = "ServerRequestAsyncTask: Exception - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            this.responseTour = null;
+            this.responseData = null;
         }
-
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid)
-    {
-        super.onPostExecute(aVoid);
-//
-//        if (this.progressDialog.isShowing())
-//            this.progressDialog.dismiss();
     }
 }

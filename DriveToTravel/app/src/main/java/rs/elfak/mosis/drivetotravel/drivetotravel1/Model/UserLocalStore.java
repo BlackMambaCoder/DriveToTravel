@@ -25,29 +25,29 @@ public class UserLocalStore {
 
     public void storeUser (Driver user)
     {
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._id, user.getId());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._name, user.getName());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._surname, user.getName());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._username, user.getName());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._password, user.getName());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._eMail, user.getName());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._phoneNumber, user.getName());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._carModel, user.getCarModel());
-        this.sharedPreferencesEditor.putInt(UserStaticAttributes._userType, user.getUserType());
+        this.sharedPreferencesEditor.putInt     (UserStaticAttributes._id,          user.getId());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._name,        user.getName());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._surname,     user.getSurname());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._username,    user.getUsername());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._password,    user.getPassword());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._eMail,       user.geteMail());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._phoneNumber, user.getPhoneNumber());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._carModel,    user.getCarModel());
+        this.sharedPreferencesEditor.putInt     (UserStaticAttributes._userType,    User.USER_TYPE_DRIVER);
 
         this.sharedPreferencesEditor.commit();
     }
 
     public void storeUser (Passenger user)
     {
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._id, user.getId());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._name, user.getName());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._surname, user.getName());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._username, user.getName());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._password, user.getName());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._eMail, user.getName());
-        this.sharedPreferencesEditor.putString(UserStaticAttributes._phoneNumber, user.getName());
-        this.sharedPreferencesEditor.putInt(UserStaticAttributes._userType, user.getUserType());
+        this.sharedPreferencesEditor.putInt     (UserStaticAttributes._id,          user.getId());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._name,        user.getName());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._surname,     user.getSurname());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._username,    user.getUsername());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._password,    user.getPassword());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._eMail,       user.geteMail());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes._phoneNumber, user.getPhoneNumber());
+        this.sharedPreferencesEditor.putInt     (UserStaticAttributes._userType,    User.USER_TYPE_PASSENGER);
 
         this.sharedPreferencesEditor.commit();
     }
@@ -56,7 +56,7 @@ public class UserLocalStore {
     {
         Driver user = new Driver();
 
-        user.setId(this.userLocalSharedPrefferences.getString(UserStaticAttributes._id, ""));
+        user.setId(this.userLocalSharedPrefferences.getInt(UserStaticAttributes._id, -1));
         user.setName(this.userLocalSharedPrefferences.getString(UserStaticAttributes._name, ""));
         user.setSurname(this.userLocalSharedPrefferences.getString(UserStaticAttributes._surname, ""));
         user.setUsername(this.userLocalSharedPrefferences.getString(UserStaticAttributes._username, ""));
@@ -72,7 +72,7 @@ public class UserLocalStore {
     {
         Passenger user = new Passenger();
 
-        user.setId(this.userLocalSharedPrefferences.getString(UserStaticAttributes._id, ""));
+        user.setId(this.userLocalSharedPrefferences.getInt(UserStaticAttributes._id, -1));
         user.setName(this.userLocalSharedPrefferences.getString(UserStaticAttributes._name, ""));
         user.setSurname(this.userLocalSharedPrefferences.getString(UserStaticAttributes._surname, ""));
         user.setUsername(this.userLocalSharedPrefferences.getString(UserStaticAttributes._username, ""));

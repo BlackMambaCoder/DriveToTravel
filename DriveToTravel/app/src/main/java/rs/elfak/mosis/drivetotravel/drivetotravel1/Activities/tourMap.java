@@ -122,7 +122,6 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
             String accUsername = "AlexZed";
             String firstName = "Aleksandar";
             String lastName = "Zdravkovic";
-
             String phone = "069/575-46-86";
             String userType = "Passenger";
 

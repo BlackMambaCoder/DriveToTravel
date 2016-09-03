@@ -40,13 +40,15 @@ public class Passenger extends User
         JSONObject retValue = new JSONObject();
 
         retValue.put(UserStaticAttributes._id, this.id);
-        retValue.put(UserStaticAttributes._name, this.name);
-        retValue.put(UserStaticAttributes._surname, this.surname);
         retValue.put(UserStaticAttributes._username, this.username);
         retValue.put(UserStaticAttributes._password, this.password);
+        retValue.put(UserStaticAttributes._name, this.name);
+        retValue.put(UserStaticAttributes._surname, this.surname);
         retValue.put(UserStaticAttributes._phoneNumber, this.phoneNumber);
         retValue.put(UserStaticAttributes._eMail, this.eMail);
-        retValue.put(UserStaticAttributes._userType, UserStaticAttributes._passengerType);
+        retValue.put(UserStaticAttributes._userType, User.USER_TYPE_PASSENGER);
+
+        // friends
 
         return retValue;
     }
@@ -59,12 +61,18 @@ public class Passenger extends User
         {
             try
             {
-                user.setName(userParam.getString(UserStaticAttributes._name));
-                user.setSurname(userParam.getString(UserStaticAttributes._surname));
                 user.setUsername(userParam.getString(UserStaticAttributes._username));
                 user.setPassword(userParam.getString(UserStaticAttributes._password));
-                user.seteMail(userParam.getString(UserStaticAttributes._eMail));
-                user.setPhoneNumber(userParam.getString(UserStaticAttributes._phoneNumber));
+                user.setId(userParam.getInt(UserStaticAttributes._id));
+//                user.friends = Arrays.asList(userParam.get(UserStaticAttributes.FRIENDS));
+
+                JSONObject metaData = userParam.getJSONObject("meta_data");
+
+                user.setName(metaData.getString(UserStaticAttributes._name));
+                user.setSurname(metaData.getString(UserStaticAttributes._surname));
+                user.seteMail(metaData.getString(UserStaticAttributes._eMail));
+                user.setPhoneNumber(metaData.getString(UserStaticAttributes._phoneNumber));
+                user.setProfileImage(metaData.getString(UserStaticAttributes.PROFILE_IMAGE));
             }
             catch (JSONException e)
             {

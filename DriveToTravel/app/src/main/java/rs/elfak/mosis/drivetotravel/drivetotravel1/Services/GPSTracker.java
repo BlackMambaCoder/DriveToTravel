@@ -48,7 +48,7 @@ public class GPSTracker extends Service implements LocationListener {
     double longitude; // longitude
 
     private String responseLocations;
-    private String userId;
+    private int userId;
 
     private boolean startSettings=false;
 
@@ -67,8 +67,8 @@ public class GPSTracker extends Service implements LocationListener {
     static final public String GPS_RESULT = "GPSTRACKER_REQUEST_PROCESSED";
     static final public String GPS_MESSAGE = "GPSTRACKER_GPS_MSG";
 
-    public GPSTracker(Context context,String userID)
-    {
+    public GPSTracker(Context context,int userID)
+        {
         this.mContext = context;
         this.userId = userID;
         broadcaster = LocalBroadcastManager.getInstance(mContext);

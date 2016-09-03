@@ -3,16 +3,16 @@
     <string name="app_name">Drive2Travel</string>
     <string name="carModel">Model automobila</string>
     <string name="connect_to_network">Povezi se na internet</string>
-    <string name="eMail">e-pošta</string>
+    <string name="eMail">e-po�ta</string>
     <string name="loginButton">Uloguj se</string>
-    <string name="loginLabeL">Već imaš nalog? Uloguj se ovde</string>
+    <string name="loginLabeL">Vec ima� nalog? Uloguj se ovde</string>
     <string name="name">Ime</string>
     <string name="password">Lozinka</string>
     <string name="phoneNumber">Broj telefona</string>
     <string name="registerButton">Prijavi se</string>
-    <string name="registerLabel">Nemaš nalog? Prijavi se ovde</string>
+    <string name="registerLabel">Nema� nalog? Prijavi se ovde</string>
     <string name="surname">Prezime</string>
-    <string name="username">Korisničko ime</string>
+    <string name="username">Korisnicko ime</string>
     <string name="enLanguage">Engleski</string>
     <string name="lang_dialog_message">Jezik dialog poruka</string>
     <string name="lang_dialog_title">Jezik dialog naslov</string>
@@ -21,18 +21,18 @@
 
     <string name="enter_first_name_message">Unesite ime</string>
     <string name="enter_last_name_message">Unesite prezime</string>
-    <string name="enter_username_message">Unesite korisničko ime</string>
+    <string name="enter_username_message">Unesite korisnicko ime</string>
     <string name="enter_password_message">Unesite lozinku</string>
 
-    <string name="error_to_store_driver_message">Greška pri čuvanju korisnika. Pokušajte ponovo za par minuta</string>
+    <string name="error_to_store_driver_message">Gre�ka pri cuvanju korisnika. Poku�ajte ponovo za par minuta</string>
 
-    <string name="title_menu_passanger_transport">Vožnje</string>
-    <string name="title_menu_passanger_search_transport">Pretraga vožnji</string>
-    <string name="title_menu_passanger_my_transport">Moje vožnje</string>
-    <string name="title_menu_passanger_settings">Podešavanja profila</string>
+    <string name="title_menu_passanger_transport">Vo�nje</string>
+    <string name="title_menu_passanger_search_transport">Pretraga vo�nji</string>
+    <string name="title_menu_passanger_my_transport">Moje vo�nje</string>
+    <string name="title_menu_passanger_settings">Pode�avanja profila</string>
 
-    <string name="title_activity_search_main">Pronađi vožnju</string>
-    <string name="start_location_activity_search_main">Početna lokacija</string>
+    <string name="title_activity_search_main">Pronadi vo�nju</string>
+    <string name="start_location_activity_search_main">Pocetna lokacija</string>
     <string name="stop_location_activity_search_main">Krajnja lokacija</string>
     <string name="time_label_activity_search_main">Vreme: </string>
     <string name="date_label_activity_search_main">Datum: </string>
@@ -41,22 +41,22 @@
     <string name="search_by_data">Pretraga po podacima</string>
     <string name="search_by_distance">Pretraga po rastojanju</string>
 
-    <string name="title_activity_tour_details">Detalji vožnje</string>
+    <string name="title_activity_tour_details">Detalji vo�nje</string>
 
     <string name="title_menu_friendship">Prijatelji</string>
     <string name="friendship_activity_title">Prijatelji</string>
-    <string name="bluetooth_start_message">Bluetooth je trenutno isključen, molimo Vas uključite bluetooth!</string>
-    <string name="bluetooth_search_start_message">Započeta je pretraga uređaja u okolini!</string>
-    <string name="bluetooth_search_finish_message">Završena je pretraga uređaja u okolini!</string>
-    <string name="bluetooth_nearby_title">Vidljivi uređaji</string>
-    <string name="bluetooth_no_devices">Nema vidljivih uređaja!</string>
+    <string name="bluetooth_start_message">Bluetooth je trenutno iskljucen, molimo Vas ukljucite bluetooth!</string>
+    <string name="bluetooth_search_start_message">Zapoceta je pretraga uredaja u okolini!</string>
+    <string name="bluetooth_search_finish_message">Zavr�ena je pretraga uredaja u okolini!</string>
+    <string name="bluetooth_nearby_title">Vidljivi uredaji</string>
+    <string name="bluetooth_no_devices">Nema vidljivih uredaja!</string>
 
 
     <string name="bluetooth_async_task_client_connecting">Povezivanje u toku</string>
     <string name="bluetooth_async_task_client_connected">Povezan</string>
-    <string name="bluetooth_async_task_client_sending_request">Šaljem zahtev za prijateljstvo</string>
-    <string name="bluetooth_async_task_client_friendship_ok">Zahtev je uspešno prihvaćen</string>
-    <string name="bluetooth_async_task_client_friendship_already">Već ste prijatelji</string>
+    <string name="bluetooth_async_task_client_sending_request">�aljem zahtev za prijateljstvo</string>
+    <string name="bluetooth_async_task_client_friendship_ok">Zahtev je uspe�no prihvacen</string>
+    <string name="bluetooth_async_task_client_friendship_already">Vec ste prijatelji</string>
     <string name="bluetooth_async_task_client_friendship_cancel">Prekidanje zahteva</string>
     <string name="bluetooth_async_task_title">Zahtev za prijateljstvo</string>
 

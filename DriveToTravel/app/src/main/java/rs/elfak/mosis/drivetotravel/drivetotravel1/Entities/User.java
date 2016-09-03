@@ -1,9 +1,14 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Entities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +17,13 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 /**
  * Created by LEO on 23.3.2016..
  */
+
 public abstract class User
 {
     public static int USER_TYPE_DRIVER      =    65;
     public static int USER_TYPE_PASSENGER   =    66;
 
-    protected String id                     =    "";
+    protected int id                        =    -1;
     protected String name                   =    "";
     protected String surname                =    "";
     protected String username               =    "";
@@ -26,9 +32,10 @@ public abstract class User
     protected String eMail                  =    "";
     protected int userType                  =    -1;
     protected List<String> friends          = new ArrayList<>();
+    protected Bitmap profileImage           = null;
 
     // === GETTER  === //
-    public String getId()
+    public int getId()
     {
         return this.id;
     }
@@ -70,9 +77,19 @@ public abstract class User
         return this.friends;
     }
 
+    public Bitmap getProfileImage()
+    {
+        return this.profileImage;
+    }
+
+    public String getProfileImageString()
+    {
+        return this.bitmapToString(this.profileImage);
+    }
+
     // === SETTER === //
 
-    public void setId(String id)
+    public void setId(int id)
     {
         this.id = id;
     }
@@ -105,6 +122,16 @@ public abstract class User
     public void seteMail (String eMail)
     {
         this.eMail = eMail;
+    }
+
+    public void setProfileImage (Bitmap bitmapParam)
+    {
+        this.profileImage = bitmapParam;
+    }
+
+    public boolean setProfileImage (String bitmapStringParam)
+    {
+        return (this.profileImage = this.stringToBitmap(bitmapStringParam)) != null;
     }
 
     public abstract JSONObject toJSONObject () throws JSONException;
@@ -141,5 +168,30 @@ public abstract class User
         }
 
         return retValue;
+    }
+
+    public static String bitmapToString(Bitmap profileBitmap)
+    {
+        ByteArrayOutputStream byteArrayOutputStream = new  ByteArrayOutputStream();
+        profileBitmap.compress(Bitmap.CompressFormat.PNG,100, byteArrayOutputStream);
+
+        byte [] b = byteArrayOutputStream.toByteArray();
+
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    public static Bitmap stringToBitmap (String imageString)
+    {
+        try
+        {
+            byte [] encodeByte=Base64.decode(imageString,Base64.DEFAULT);
+
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        }
+        catch(Exception e)
+        {
+            e.getMessage();
+            return null;
+        }
     }
 }
