@@ -111,8 +111,18 @@
         android:layout_height="wrap_content"
         android:text="Show on map"
         android:id="@+id/tour_details_show_on_map_btn"
+        android:layout_marginLeft="22dp"
+        android:layout_alignTop="@+id/button2"
+        android:layout_toStartOf="@+id/button2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attend on ride"
+        android:id="@+id/button2"
+        android:layout_marginStart="37dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/tour_details_driver_name_text"
-        android:layout_toEndOf="@+id/textView11"
-        android:layout_marginTop="65dp" />
+        android:layout_toEndOf="@+id/tour_details_driver_name_text" />
 
 </RelativeLayout>
