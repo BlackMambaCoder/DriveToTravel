@@ -35,8 +35,8 @@ public class ServerRequestAsyncTask extends AsyncTask<String, Void, Void> {
     @Override
     protected Void doInBackground(String... params)
     {
-        String postValue = params[0];
-        String route = params[1];
+        String route = params[0];
+        String postValue = params[1];
 
         String routeUrl = ServerStaticAttributes._SERVER_ROOT_URL
                             + route;

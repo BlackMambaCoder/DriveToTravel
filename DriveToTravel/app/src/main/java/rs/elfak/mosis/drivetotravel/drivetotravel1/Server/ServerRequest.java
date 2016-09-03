@@ -213,23 +213,26 @@ public class ServerRequest {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            jsonObject.put("username", searchAttribute);
+            jsonObject.put(TourStaticAttributes._STARTDATE_AND_TIME, searchAttribute);
 
             tours = this.searchTour(jsonObject);
-        } catch (JSONException e) {
+        }
+        catch (JSONException e)
+        {
             String successMessage = "ServerRequestSearchTourForDate: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             tours = null;
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e)
+        {
             String successMessage = "ServerRequestSearchTourForDate: InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             tours = null;
-        } catch (ExecutionException e) {
+        }
+        catch (ExecutionException e)
+        {
             String successMessage = "ServerRequestSearchTourForDate: ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             tours = null;
         }
 
@@ -358,7 +361,7 @@ public class ServerRequest {
 
             String postValue = requestData.toString();
             String route = ServerStaticAttributes.UPDATE_TOUR_RANK;
-            String[] requestDataArray = { postValue, route };
+            String[] requestDataArray = { route , postValue };
             serverRequest.execute(requestDataArray).get();
 
             String responseDataStr = serverRequest.getResponseData();
@@ -528,7 +531,7 @@ public class ServerRequest {
         {
             String postValue = tourJsonObj.toString();
             String route = ServerStaticAttributes.CREATE_TOUR_URL;
-            String[] requestDataArray = { postValue , route };
+            String[] requestDataArray = {  route , postValue };
 
             serverRequest.execute(requestDataArray).get();
             String responseData = serverRequest.getResponseData();
@@ -609,7 +612,7 @@ public class ServerRequest {
         String postValue = "";
         String route = ServerStaticAttributes.FETCH_ALL_TOURS;
 
-        String[] taskDataArray = { postValue, route };
+        String[] taskDataArray = { route , postValue };
 
         ServerRequestAsyncTask task = new ServerRequestAsyncTask(this.context, null);
 
