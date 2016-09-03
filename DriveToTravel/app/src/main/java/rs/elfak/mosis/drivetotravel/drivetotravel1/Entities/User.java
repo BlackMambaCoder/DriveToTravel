@@ -170,7 +170,7 @@ public abstract class User
         return retValue;
     }
 
-    private String bitmapToString(Bitmap profileBitmap)
+    public static String bitmapToString(Bitmap profileBitmap)
     {
         ByteArrayOutputStream byteArrayOutputStream = new  ByteArrayOutputStream();
         profileBitmap.compress(Bitmap.CompressFormat.PNG,100, byteArrayOutputStream);
@@ -180,7 +180,7 @@ public abstract class User
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
-    private Bitmap stringToBitmap (String imageString)
+    public static Bitmap stringToBitmap (String imageString)
     {
         try
         {
