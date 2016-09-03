@@ -23,4 +23,5 @@ public class ServerStaticAttributes
     public static String CREATE_TOUR_URL = "/tour/create";
     public static String FETCH_DRIVERS_TOURS = "/tour/drivers";
     public static String FETCH_ALL_TOURS = "/tour/all";
+    public static String UPDATE_TOUR_RANK = "/tour/update_rank";
 }

@@ -53,7 +53,6 @@ public class UpdateTourRankAsyncTask extends AsyncTask<String, Void, Void> {
             {
                 String successMessage = "UpdateTourRankAsyncTask: JSONException - " + e.getMessage();
                 Log.e("*****BREAK_POINT*****", successMessage);
-                e.printStackTrace();
                 retValue = null;
             }
         }

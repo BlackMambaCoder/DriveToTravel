@@ -16,6 +16,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.MyConverter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.AddFriendAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchDriversToursAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchTourDataAsyncTask;
@@ -342,35 +343,51 @@ public class ServerRequest {
         String successMessage;
 
         JSONObject requestData = new JSONObject();
-        List<Double> responseData;
+//        List<Double> responseData;
 
-        UpdateTourRankAsyncTask task = new UpdateTourRankAsyncTask();
+//        UpdateTourRankAsyncTask task = new UpdateTourRankAsyncTask();
+        ServerRequestAsyncTask serverRequest = new ServerRequestAsyncTask(this.context, null);
+
 
         try {
             requestData.put("rank", rankParam);
             requestData.put("tourid", tourid);
 
-            task.execute(requestData.toString()).get();
+//            task.execute(requestData.toString()).get();
+//            responseData = task.getResponseData();
 
-            responseData = task.getResponseData();
-        } catch (JSONException e) {
+            String postValue = requestData.toString();
+            String route = ServerStaticAttributes.UPDATE_TOUR_RANK;
+            String[] requestDataArray = { postValue, route };
+            serverRequest.execute(requestDataArray).get();
+
+            String responseDataStr = serverRequest.getResponseData();
+
+            if (responseDataStr != null)
+            {
+                return MyConverter.JSONString2DoubleValueList(responseDataStr);
+            }
+
+            return null;
+        }
+        catch (JSONException e)
+        {
             successMessage = "ServerRequestUpdateTourRank: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            responseData = null;
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+            return null;
+        }
+        catch (InterruptedException e)
+        {
             successMessage = "ServerRequestUpdateTourRank: InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            responseData = null;
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+            return null;
+        }
+        catch (ExecutionException e)
+        {
             successMessage = "ServerRequestUpdateTourRank: ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            responseData = null;
-            e.printStackTrace();
+            return null;
         }
-
-        return responseData;
     }
 
     public Driver storeUser(Driver userObjectParam) {
@@ -499,15 +516,30 @@ public class ServerRequest {
 
     public Tour storeTour(Tour tourParam)
     {
-        JSONObject tourJsonObj = tourParam.toJSONObject();
+        JSONObject tourJsonObj      = tourParam.toJSONObject();
 
-        StoreTourDataAsyncTask task = new StoreTourDataAsyncTask();
+        ServerRequestAsyncTask serverRequest
+                                    = new ServerRequestAsyncTask(
+                                        this.context,
+                                        null
+                                    );
 
         try
         {
-            task.execute(tourJsonObj.toString()).get();
+            String postValue = tourJsonObj.toString();
+            String route = ServerStaticAttributes.CREATE_TOUR_URL;
+            String[] requestDataArray = { postValue , route };
 
-            tourJsonObj = task.getTour();
+            serverRequest.execute(requestDataArray).get();
+            String responseData = serverRequest.getResponseData();
+
+            if (responseData != null)
+            {
+                tourJsonObj = new JSONObject(responseData);
+                return Tour.getTourFromJSONObject(tourJsonObj);
+            }
+
+            return null;
         }
         catch (InterruptedException e)
         {
@@ -521,8 +553,12 @@ public class ServerRequest {
             Log.e("*****BREAK_POINT*****", successMessage);
             return null;
         }
-
-        return Tour.getTourFromJSONObject(tourJsonObj);
+        catch (JSONException e)
+        {
+            String successMessage = "ServerRequest::storeTour : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
     }
 
     public Tour[] getDriverTours(int driverIdParam)
@@ -562,6 +598,12 @@ public class ServerRequest {
         }
     }
 
+    /**
+     * Uses new AsyncTask: ServerRequest AsyncTask which can perform
+     * server requests for all types of requests from this app.
+     *
+     * @return array all tours from database
+     */
     public Tour[] getAllTours()
     {
         String postValue = "";
