@@ -71,6 +71,7 @@ public abstract class User
     }
 
     // === SETTER === //
+
     public void setId(String id)
     {
         this.id = id;
@@ -105,7 +106,6 @@ public abstract class User
     {
         this.eMail = eMail;
     }
-
 
     public abstract JSONObject toJSONObject () throws JSONException;
 

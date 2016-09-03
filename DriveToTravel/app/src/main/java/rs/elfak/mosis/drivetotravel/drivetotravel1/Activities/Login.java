@@ -139,6 +139,15 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
                 Passenger loggedInPassanger = new Passenger();
 
+                loggedInPassanger.setUsername("Tester");
+                loggedInPassanger.setSurname("Beta");
+                loggedInPassanger.setPhoneNumber("12345");
+                loggedInPassanger.seteMail("beta@test");
+                loggedInPassanger.setName("BeT");
+                loggedInPassanger.setId("102020130");
+                loggedInPassanger.setSurname("SeS");
+                loggedInPassanger.setPassword("XR35");
+
                 UserLocalStore userLocalStore = new UserLocalStore(this);
                 userLocalStore.storeUser(loggedInPassanger);
                 userLocalStore.setUserLoggedIn(true);

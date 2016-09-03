@@ -37,6 +37,7 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        setTitle("Register");
 
         this.registerBtn = (Button)findViewById(R.id.btnRegister);
         this.registerBtn.setOnClickListener(this);

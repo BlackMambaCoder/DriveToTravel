@@ -1,11 +1,15 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -15,6 +19,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 public class ShowTourDetailsActivity extends AppCompatActivity {
 
     TextView startLocation,endLocation,startDate,startTime,tourDriver;
+    Button mapBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +34,10 @@ public class ShowTourDetailsActivity extends AppCompatActivity {
         startTime = (TextView) findViewById(R.id.tour_details_start_time_text);
         tourDriver = (TextView) findViewById(R.id.tour_details_driver_name_text);
 
+        mapBtn = (Button) findViewById(R.id.tour_details_show_on_map_btn);
+
         Bundle savedTourBundle = getIntent().getExtras();
-        Tour tour = savedTourBundle.getParcelable("tour");
+        final Tour tour = savedTourBundle.getParcelable("tour");
 
         startLocation.setText(tour.getStartLocation());
         endLocation.setText(tour.getDestinationLocation());
@@ -45,5 +52,13 @@ public class ShowTourDetailsActivity extends AppCompatActivity {
         startTime.setText(Time);
 
         tourDriver.setText(tour.getTourDriver());
+
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mapIntent = new Intent(ShowTourDetailsActivity.this,tourMap.class);
+                startActivity(mapIntent);
+            }
+        });
     }
 }
