@@ -55,7 +55,6 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
     }
 
 
-
     @Override
     public void onClick(View v) {
 

@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +26,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -40,7 +45,7 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
     private Marker myPositionMarker;
     private LatLng myLocation;
     private boolean mapIsReady = false;
-    private boolean lockTaxiPosition=false;
+    private boolean lockTaxiPosition = false;
     private String uid;
     private UserLocalStore userLocalStore;
 
@@ -56,7 +61,7 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
 
         userLocalStore = new UserLocalStore(this);
 
-        mGPS = new GPSTracker(this,userLocalStore.getPassenger().getId());
+        mGPS = new GPSTracker(this, userLocalStore.getPassenger().getId());
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -75,7 +80,7 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
                     myLocation = new LatLng(Double.valueOf(data[0]), Double.valueOf(data[1]));
                     myPositionMarker.setPosition(myLocation);
 
-                    if(lockTaxiPosition) {
+                    if (lockTaxiPosition) {
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
                     }
                 }
@@ -99,26 +104,34 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
         mMap = googleMap;
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(this));
 
-        if (mGPS.canGetLocation()) {
-            myLocation = new LatLng(mGPS.getLatitude(), mGPS.getLongitude());
-        } else {
-            myLocation = new LatLng(0, 0);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this,"Please enable location permission!",Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        //mMap.setMyLocationEnabled(true);
+        if (mGPS.canGetLocation())
+        {
+            myLocation = new LatLng(mGPS.getLatitude(), mGPS.getLongitude());
+        }
 
-        String accUsername = userLocalStore.getPassenger().getUsername();
-        String firstName = userLocalStore.getPassenger().getName();
-        String lastName = userLocalStore.getPassenger().getSurname();
+        //Check location
+        if(myLocation != null)
+        {
+            mMap.setMyLocationEnabled(true);
 
-        String phone = userLocalStore.getPassenger().getPhoneNumber();
-        String userType = "Passenger";
+            String accUsername = "AlexZed";
+            String firstName = "Aleksandar";
+            String lastName = "Zdravkovic";
 
-        String data = firstName+","+lastName+","+phone+","+userType;
+            String phone = "069/575-46-86";
+            String userType = "Passenger";
 
-        myPositionMarker = mMap.addMarker(new MarkerOptions().position(myLocation).title(accUsername).snippet(data));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation,15));
+            String data = firstName+" "+lastName+","+phone+","+userType;
+
+            myPositionMarker = mMap.addMarker(new MarkerOptions().position(myLocation).title(accUsername).snippet(data));
+            myPositionMarker.setIcon(BitmapDescriptorFactory.fromBitmap(resizeMapIcon(R.drawable.profile,128,140)));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation,15));
+        }
 
         mapIsReady=true;
     }
@@ -152,12 +165,24 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
 
             case R.id.map_taxi_lock_btn:
                 lockTaxiPosition = !lockTaxiPosition;
-                Toast.makeText(tourMap.this,"Tracking taxi: "+lockTaxiPosition,Toast.LENGTH_SHORT).show();
+                Toast.makeText(tourMap.this,"Tracking driver: "+lockTaxiPosition,Toast.LENGTH_SHORT).show();
                 break;
 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private Bitmap resizeMapIcon(int drawableIcon, int width, int height)
+    {
+        Bitmap imageBitmap = BitmapFactory.decodeResource(this.getResources(),drawableIcon);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+        return resizedBitmap;
+    }
+
+    private Bitmap resizeMapIcon(Bitmap image,int width, int height){
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(image, width, height, false);
+        return resizedBitmap;
     }
 
 }

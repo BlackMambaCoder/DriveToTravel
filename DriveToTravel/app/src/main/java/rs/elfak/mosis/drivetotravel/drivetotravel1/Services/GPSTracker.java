@@ -95,7 +95,8 @@ public class GPSTracker extends Service implements LocationListener {
 
             if (!isGPSEnabled && !isNetworkEnabled) {
                 Toast.makeText(mContext, "Not found any location provider, please turn on GPS", Toast.LENGTH_SHORT).show();
-               // showSettingsAlert();
+                canGetLocation=false;
+                return false;
             }
 
             this.canGetLocation = true;

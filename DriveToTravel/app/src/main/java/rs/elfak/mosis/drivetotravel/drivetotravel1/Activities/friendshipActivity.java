@@ -30,6 +30,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTClientThread;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTServerAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTServerThread;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 
@@ -147,9 +148,9 @@ public class friendshipActivity extends AppCompatActivity {
             case R.id.friendship_add_button:
                 //Dodavanje prijatelja preko bluetooth-a
 
-                String loggedUser = userLocalStore.getTypeOfLoggedUser();
+                int loggedUser = userLocalStore.getTypeOfLoggedUser();
 
-                if(loggedUser.equals("Driver"))
+                if(loggedUser == User.USER_TYPE_DRIVER)
                 {
                     /*
                     //Show progress bar
@@ -163,7 +164,7 @@ public class friendshipActivity extends AppCompatActivity {
                     BTServerAsyncTask task = new BTServerAsyncTask(context,"Drive2Travel");
                     task.execute();
                 }
-                else if(loggedUser.equals("Passenger"))
+                else if(loggedUser == User.USER_TYPE_PASSENGER)
                 {
                     checkBluetooth();
                     BA.startDiscovery();

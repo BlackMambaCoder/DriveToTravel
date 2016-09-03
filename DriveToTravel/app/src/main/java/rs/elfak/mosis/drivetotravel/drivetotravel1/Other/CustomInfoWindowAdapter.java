@@ -1,6 +1,9 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Other;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -66,7 +69,20 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         //ImageLoader imageLoader = ((AppConfig)mContext.getApplicationContext()).getImageLoader();
         //imageLoader.loadBitmap(imagePath, popUpImage, 0, 0, onImageLoaded);
 
+        //Load image from string
+        String encodedImage="";
+
+        if(!encodedImage.isEmpty()) {
+            // Dekodiranje stringa
+            byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+
+            //Slika
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            accImage.setImageBitmap(decodedByte);
+        }
+
         // Returning the view containing InfoWindow contents
         return popUp;
+
     }
 }
