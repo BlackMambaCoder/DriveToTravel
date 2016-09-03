@@ -1,9 +1,14 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Entities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +32,7 @@ public abstract class User
     protected String eMail                  =    "";
     protected int userType                  =    -1;
     protected List<String> friends          = new ArrayList<>();
+    protected Bitmap profileImage           = null;
 
     // === GETTER  === //
     public int getId()
@@ -71,6 +77,16 @@ public abstract class User
         return this.friends;
     }
 
+    public Bitmap getProfileImage()
+    {
+        return this.profileImage;
+    }
+
+    public String getProfileImageString()
+    {
+        return this.bitmapToString(this.profileImage);
+    }
+
     // === SETTER === //
 
     public void setId(int id)
@@ -108,6 +124,16 @@ public abstract class User
         this.eMail = eMail;
     }
 
+    public void setProfileImage (Bitmap bitmapParam)
+    {
+        this.profileImage = bitmapParam;
+    }
+
+    public boolean setProfileImage (String bitmapStringParam)
+    {
+        return (this.profileImage = this.stringToBitmap(bitmapStringParam)) != null;
+    }
+
     public abstract JSONObject toJSONObject () throws JSONException;
 
     public boolean addFriend(String usernameParam)
@@ -142,5 +168,30 @@ public abstract class User
         }
 
         return retValue;
+    }
+
+    private String bitmapToString(Bitmap profileBitmap)
+    {
+        ByteArrayOutputStream byteArrayOutputStream = new  ByteArrayOutputStream();
+        profileBitmap.compress(Bitmap.CompressFormat.PNG,100, byteArrayOutputStream);
+
+        byte [] b = byteArrayOutputStream.toByteArray();
+
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    private Bitmap stringToBitmap (String imageString)
+    {
+        try
+        {
+            byte [] encodeByte=Base64.decode(imageString,Base64.DEFAULT);
+
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        }
+        catch(Exception e)
+        {
+            e.getMessage();
+            return null;
+        }
     }
 }

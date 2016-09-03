@@ -1,6 +1,7 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Server;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -57,99 +58,9 @@ public class ServerRequest {
         this.classDriver = null;
     }
 
-    public Driver getDriver() {
-        return this.classDriver;
-    }
-
-//    private void storeDriver ()
-//    {
-//        if (this.classDriver != null)
-//        {
-//            try
-//            {
-//                StoreDriverDataAsyncTask storeDriverDataAsyncTask = new StoreDriverDataAsyncTask(this.classDriver, this.context);
-//                storeDriverDataAsyncTask.execute().get();
-//                this.classDriver = storeDriverDataAsyncTask.getDriver();
-//            }
-//            catch (InterruptedException e)
-//            {
-//                Log.e("*****BREAK_POINT*****", "ServerRequest storeDriver: " + e.getMessage());
-//                this.classDriver = null;
-//            }
-//            catch (ExecutionException e)
-//            {
-//                Log.e("*****BREAK_POINT*****", "ServerRequest storeDriver: " + e.getMessage());
-//                this.classDriver = null;
-//            }
-//        }
+//    public Driver getDriver() {
+//        return this.classDriver;
 //    }
-
-//    public void fetchDriverByUsername (String username)
-//    {
-//        try
-//        {
-//            FetchDriverDataAsyncTask fetchDriverDataAsyncTask = new FetchDriverDataAsyncTask(this.context);
-//            fetchDriverDataAsyncTask.execute(username).get();
-//            this.classDriver = fetchDriverDataAsyncTask.getUser();
-//        }
-//        catch (InterruptedException e)
-//        {
-//            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
-//            e.printStackTrace();
-//            this.classDriver = null;
-//        }
-//        catch (ExecutionException e)
-//        {
-//            Log.e("*****BREAK_POINT*****", "ServerRequest fetDriverByUsername: " + e.getMessage());
-//            e.printStackTrace();
-//            this.classDriver = null;
-//        }
-//    }
-
-    public boolean connectToServer(Driver driverP) {
-        boolean returnValue = false;
-
-//        this.classDriver = driverP;
-//        this.storeDriver();
-//
-//        if (this.classDriver != null)
-//        {
-//            returnValue = true; //this.storeUserToLocalStore();
-//        }
-//
-//        else
-//        {
-//            Log.e("/connectToServer", "Driver couldn't be stored");
-//        }
-
-        return returnValue;
-    }
-
-//    public boolean connectToServer(String username, String password)
-//    {
-//        boolean retValue = true;
-//
-//        this.fetchDriverByUsername(username);
-//
-//        if (this.classDriver != null && !password.equals(this.classDriver.getPassword()))
-//        {
-//            retValue = this.storeUserToLocalStore();
-//        }
-//
-//        return retValue;
-//    }
-
-    private boolean storeUserToLocalStore() {
-        boolean retValue = false;
-
-        if (!this.userLocalStore.getUserLoggedIn()) {
-            this.userLocalStore.storeUser(this.classDriver);
-            this.userLocalStore.setUserLoggedIn(true);
-            retValue = true;
-        }
-
-        return retValue;
-    }
 
 //    public void searchTour(String startLocationParam, String endLocationParam, String timeParam, String dateParam)
 //    {
@@ -167,41 +78,57 @@ public class ServerRequest {
 //    }
 
     private List<Tour> searchTour(JSONObject jsonObject) throws ExecutionException, InterruptedException {
-        FetchTourDataAsyncTask fetchTourDataAsyncTask
-                = new FetchTourDataAsyncTask(this.context);
+//        FetchTourDataAsyncTask fetchTourDataAsyncTask
+//                = new FetchTourDataAsyncTask(this.context);
+//
+//        fetchTourDataAsyncTask.execute(jsonObject.toString()).get();
+//
+//        return fetchTourDataAsyncTask.getTours();
 
-        fetchTourDataAsyncTask.execute(jsonObject.toString()).get();
+        String route = ServerStaticAttributes.SEARCH_TOUR_BY_LOCATION;
+        String requestData = jsonObject.toString();
+        String[] requestDataArray = { route , requestData };
 
-        return fetchTourDataAsyncTask.getTours();
+        ServerRequestAsyncTask task = new ServerRequestAsyncTask(this.context, null);
+        task.execute(requestDataArray).get();
+
+        return Tour.getToursFromJsonArray(task.getResponseData());
     }
 
     public List<Tour> searchTour(int searchCriteria, String... searchAttribute) {
         List<Tour> tours;
         JSONObject jsonObject = new JSONObject();
 
-        try {
-            if (searchCriteria == ServerRequest.SEARCH_FOR_DRIVER) {
+        try
+        {
+            if (searchCriteria == ServerRequest.SEARCH_FOR_DRIVER)
+            {
                 jsonObject.put("username", searchAttribute[0]);
-            } else if (searchCriteria == ServerRequest.SEARCH_FOR_LOCATION) {
+            }
+            else if (searchCriteria == ServerRequest.SEARCH_FOR_LOCATION)
+            {
                 jsonObject.put("startlocation", searchAttribute[0]);
                 jsonObject.put("destlocation", searchAttribute[1]);
             }
 
             tours = this.searchTour(jsonObject);
-        } catch (JSONException e) {
+        }
+        catch (JSONException e)
+        {
             String successMessage = "ServerRequestSearchTour: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             tours = null;
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e)
+        {
             String successMessage = "ServerRequestSearchTour: InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             tours = null;
-        } catch (ExecutionException e) {
+        }
+        catch (ExecutionException e)
+        {
             String successMessage = "ServerRequestSearchTour: ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
             tours = null;
         }
 
@@ -640,6 +567,40 @@ public class ServerRequest {
         {
             String successMessage = "ServerRequest::getAllTours : ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+    }
+
+    public String uploadBitmapString(String bitmapParam, int driverIdParam)
+    {
+        try
+        {
+            String route = ServerStaticAttributes.UPLOAD_USER_IMAGE;
+            JSONObject image = new JSONObject();
+
+            image.put(UserStaticAttributes._id, driverIdParam);
+            image.put(UserStaticAttributes.PROFILE_IMAGE, bitmapParam);
+
+            String[] requestDataArray = { route , image.toString() };
+
+            ServerRequestAsyncTask task = new ServerRequestAsyncTask(this.context, null);
+            task.execute(requestDataArray).get();
+
+            return task.getResponseData();
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        catch (ExecutionException e)
+        {
+            e.printStackTrace();
             return null;
         }
     }
