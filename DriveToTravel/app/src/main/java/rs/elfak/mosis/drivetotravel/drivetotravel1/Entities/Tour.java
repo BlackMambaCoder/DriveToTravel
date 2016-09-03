@@ -212,47 +212,24 @@ public class Tour implements Parcelable
 
     public static ArrayList<Tour> getToursFromJsonArray(String jsonString)
     {
-        ArrayList<Tour> tourArrayList = new ArrayList<>();
-
         try {
+            ArrayList<Tour> tourArrayList = new ArrayList<>();
             JSONArray jsonArray = new JSONArray(jsonString);
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-
-                Tour tour = new Tour();
-
+            for (int i = 0; i < jsonArray.length(); i++)
+            {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                tour.setStartLocation(jsonObject.getString(TourStaticAttributes._STARTLOCATION));
-                tour.setDestinationLocation(jsonObject.getString(TourStaticAttributes._DESTINATIONLOCATION));
-
-                String dateFromJson = jsonObject.getString(TourStaticAttributes._STARTDATE_AND_TIME);
-                Date date = MyConverter._String2Date(dateFromJson);
-                tour.setStartDateAndTime(date);
-
-                tour.setDriver(jsonObject.getInt(TourStaticAttributes._TOUR_DRIVER));
-
-                List<String> passengerList = StringManipulator.jsonArrayToStringList(
-                        jsonObject.getString(TourStaticAttributes._PASSENGERS)
-                );
-
-                tour.setPassengers(passengerList);
-
-                tourArrayList.add(tour);
+                tourArrayList.add(Tour.getTourFromJSONObject(jsonObject));
             }
+
+            return tourArrayList;
         }
         catch (JSONException ex)
         {
             Log.e("*****BREAK_POINT*****", "Tour getToursFromJSONArray: " + ex.getMessage());
-            tourArrayList = null;
+            return null;
         }
-//        catch (ParseException e)
-//        {
-//            e.printStackTrace();
-//            tourArrayList = null;
-//        }
-
-        return tourArrayList;
     }
 
     public static Tour getTourFromJSONObject(JSONObject tourJsonObject)
@@ -300,6 +277,19 @@ public class Tour implements Parcelable
         }
 
         return retValue;
+    }
+
+    public static Tour[] getArrayFromList(List<Tour> tourListParam)
+    {
+        int i = 0;
+        Tour[] tours = new Tour[tourListParam.size()];
+
+        for (Tour tour :
+                tourListParam) {
+            tours[i++] = tour;
+        }
+
+        return tours;
     }
 
     // === Methods for parsing (PARCELABLE) === //

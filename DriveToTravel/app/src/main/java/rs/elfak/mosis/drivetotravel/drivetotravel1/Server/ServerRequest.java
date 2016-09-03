@@ -17,9 +17,11 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.AddFriendAsyncTask;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchDriversToursAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchTourDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FriendWithAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.LoginUserAsyncTask;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.ServerRequestAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.StoreTourDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.StoreUserDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
@@ -521,5 +523,79 @@ public class ServerRequest {
         }
 
         return Tour.getTourFromJSONObject(tourJsonObj);
+    }
+
+    public Tour[] getDriverTours(int driverIdParam)
+    {
+        JSONObject postValue = new JSONObject();
+        try
+        {
+            postValue.put(UserStaticAttributes._id, driverIdParam);
+            FetchDriversToursAsyncTask task = new FetchDriversToursAsyncTask(null);
+            task.execute(postValue.toString()).get();
+            String response = task.getResponse();
+
+            if (response == null) {
+                Toast.makeText(this.context, "response from tours is null", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+            List<Tour> tours = Tour.getToursFromJsonArray(response);
+            return Tour.getArrayFromList(tours);
+        }
+        catch (JSONException e)
+        {
+            String successMessage = "ServerRequest::getDriverTours : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+        catch (InterruptedException e)
+        {
+            String successMessage = "ServerRequest::getDriverTours : InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+        catch (ExecutionException e)
+        {
+            String successMessage = "ServerRequest::getDriverTours : ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+    }
+
+    public Tour[] getAllTours()
+    {
+        String postValue = "";
+        String route = ServerStaticAttributes.FETCH_ALL_TOURS;
+
+        String[] taskDataArray = { postValue, route };
+
+        ServerRequestAsyncTask task = new ServerRequestAsyncTask(this.context, null);
+
+        try
+        {
+            task.execute(taskDataArray).get();
+            String response = task.getResponseData();
+
+            if (response != null)
+            {
+                return Tour.getArrayFromList(
+                        Tour.getToursFromJsonArray(response)
+                );
+            }
+
+            return null;
+        }
+        catch (InterruptedException e)
+        {
+            String successMessage = "ServerRequest::getAllTours : InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+        catch (ExecutionException e)
+        {
+            String successMessage = "ServerRequest::getAllTours : ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
     }
 }
