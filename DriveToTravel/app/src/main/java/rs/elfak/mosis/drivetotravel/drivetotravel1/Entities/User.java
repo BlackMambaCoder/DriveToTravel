@@ -12,12 +12,13 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 /**
  * Created by LEO on 23.3.2016..
  */
+
 public abstract class User
 {
     public static int USER_TYPE_DRIVER      =    65;
     public static int USER_TYPE_PASSENGER   =    66;
 
-    protected String id                     =    "";
+    protected int id                        =    -1;
     protected String name                   =    "";
     protected String surname                =    "";
     protected String username               =    "";
@@ -28,7 +29,7 @@ public abstract class User
     protected List<String> friends          = new ArrayList<>();
 
     // === GETTER  === //
-    public String getId()
+    public int getId()
     {
         return this.id;
     }
@@ -72,7 +73,7 @@ public abstract class User
 
     // === SETTER === //
 
-    public void setId(String id)
+    public void setId(int id)
     {
         this.id = id;
     }

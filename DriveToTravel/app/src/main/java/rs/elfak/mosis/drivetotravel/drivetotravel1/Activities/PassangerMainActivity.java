@@ -14,17 +14,20 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
 
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.CustomListAdapter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.Location;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.GPSTracker;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.LocationUpdateService;
 
 public class PassangerMainActivity extends AppCompatActivity {
@@ -39,8 +42,7 @@ public class PassangerMainActivity extends AppCompatActivity {
     ArrayList<Location> locationsList       = null;
 
     public static Handler publicHandler            = null;
-
-    GPSTracker gps;
+    private Passenger user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,31 +50,16 @@ public class PassangerMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_passanger_main);
         setTitle("Home");
 
-        listaVoznji = (ListView)findViewById(R.id.listView);
-
-        tours = new  Tour[3];
-
-        tours[0] = new Tour("Nis","Beograd","08-12-2016","23:9",0);
-        tours[1] = new Tour("Zajecar","Bor","08-12-2016","23:9",1);
-        tours[2] = new Tour("Negotin","Kladovo","08-12-2016","23:9",2);
-
-        listAdapter = new CustomListAdapter(PassangerMainActivity.this,tours);
-        listaVoznji.setAdapter(listAdapter);
-
-       //Klik na item
-       listaVoznji.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Tour item =(Tour) adapterView.getItemAtPosition(i);
-               // Toast.makeText(PassangerMainActivity.this, "Click: " + item.getStartLocation()+" "+item.getDestinationLocation(), Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(PassangerMainActivity.this, ShowTourDetailsActivity.class);
-                intent.putExtra("tour", item);
-
-                startActivity(intent);
-            }
-        });
+//        listaVoznji = (ListView)findViewById(R.id.listView);
+//
+//        tours = new  Tour[3];
+//
+//        tours[0] = new Tour("Nis","Beograd","08-12-2016","23:9",0, 0);
+//        tours[1] = new Tour("Zajecar","Bor","08-12-2016","23:9",0, 1);
+//        tours[2] = new Tour("Negotin","Kladovo","08-12-2016","23:9",0, 2);
+//
+//        listAdapter = new CustomListAdapter(PassangerMainActivity.this,tours);
+//        listaVoznji.setAdapter(listAdapter);
 
 
 
@@ -97,6 +84,24 @@ public class PassangerMainActivity extends AppCompatActivity {
             }
         });
         */
+
+        this.getLoggedInUser();
+        this.prepareView();
+
+        //Klik na item
+        listaVoznji.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Tour item =(Tour) adapterView.getItemAtPosition(i);
+                // Toast.makeText(PassangerMainActivity.this, "Click: " + item.getStartLocation()+" "+item.getDestinationLocation(), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(PassangerMainActivity.this, ShowTourDetailsActivity.class);
+                intent.putExtra("tour", item);
+
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -222,5 +227,33 @@ public class PassangerMainActivity extends AppCompatActivity {
                 Toast.makeText(PassangerMainActivity.this,"Location: "+locationsList.get(0),Toast.LENGTH_SHORT).show();
             }
         };
+    }
+
+    private void prepareView()
+    {
+        this.listaVoznji = (ListView)findViewById(R.id.listView);
+
+        this.getAllTours();
+
+        if (this.tours == null)
+        {
+            return;
+        }
+
+        this.listAdapter = new CustomListAdapter(PassangerMainActivity.this, this.tours);
+        this.listaVoznji.setAdapter(this.listAdapter);
+    }
+
+    private void getLoggedInUser()
+    {
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        this.user = userLocalStore.getPassenger();
+        Toast.makeText(this, this.user.getUsername(), Toast.LENGTH_LONG).show();
+    }
+
+    private void getAllTours()
+    {
+        ServerRequest serverRequest = new ServerRequest(this);
+        this.tours = serverRequest.getAllTours();
     }
 }

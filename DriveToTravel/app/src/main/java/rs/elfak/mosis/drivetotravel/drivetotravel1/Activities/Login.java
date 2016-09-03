@@ -50,6 +50,9 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
         this.testUserButton = (Button) findViewById(R.id.testUser_button);
         testUserButton.setOnClickListener(this);
 
+        Button testDriverButton = (Button) findViewById(R.id.testDriver_button);
+        testDriverButton.setOnClickListener(this);
+
         //Get language
         LanguageChange.getMyLanguage(this);
     }
@@ -61,66 +64,18 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
         int onClickId = v.getId();
 
-        Intent intent;
+        Intent intent = null;
 
         switch (onClickId)
         {
             case R.id.loginBtn:
 
-                if (this.connectedToInternet() && this.checkFields())
+                if (this.connectedToInternet())// && this.checkFields())
                 {
-                    int responseUserType=-1;
-
                     String username                 = this.usernameET.getText().toString();
                     String password                 = this.passwordET.getText().toString();
-                    ServerRequest serverRequest     = new ServerRequest(this);
-                    JSONObject responseUser         = serverRequest.loginUser(username, password);
-                    UserLocalStore userLocalStore   = new UserLocalStore(this);
 
-
-                    if ((responseUser = serverRequest.loginUser(username, password)) != null)
-                    {
-                        try
-                        {
-                            responseUserType = responseUser.getInt(UserStaticAttributes._userType);
-                        }
-                        catch (JSONException e)
-                        {
-                            responseUserType = -1;
-                            e.printStackTrace();
-                        }
-
-                        if (responseUserType == User.USER_TYPE_DRIVER)
-                        {
-                            Driver loggedInUser =
-                                    Driver.getDriverFromJSONObject(responseUser);
-
-                            userLocalStore.storeUser(loggedInUser);
-
-                            intent = new Intent(this, PassangerMainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                        else if (responseUserType == User.USER_TYPE_PASSENGER)
-                        {
-                            Passenger loggedInUser =
-                                    Passenger.getUserFromJSONObject(responseUser);
-
-                            userLocalStore.storeUser(loggedInUser);
-
-                            intent = new Intent(this, PassangerMainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                        else
-                        {
-                            Toast.makeText(this, "False credentials", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                    else
-                    {
-                        Toast.makeText(this, "False credentials", Toast.LENGTH_LONG).show();
-                    }
+                    this.loginUser(username, password);
                 }
 
                 break;
@@ -135,25 +90,25 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 break;
 
             case R.id.testUser_button:
-                intent = new Intent(this, PassangerMainActivity.class);
 
-                Passenger loggedInPassanger = new Passenger();
+                if (this.connectedToInternet() && this.checkFields())
+                {
+                    String username = "acko";
+                    String password = "password";
 
-                loggedInPassanger.setUsername("Tester");
-                loggedInPassanger.setSurname("Beta");
-                loggedInPassanger.setPhoneNumber("12345");
-                loggedInPassanger.seteMail("beta@test");
-                loggedInPassanger.setName("BeT");
-                loggedInPassanger.setId("102020130");
-                loggedInPassanger.setSurname("SeS");
-                loggedInPassanger.setPassword("XR35");
+                    this.loginUser(username, password);
+                }
 
-                UserLocalStore userLocalStore = new UserLocalStore(this);
-                userLocalStore.storeUser(loggedInPassanger);
-                userLocalStore.setUserLoggedIn(true);
+                break;
 
-                startActivity(intent);
-                finish();
+            case R.id.testDriver_button:
+                if (this.connectedToInternet() && this.checkFields())
+                {
+                    String username = "leorado";
+                    String password = "password";
+
+                    this.loginUser(username, password);
+                }
                 break;
         }
     }
@@ -216,5 +171,76 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
         }
 
         return retValue;
+    }
+
+    private void loginUser(String username, String password)
+    {
+        ServerRequest serverRequest     = new ServerRequest(this);
+        JSONObject responseUser;//         = serverRequest.loginUser(username, password);
+        UserLocalStore userLocalStore   = new UserLocalStore(this);
+
+        Passenger myPassenger = new Passenger();
+        myPassenger.setUsername("Tester username");
+        myPassenger.setSurname("Test surname");
+        myPassenger.setName("Test name");
+        myPassenger.seteMail("test@test");
+        myPassenger.setId(123456);
+        myPassenger.setId(123456);
+        myPassenger.setPhoneNumber("123-456");
+
+        userLocalStore.storeUser(myPassenger);
+        userLocalStore.setUserLoggedIn(true);
+
+        Intent intent1;
+        intent1 = new Intent(this, PassangerMainActivity.class);
+        startActivity(intent1);
+        finish();
+
+        if ((responseUser = serverRequest.loginUser(username, password)) != null)
+        {
+            int responseUserType;
+            try
+            {
+                JSONObject meta_data = responseUser.getJSONObject("meta_data");
+                responseUserType = meta_data.getInt(UserStaticAttributes._userType);
+            }
+            catch (JSONException e)
+            {
+                responseUserType = -1;
+                e.printStackTrace();
+            }
+
+            Intent intent;
+            if (responseUserType == User.USER_TYPE_DRIVER)
+            {
+                Driver loggedInUser =
+                        Driver.getDriverFromJSONObject(responseUser);
+
+                userLocalStore.storeUser(loggedInUser);
+
+                intent = new Intent(this, DriversMainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else if (responseUserType == User.USER_TYPE_PASSENGER)
+            {
+                Passenger loggedInUser =
+                        Passenger.getUserFromJSONObject(responseUser);
+
+                userLocalStore.storeUser(loggedInUser);
+
+                intent = new Intent(this, PassangerMainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(this, "False credentials", Toast.LENGTH_LONG).show();
+            }
+        }
+        else
+        {
+            Toast.makeText(this, "False credentials", Toast.LENGTH_LONG).show();
+        }
     }
 }
