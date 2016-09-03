@@ -21,6 +21,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchDriver
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchTourDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FriendWithAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.LoginUserAsyncTask;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.ServerRequestAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.StoreTourDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.StoreUserDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
@@ -556,6 +557,43 @@ public class ServerRequest {
         catch (ExecutionException e)
         {
             String successMessage = "ServerRequest::getDriverTours : ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+    }
+
+    public Tour[] getAllTours()
+    {
+        String postValue = "";
+        String route = ServerStaticAttributes.FETCH_ALL_TOURS;
+
+        String[] taskDataArray = { postValue, route };
+
+        ServerRequestAsyncTask task = new ServerRequestAsyncTask(this.context, null);
+
+        try
+        {
+            task.execute(taskDataArray).get();
+            String response = task.getResponseData();
+
+            if (response != null)
+            {
+                return Tour.getArrayFromList(
+                        Tour.getToursFromJsonArray(response)
+                );
+            }
+
+            return null;
+        }
+        catch (InterruptedException e)
+        {
+            String successMessage = "ServerRequest::getAllTours : InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+        catch (ExecutionException e)
+        {
+            String successMessage = "ServerRequest::getAllTours : ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             return null;
         }
