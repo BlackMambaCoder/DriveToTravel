@@ -93,8 +93,8 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
 
                         if (driver != null && this.storeUserToLocalStore(driver))
                         {
-                            //this.storeUserToLocalStore(driver);
-                            intent = new Intent(this, PassangerMainActivity.class);
+                            this.storeUserToLocalStore(driver);
+                            intent = new Intent(this, DriversMainActivity.class);
                             startActivity(intent);
                             finish();
                         }
@@ -112,6 +112,7 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
 
                         if (passenger != null && this.storeUserToLocalStore(passenger))
                         {
+                            this.storeUserToLocalStore(passenger);
                             intent = new Intent(this, PassangerMainActivity.class);
                             startActivity(intent);
                             finish();

@@ -1,5 +1,10 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Other;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,10 +21,13 @@ public class MyConverter
     public static Date _String2Date(String dateArg)
     {
         /**
-         * dateArg = "Sat Apr 16 11:51:00 CEST 2016"
+         * dateArg = "2-8-2016 17:35"
+         * dateArg = "Fri Sep 02 21:00:56 CEST 2016"
+         *
+         * format = "E M d H:m:s z y"
          */
         SimpleDateFormat simpleDateFormat =
-                new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH);
+                new SimpleDateFormat("d-M-y H:m", Locale.ENGLISH);
 
         Date retValue = new Date();
 
@@ -29,10 +37,54 @@ public class MyConverter
         }
         catch (ParseException e)
         {
-            e.printStackTrace();
+            Log.e("Error _String2Date: ", e.getMessage());
+            retValue = null;
         }
 
         return retValue;
+    }
+
+    public static Date _ComplexString2Date(String dateArg)
+    {
+        /**
+         * dateArg = "2-8-2016 17:35"
+         * dateArg = "Fri Sep 02 21:00:56 CEST 2016"
+         *
+         * format = "E M d H:m:s z y"
+         */
+        SimpleDateFormat simpleDateFormat =
+                new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH);
+
+        Date retValue = new Date();
+
+        try
+        {
+            retValue = simpleDateFormat.parse(dateArg);
+        }
+        catch (ParseException e)
+        {
+            Log.e("Error _String2Date: ", e.getMessage());
+            retValue = null;
+        }
+
+        return retValue;
+    }
+
+    public static String _Date2String(Date dateArg)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(dateArg.getDay());
+        stringBuilder.append("-");
+        stringBuilder.append(dateArg.getMonth());
+        stringBuilder.append("-");
+        stringBuilder.append(dateArg.getYear());
+        stringBuilder.append(" ");
+        stringBuilder.append(dateArg.getHours());
+        stringBuilder.append(":");
+        stringBuilder.append(dateArg.getMinutes());
+
+        return stringBuilder.toString();
     }
 
     public static String _StringList2String (List<String> stringListArg)
@@ -62,5 +114,28 @@ public class MyConverter
         }
 
         return retValue;
+    }
+
+    public static List<Double> JSONString2DoubleValueList(String stringArg)
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(stringArg);
+            List<Double> retValue = new ArrayList<>();
+
+            double tourRank = jsonObject.getDouble("tourrank");
+            double driverRank = jsonObject.getDouble("driverrank");
+
+            retValue.add(tourRank);
+            retValue.add(driverRank);
+
+            return retValue;
+        }
+        catch (JSONException e)
+        {
+            String successMessage = "MyConverter::JSONString2DoubleValueList: JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
     }
 }

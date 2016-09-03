@@ -108,11 +108,11 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
 
         //mMap.setMyLocationEnabled(true);
 
-        String accUsername = userLocalStore.getPassenger().getUsername();
-        String firstName = userLocalStore.getPassenger().getName();
-        String lastName = userLocalStore.getPassenger().getSurname();
+        String accUsername = "Tester";
+        String firstName = "Test";
+        String lastName = "User";
 
-        String phone = userLocalStore.getPassenger().getPhoneNumber();
+        String phone = "123-456-78-90";
         String userType = "Passenger";
 
         String data = firstName+","+lastName+","+phone+","+userType;
