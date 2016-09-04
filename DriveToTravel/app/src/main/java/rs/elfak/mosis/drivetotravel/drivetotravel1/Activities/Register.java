@@ -89,7 +89,6 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
                     if (rBtnDriverUser.isChecked())
                     {
                         Driver driver = new Driver(user);
-                        driver.setProfileImage(this.profileBitmap);
 
                         driver = serverRequest.storeUser(driver);
 
@@ -175,6 +174,8 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
         editText = (EditText)findViewById(R.id.etRegPassword);
         textFromLayout = editText.getText().toString();
         user.setPassword(textFromLayout);
+
+        user.setProfileImage(this.profileBitmap);
 
         return user;
     }

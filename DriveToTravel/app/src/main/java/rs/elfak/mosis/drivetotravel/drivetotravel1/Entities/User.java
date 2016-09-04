@@ -83,7 +83,7 @@ public abstract class User
 
     public String getProfileImageString()
     {
-        return this.bitmapToString(this.profileImage);
+        return User.bitmapToString(this.profileImage);
     }
 
     // === SETTER === //
@@ -130,7 +130,7 @@ public abstract class User
 
     public boolean setProfileImage (String bitmapStringParam)
     {
-        return (this.profileImage = this.stringToBitmap(bitmapStringParam)) != null;
+        return (this.profileImage = User.stringToBitmap(bitmapStringParam)) != null;
     }
 
     public abstract JSONObject toJSONObject () throws JSONException;

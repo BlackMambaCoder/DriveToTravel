@@ -28,6 +28,8 @@ public class Passenger extends User
         this.eMail                      = user.eMail;
         this.phoneNumber                = user.phoneNumber;
         this.userType                   = User.USER_TYPE_PASSENGER;
+        this.friends                    = user.friends;
+        this.profileImage               = user.profileImage;
     }
 
     @Override
@@ -47,6 +49,7 @@ public class Passenger extends User
         retValue.put(UserStaticAttributes._phoneNumber, this.phoneNumber);
         retValue.put(UserStaticAttributes._eMail, this.eMail);
         retValue.put(UserStaticAttributes._userType, User.USER_TYPE_PASSENGER);
+        retValue.put(UserStaticAttributes.PROFILE_IMAGE, this.getProfileImageString());
 
         // friends
 
