@@ -26,7 +26,6 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.CustomListAdapter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.Location;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.GPSTracker;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.LocationUpdateService;
 

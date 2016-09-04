@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,13 +22,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTClientAsyncTask;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTClientThread;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTServerAsyncTask;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTServerThread;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 
