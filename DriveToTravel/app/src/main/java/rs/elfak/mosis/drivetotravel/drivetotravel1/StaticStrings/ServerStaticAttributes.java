@@ -21,6 +21,9 @@ public class ServerStaticAttributes
     public static String _LOGIN_URL = "/user/login";
     public static String _REGISTER_URL = "/user/register";
     public static String UPLOAD_USER_IMAGE = "/user/upload_image";
+    public static String USER_FRIEND_WITH = "/user/friend";
+    public static String USER_ADD_FRIEND = "/user/add_friend";
+
     public static String CREATE_TOUR_URL = "/tour/create";
     public static String FETCH_DRIVERS_TOURS = "/tour/drivers";
     public static String FETCH_ALL_TOURS = "/tour/all";

@@ -18,7 +18,6 @@ import java.lang.reflect.Method;
 import java.util.UUID;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 
 /**
  * Created by Alexa on 8/25/2016.

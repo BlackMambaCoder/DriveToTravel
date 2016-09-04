@@ -6,10 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 

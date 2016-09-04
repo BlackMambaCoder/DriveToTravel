@@ -3,8 +3,6 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Handlers;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 /**
  * Created by LEO on 15.8.2016..

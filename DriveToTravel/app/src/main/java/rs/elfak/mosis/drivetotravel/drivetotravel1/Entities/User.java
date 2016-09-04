@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -160,7 +159,8 @@ public abstract class User
 
         if (
                 this.friends.contains(usernameParam) &&
-                serverRequest.removeFriend(usernameParam) != null
+//                serverRequest.removeFriend(usernameParam) != null
+                serverRequest.addFriend(usernameParam) != null
             )
         {
             this.friends.remove(usernameParam);

@@ -1,7 +1,5 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Threads;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -11,7 +9,6 @@ import org.json.JSONObject;
 import java.util.concurrent.ExecutionException;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Activities.PassangerMainActivity;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Handlers.ReceiveLocationHandler;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.LocListener;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.SendDeviceLocationDataAsyncTask;
 
