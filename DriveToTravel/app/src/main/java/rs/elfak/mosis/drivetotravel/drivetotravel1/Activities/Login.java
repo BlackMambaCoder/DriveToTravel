@@ -90,13 +90,18 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
             case R.id.testUser_button:
 
+                //TODO: Ne zaboravi da otkomentarises ove linije ->
+
+                /*
                 if (this.connectedToInternet() && this.checkFields())
                 {
                     String username = "acko";
                     String password = "password";
 
                     this.loginUser(username, password);
-                }
+                }*/
+
+                this.loginTestUser(User.USER_TYPE_PASSENGER);
 
                 break;
 
@@ -223,6 +228,42 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
         else
         {
             Toast.makeText(this, "False credentials", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void loginTestUser(int userType)
+    {
+        if(userType == User.USER_TYPE_DRIVER)
+        {
+            Driver myDriver = new Driver();
+
+            myDriver.setUsername("Tester driver");
+            myDriver.setName("Beta");
+            myDriver.setSurname("Test");
+            myDriver.seteMail("beta@test.com");
+            myDriver.setPhoneNumber("000/000-00-00");
+            myDriver.setCarModel("Renault Clio");
+            myDriver.setId(1);
+
+            Intent intent = new Intent(this, DriversMainActivity.class);
+            startActivity(intent);
+
+        }
+        //Test passanger
+        else
+        {
+            Passenger myPassanger = new Passenger();
+            myPassanger.setUsername("Tester passanger");
+            myPassanger.setName("Beta");
+            myPassanger.setSurname("Test");
+            myPassanger.setPassword("Test");
+            myPassanger.setId(1);
+            myPassanger.setPhoneNumber("000/000-00-00");
+            myPassanger.seteMail("beta@test.com");
+
+
+            Intent intent = new Intent(this, PassangerMainActivity.class);
+            startActivity(intent);
         }
     }
 }
