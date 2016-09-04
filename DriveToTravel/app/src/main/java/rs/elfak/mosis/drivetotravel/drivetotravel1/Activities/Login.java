@@ -93,7 +93,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 //TODO: Ne zaboravi da otkomentarises ove linije ->
 
                 /*
-                if (this.connectedToInternet() && this.checkFields())
+                if (this.connectedToInternet())// && this.checkFields())
                 {
                     String username = "acko";
                     String password = "password";
@@ -106,10 +106,10 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 break;
 
             case R.id.testDriver_button:
-                if (this.connectedToInternet() && this.checkFields())
+                if (this.connectedToInternet())// && this.checkFields())
                 {
-                    String username = "leorado";
-                    String password = "password";
+                    String username = "leo";
+                    String password = "pass";
 
                     this.loginUser(username, password);
                 }

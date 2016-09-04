@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -84,7 +83,7 @@ public abstract class User
 
     public String getProfileImageString()
     {
-        return this.bitmapToString(this.profileImage);
+        return User.bitmapToString(this.profileImage);
     }
 
     // === SETTER === //
@@ -131,7 +130,7 @@ public abstract class User
 
     public boolean setProfileImage (String bitmapStringParam)
     {
-        return (this.profileImage = this.stringToBitmap(bitmapStringParam)) != null;
+        return (this.profileImage = User.stringToBitmap(bitmapStringParam)) != null;
     }
 
     public abstract JSONObject toJSONObject () throws JSONException;
@@ -160,7 +159,8 @@ public abstract class User
 
         if (
                 this.friends.contains(usernameParam) &&
-                serverRequest.removeFriend(usernameParam) != null
+//                serverRequest.removeFriend(usernameParam) != null
+                serverRequest.addFriend(usernameParam) != null
             )
         {
             this.friends.remove(usernameParam);
