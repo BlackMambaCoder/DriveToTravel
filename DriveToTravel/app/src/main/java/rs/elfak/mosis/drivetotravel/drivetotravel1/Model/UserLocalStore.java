@@ -103,9 +103,9 @@ public class UserLocalStore {
         return this.userLocalSharedPrefferences.getBoolean(UserStaticAttributes._loggedIn, true);
     }
 
-    public String getTypeOfLoggedUser()
+    public int getTypeOfLoggedUser()
     {
-        return this.userLocalSharedPrefferences.getString(UserStaticAttributes._userType,"");
+        return this.userLocalSharedPrefferences.getInt(UserStaticAttributes._userType,-1);
     }
 
     public void clearUserData()
