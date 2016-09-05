@@ -33,6 +33,7 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
 
     private String deviceName,deviceAddress;
 
+    private String aID,bID;
 
     private InputStream mmInStream;
     private OutputStream mmOutStream;
@@ -131,12 +132,14 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
                 try {
 
                     //Send my ID to server side
-                    String myID = userLocalStore.getPassenger().getUsername(); //Get UserName of passanger
-
+                    String myID = userLocalStore.getPassenger().getUsername(); //Get UserName of
+                                                                               //User
                     if(myID.isEmpty())
                     {
                         myID="-1";
                     }
+
+                    aID = myID;
 
                     this.writeMessage(myID);
 
@@ -157,6 +160,11 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
 
 
                         Log.d("[KLIJENT]", "Received msg:  " + receivedMsg);
+
+                        if (receivedMsg.contains("OK,"))
+                        {
+                            bID=receivedMsg;
+                        }
 
                         if (receivedMsg.contains("Finish")) {
                             Log.d("[KLIJENT]", "Disconnecting");

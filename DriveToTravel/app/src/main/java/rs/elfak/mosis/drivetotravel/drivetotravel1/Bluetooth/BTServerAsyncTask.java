@@ -186,9 +186,13 @@ public class BTServerAsyncTask extends AsyncTask<Void,String,String>
 
                             Log.d("[SERVER]","Is friends: "+myID+" and "+receivedMsg);
 
-                            //Slanje podataka klijentu
-                            String sendMsg = "Finish";
+                            //Slanje mojih podataka klijentu
+                            String sendMsg = "OK,"+myID;
 
+                            writeMessage(sendMsg);
+
+                            //Izlaz
+                            sendMsg ="Finish";
                             writeMessage(sendMsg);
 
                             publishProgress("Finish ");
