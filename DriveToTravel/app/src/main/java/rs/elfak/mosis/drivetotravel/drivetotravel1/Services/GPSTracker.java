@@ -85,7 +85,9 @@ public class GPSTracker extends Service implements LocationListener {
 
             //No permission
             if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(mContext, "Please enable location permission", Toast.LENGTH_SHORT).show();
+
+                //ActivityCompat.requestPermissions(this,new String[]{"Location"},0);
+                Toast.makeText(mContext,"Please enable location permission!",Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -122,6 +124,7 @@ public class GPSTracker extends Service implements LocationListener {
                     }
                 }
 
+                Toast.makeText(mContext, "Location update activated", Toast.LENGTH_LONG).show();
                 return true;
             }
 
@@ -183,6 +186,7 @@ public class GPSTracker extends Service implements LocationListener {
                 return;
             }
 
+            Toast.makeText(mContext, "Location update deactivated", Toast.LENGTH_LONG).show();
             locationManager.removeUpdates(GPSTracker.this);
             this.canGetLocation=false;
         }

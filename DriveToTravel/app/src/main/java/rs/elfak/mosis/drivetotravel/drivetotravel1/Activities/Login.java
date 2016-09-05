@@ -124,6 +124,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
         ConnectivityManager connectivityManager =
                 (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        /*
         if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState()
                 == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState()
@@ -132,6 +133,17 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
             retValue = true;
         }
 
+        else
+        {
+            Toast.makeText(this, R.string.connect_to_network, Toast.LENGTH_SHORT).show();
+        }
+        */
+
+        if(connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isAvailable()
+                                                            && connectivityManager.getActiveNetworkInfo().isConnected())
+        {
+            retValue=true;
+        }
         else
         {
             Toast.makeText(this, R.string.connect_to_network, Toast.LENGTH_SHORT).show();

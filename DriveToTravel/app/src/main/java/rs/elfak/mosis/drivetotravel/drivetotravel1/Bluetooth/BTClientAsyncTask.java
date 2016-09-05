@@ -11,12 +11,15 @@ import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import com.google.firebase.auth.api.model.StringList;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 
 /**
@@ -33,6 +36,7 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
 
     private String deviceName,deviceAddress;
 
+    private String aID,bID;
 
     private InputStream mmInStream;
     private OutputStream mmOutStream;
@@ -53,6 +57,7 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
 
     private AlertDialog.Builder builder;
     private UserLocalStore userLocalStore;
+    private Passenger myPassanger;
 
 
     public BTClientAsyncTask(Context context,String deviceName, String deviceAddress) {
@@ -61,6 +66,7 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
 
         builder = new AlertDialog.Builder(context);
         userLocalStore = new UserLocalStore(context);
+        myPassanger = userLocalStore.getPassenger();
 
         this.deviceAddress = deviceAddress;
         this.deviceName = deviceName;
@@ -131,14 +137,16 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
                 try {
 
                     //Send my ID to server side
-                    String myID = userLocalStore.getPassenger().getUsername(); //Get UserName of passanger
-
+                    String myID = userLocalStore.getPassenger().getUsername(); //Get UserName of
+                                                                               //User
                     if(myID.isEmpty())
                     {
                         myID="-1";
                     }
 
-                    this.writeMessage(myID);
+
+
+                    this.writeMessage("HI,"+myID+",FINISH");
 
                     bytesRead = mmInStream.read(buffer);
 
@@ -155,12 +163,31 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
                         receivedMsg = receivedMsg + new String(buffer, 0, bytesRead);
                         sb.append(receivedMsg);
 
-
                         Log.d("[KLIJENT]", "Received msg:  " + receivedMsg);
 
-                        if (receivedMsg.contains("Finish")) {
-                            Log.d("[KLIJENT]", "Disconnecting");
-                            exitMessage="You are now friends";
+                        if (receivedMsg.contains("OK"))
+                        {
+                            String[] received = receivedMsg.split(",");
+                            Log.d("[KLIJENT]","Server ID: "+received[1]);
+                            publishProgress("Checking friendship...");
+
+                            //Check on server
+                            aID = myID;
+                            bID = received[1];
+
+                            if(myPassanger.addFriend(bID))
+                            {
+                                publishProgress("You are now friends!");
+                                Log.d("[KLIJENT]","U are now friends!");
+                            }
+                            else
+                            {
+                                publishProgress("You are already friends!");
+                                Log.d("[KLIJENT]","U are already friends...");
+                            }
+
+                            //End
+
                             finishWork();
                             break;
                         }
@@ -247,6 +274,8 @@ public class BTClientAsyncTask extends AsyncTask<Void,String,String>
 
         try {
             BS.close();
+            mmInStream.close();
+            mmOutStream.close();
         } catch (IOException e) {
             Log.d("[KLIJENT]","Can't disconnect from BT, BS.close");
         }

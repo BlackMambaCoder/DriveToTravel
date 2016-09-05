@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/friendship_search_button"
-        android:title="Search friends"
-        android:icon="@android:drawable/ic_menu_search"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/friendship_add_button"
         android:title="Add friend"
         android:icon="@drawable/ic_person_add_white_24dp"

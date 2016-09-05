@@ -64,6 +64,9 @@ public class Driver extends User
                 user.setId(userParam.getInt(UserStaticAttributes._id));
 //                user.friends = Arrays.asList(userParam.get(UserStaticAttributes.FRIENDS));
 
+                String friends = userParam.getString(UserStaticAttributes.FRIENDS);
+                user.setFriendsFromJSONObjects(friends);
+
                 JSONObject metaData = userParam.getJSONObject("meta_data");
 
                 user.setName(metaData.getString(UserStaticAttributes._name));

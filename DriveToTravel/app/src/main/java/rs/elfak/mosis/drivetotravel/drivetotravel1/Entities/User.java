@@ -3,6 +3,7 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Entities;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
 
 /**
  * Created by LEO on 23.3.2016..
@@ -75,6 +77,18 @@ public abstract class User
     public List<String> getFriends()
     {
         return this.friends;
+    }
+
+    public JSONArray getFriendsAsJSONArray()
+    {
+        JSONArray friendsArray = new JSONArray();
+
+        for (int i = 0; i < this.friends.size(); i++)
+        {
+            friendsArray.put(this.friends.get(i));
+        }
+
+        return friendsArray;
     }
 
     public Bitmap getProfileImage()
@@ -143,7 +157,7 @@ public abstract class User
 
         if (
                 !this.friends.contains(usernameParam) &&
-                serverRequest.addFriend(usernameParam) != null
+                serverRequest.addFriend(usernameParam, this.id) != null
             )
         {
             this.friends.add(usernameParam);
@@ -156,19 +170,60 @@ public abstract class User
     public boolean removeFriend(String usernameParam)
     {
         ServerRequest serverRequest = new ServerRequest();
-        boolean retValue = false;
 
         if (
                 this.friends.contains(usernameParam) &&
-//                serverRequest.removeFriend(usernameParam) != null
-                serverRequest.addFriend(usernameParam) != null
+                serverRequest.removeFriend(usernameParam,this.id) != null
             )
         {
             this.friends.remove(usernameParam);
-            retValue = true;
+            return true;
         }
 
-        return retValue;
+        return false;
+    }
+
+    public void setFriends(String friendString)
+    {
+        try
+        {
+            JSONArray friends = new JSONArray(friendString);
+
+            for (int i = 0; i < friends.length(); i++)
+            {
+                try {
+                    this.friends.add(friends.getString(i));
+                } catch (JSONException e) {
+                    Log.e("Error : setting friends", e.getMessage());
+                }
+            }
+        }
+        catch (JSONException e)
+        {
+            this.friends = null;
+        }
+    }
+
+    public void setFriendsFromJSONObjects(String friendString)
+    {
+        try
+        {
+            JSONArray friends = new JSONArray(friendString);
+
+            for (int i = 0; i < friends.length(); i++)
+            {
+                try {
+                    JSONObject friendObj = friends.getJSONObject(i);
+                    this.friends.add(friendObj.getString(UserStaticAttributes._username));
+                } catch (JSONException e) {
+                    Log.e("Error : setting friends", e.getMessage());
+                }
+            }
+        }
+        catch (JSONException e)
+        {
+            this.friends = null;
+        }
     }
 
     public static String bitmapToString(Bitmap profileBitmap)
