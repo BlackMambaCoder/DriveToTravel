@@ -22,15 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp">
 
-        <ImageView
-            android:layout_width="128dp"
-            android:layout_height="140dp"
-            android:id="@+id/infowindow_acc_image"
-            android:src="@color/colorPrimary"
-            android:layout_marginLeft="5dp"
-            android:layout_below="@+id/infowindow_username"
-            android:layout_alignParentStart="true" />
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
