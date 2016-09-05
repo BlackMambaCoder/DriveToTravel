@@ -14,4 +14,6 @@ public class TourStaticAttributes
     public static final String _RANK                    = "rank";
     public static final String PASSENGER_ID             = "passenger_id";
     public static final String TOUR_ID                  = "tour_id";
+    public static final String DRIVER_USER_NAME         = "driver_user_name";
+    public static final String DRIVER_RANK              = "driver_rank";
 }

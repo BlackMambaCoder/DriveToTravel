@@ -22,8 +22,10 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.LocListener;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.SendDeviceLocationDataAsyncTask;
 
@@ -264,6 +266,7 @@ public class GPSTracker extends Service implements LocationListener {
 
         String locationStr=String.valueOf(latitude)+","+String.valueOf(longitude);
         sendLocationUpdate(locationStr);
+        //sendLocationToServer();
     }
 
     /* WHEN USER DISABLE INTERNET OR GPS */
@@ -323,13 +326,15 @@ public class GPSTracker extends Service implements LocationListener {
 
     private void sendLocationToServer()
     {
-        double[] sendLocData                = this.getDeviceLocation();
+        double[] sendLocData = this.getDeviceLocation();
         SendDeviceLocationDataAsyncTask task
                 = new SendDeviceLocationDataAsyncTask();
         try
         {
             task.execute(this.locationToJSONObject(sendLocData).toString()).get();
             this.responseLocations = task.getJSONUsersLocationArray();
+
+            List<JSONObject> users = User.JSONArrayToJSONObject(this.responseLocations);
         }
         catch (InterruptedException e)
         {

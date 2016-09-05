@@ -32,6 +32,8 @@ public class Tour implements Parcelable
     private int driverId;
     private List<String> passengers;
     private double rank;
+    private String driverUsername;
+    private double driverRank;
 
 
     public Tour ()
@@ -43,6 +45,8 @@ public class Tour implements Parcelable
         this.driverId                   =    -1;
         this.passengers                 =  new ArrayList<>();
         this.rank                       =  -1.0;
+        this.driverUsername             =    "";
+        this.driverRank                 =  -1.0;
     }
 
     public Tour (
@@ -151,6 +155,16 @@ public class Tour implements Parcelable
         return this.rank;
     }
 
+    public String getDriverUsername()
+    {
+        return this.driverUsername;
+    }
+
+    public double getDriverRank()
+    {
+        return this.driverRank;
+    }
+
     // === SETTER === //
     public void setId(int parameter)
     {
@@ -203,6 +217,16 @@ public class Tour implements Parcelable
         }
 
         return null;
+    }
+
+    public void setDriverUsername (String param)
+    {
+        this.driverUsername = param;
+    }
+
+    public void setDriverRank (double param)
+    {
+        this.driverRank = param;
     }
 
     // === STATIC METHODS === //
@@ -265,6 +289,9 @@ public class Tour implements Parcelable
                 retValue.passengers.add(passengers.getString(i));
             }
 
+            retValue.setDriverUsername(metaData.getString(TourStaticAttributes.DRIVER_USER_NAME));
+            retValue.setDriverRank(metaData.getDouble(TourStaticAttributes.DRIVER_RANK));
+
         }
         catch (JSONException e)
         {
@@ -301,6 +328,10 @@ public class Tour implements Parcelable
         this.startDateAndTime = MyConverter._String2Date(data[2]);
         this.driverId = Integer.parseInt(data[3]);
         this.passengers = MyConverter._String2StringList(data[4]);
+        this.rank = Integer.parseInt(data[5]);
+        this.id = Integer.parseInt(data[6]);
+        this.driverUsername = data[7];
+        this.driverRank = Float.parseFloat(data[8]);
     }
 
     @Override
@@ -317,7 +348,17 @@ public class Tour implements Parcelable
            passangerString  = MyConverter._StringList2String(this.passengers);
         }
 
-        String[] data={this.startLocation,this.destinationLocation,this.startDateAndTime.toString(),String.valueOf(this.driverId),passangerString};
+        String[] data={
+                this.startLocation,
+                this.destinationLocation,
+                String.valueOf(this.startDateAndTime),
+                String.valueOf(this.driverId),
+                passangerString,
+                String.valueOf(this.rank),
+                String.valueOf(this.id),
+                this.driverUsername,
+                String.valueOf(this.driverRank)
+        };
 
         dest.writeStringArray(data);
     }

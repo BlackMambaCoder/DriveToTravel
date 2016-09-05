@@ -168,7 +168,19 @@ public class AddTourActivity extends AppCompatActivity implements
         retValue.setStartLocation(startLoc);
         retValue.setDestinationLocation(destLoc);
 
-        Date startDate = MyConverter._String2Date(startDateStr + " " + startTimeStr);
+//        Date startDate = MyConverter._String2Date(startDateStr + " " + startTimeStr);
+
+        String[] dateStr = startDateStr.split("-");
+        String[] timeStr = startTimeStr.split(":");
+
+        Date startDate = new Date(
+                Integer.valueOf(dateStr[2]),
+                Integer.valueOf(dateStr[1]),
+                Integer.valueOf(dateStr[0]),
+                Integer.valueOf(timeStr[0]),
+                Integer.valueOf(timeStr[1])
+        );
+
         if (startDate == null)
         {
             Toast.makeText(this, "Date error", Toast.LENGTH_SHORT).show();

@@ -37,7 +37,8 @@ public class SendDeviceLocationDataAsyncTask extends AsyncTask<String, Void, Voi
         Resources res           = Resources.getSystem();
         String postValue        = params[0];
         String successMessage;
-        String routeUrl         = res.getString(R.string.servers_url) + res.getString(R.string.update_user_location);
+        String routeUrl         = ServerStaticAttributes._SERVER_ROOT_URL +
+                ServerStaticAttributes.UPDATE_USER_LOCATION;
         try
         {
             URL url                 = new URL(routeUrl);
