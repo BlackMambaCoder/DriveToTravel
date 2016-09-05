@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 
 /**
@@ -43,6 +44,14 @@ public class BTServerAsyncTask extends AsyncTask<Void,String,String>
 
     private  AlertDialog.Builder builder;
     private  UserLocalStore userLocalStore;
+    private  Driver myDriver;
+
+    private  String aID,bID = null;
+
+    public String getbID()
+    {
+        return bID;
+    }
 
     public BTServerAsyncTask(Context context, String deviceName)
     {
@@ -61,6 +70,7 @@ public class BTServerAsyncTask extends AsyncTask<Void,String,String>
         progressDialog.setTitle("Friendship request");
 
         userLocalStore = new UserLocalStore(context);
+        myDriver = userLocalStore.getDriver();
 
         try {
             tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME, MY_UUID);
@@ -184,18 +194,40 @@ public class BTServerAsyncTask extends AsyncTask<Void,String,String>
                                 myID="-1";
                             }
 
-                            Log.d("[SERVER]","Is friends: "+myID+" and "+receivedMsg);
-
                             //Slanje mojih podataka klijentu
-                            String sendMsg = "OK,"+myID;
-
+                            String sendMsg = "OK,"+myID+",FINISH";
                             writeMessage(sendMsg);
 
-                            //Izlaz
-                            sendMsg ="Finish";
-                            writeMessage(sendMsg);
+                            String[] received = receivedMsg.split(",");
+                            Log.d("[SERVER]","Klijent ID: "+received[1]);
 
-                            publishProgress("Finish ");
+                            publishProgress("Checking friendship...");
+
+                            //Provera sa serverom
+                            aID = myID;
+                            bID = received[1];
+
+                            boolean ok=false;
+
+                            if(myDriver.addFriend(received[1]))
+                            {
+                                ok=true;
+                                Log.d("[SERVER]","U are now friends!");
+                            }
+                            else
+                            {
+                                ok=false;
+                                Log.d("[SERVER]","U are already friends...");
+                            }
+
+                            if(ok)
+                            {
+                                publishProgress("You are now friends!");
+                            }
+                            else
+                            {
+                                publishProgress("You are already friends!");
+                            }
 
                             //Exit
                             finishWork();

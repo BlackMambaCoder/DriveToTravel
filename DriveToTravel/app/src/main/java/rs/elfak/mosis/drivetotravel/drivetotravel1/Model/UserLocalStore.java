@@ -42,6 +42,7 @@ public class UserLocalStore {
         this.sharedPreferencesEditor.putString  (UserStaticAttributes._carModel,    user.getCarModel());
         this.sharedPreferencesEditor.putInt     (UserStaticAttributes._userType,    User.USER_TYPE_DRIVER);
         this.sharedPreferencesEditor.putString  (UserStaticAttributes.PROFILE_IMAGE,user.getProfileImageString());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes.FRIENDS,      user.getFriendsAsJSONArray().toString());
 
         this.sharedPreferencesEditor.commit();
     }
@@ -57,6 +58,7 @@ public class UserLocalStore {
         this.sharedPreferencesEditor.putString  (UserStaticAttributes._phoneNumber, user.getPhoneNumber());
         this.sharedPreferencesEditor.putInt     (UserStaticAttributes._userType,    User.USER_TYPE_PASSENGER);
         this.sharedPreferencesEditor.putString  (UserStaticAttributes.PROFILE_IMAGE,user.getProfileImageString());
+        this.sharedPreferencesEditor.putString  (UserStaticAttributes.FRIENDS,      user.getFriendsAsJSONArray().toString());
 
         this.sharedPreferencesEditor.commit();
     }
@@ -73,6 +75,7 @@ public class UserLocalStore {
         user.seteMail(this.userLocalSharedPrefferences.getString(UserStaticAttributes._eMail, ""));
         user.setPhoneNumber(this.userLocalSharedPrefferences.getString(UserStaticAttributes._phoneNumber, ""));
         user.setCarModel(this.userLocalSharedPrefferences.getString(UserStaticAttributes._carModel, ""));
+        user.setFriends(this.userLocalSharedPrefferences.getString(UserStaticAttributes.FRIENDS, null));
         String img = this.userLocalSharedPrefferences.getString(UserStaticAttributes.PROFILE_IMAGE, null);
 
         if (img != null)
@@ -94,6 +97,7 @@ public class UserLocalStore {
         user.setPassword(this.userLocalSharedPrefferences.getString(UserStaticAttributes._password, ""));
         user.seteMail(this.userLocalSharedPrefferences.getString(UserStaticAttributes._eMail, ""));
         user.setPhoneNumber(this.userLocalSharedPrefferences.getString(UserStaticAttributes._phoneNumber, ""));
+        user.setFriends(this.userLocalSharedPrefferences.getString(UserStaticAttributes.FRIENDS, null));
         String img = this.userLocalSharedPrefferences.getString(UserStaticAttributes.PROFILE_IMAGE, null);
 
         if (img != null)

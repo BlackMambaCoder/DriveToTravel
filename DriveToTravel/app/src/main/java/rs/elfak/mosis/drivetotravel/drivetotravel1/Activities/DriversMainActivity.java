@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,9 +30,12 @@ public class DriversMainActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_drivers_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        setTitle("Home");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.create_tour_button);
         fab.setOnClickListener(this);
@@ -79,5 +85,29 @@ public class DriversMainActivity extends AppCompatActivity implements View.OnCli
         UserLocalStore userLocalStore = new UserLocalStore(this);
         this.user = userLocalStore.getDriver();
         Toast.makeText(this, this.user.getUsername(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.passanger_main_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.passanger_main_menu_friendship:
+                Intent intent_fr = new Intent(this, friendshipActivity.class);
+                startActivity(intent_fr);
+                break;
+
+            default:
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,9 +1,12 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,6 +30,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.Location;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.GPSTracker;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.LocationUpdateService;
 
 public class PassangerMainActivity extends AppCompatActivity {
@@ -42,6 +46,8 @@ public class PassangerMainActivity extends AppCompatActivity {
 
     public static Handler publicHandler            = null;
     private Passenger user;
+
+    private GPSTracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +92,7 @@ public class PassangerMainActivity extends AppCompatActivity {
 
         this.getLoggedInUser();
         this.prepareView();
+        tracker = new GPSTracker(this,user.getId());
 
         //Klik na item
         listaVoznji.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -138,13 +145,23 @@ public class PassangerMainActivity extends AppCompatActivity {
                     /**
                      *  User id
                      */
-                    this.startLocationUpdateService(-1);
-                    Toast.makeText(this, "Location update activated", Toast.LENGTH_LONG).show();
+                    //No permission
+                    if (ActivityCompat.checkSelfPermission
+                            (this, Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED)
+                    {
+                        ActivityCompat.requestPermissions(this, new String[]{"Location"}, 0);
+                    }
+
+
+                    tracker.initLocationProvider();
                 }
                 else
                 {
                     this.toggleLocationNotification = false;
-                    this.stopLocationUpdateService();
+                    tracker.stopUsingGPS();
                     Toast.makeText(this, "Location update deactivated", Toast.LENGTH_LONG).show();
                 }
 

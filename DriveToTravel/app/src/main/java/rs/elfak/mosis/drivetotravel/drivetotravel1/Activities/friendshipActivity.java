@@ -1,6 +1,7 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -15,6 +16,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,14 +28,16 @@ import java.util.Set;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTClientAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Bluetooth.BTServerAsyncTask;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 
 public class friendshipActivity extends AppCompatActivity {
 
     private BluetoothAdapter BA;
-    private ArrayAdapter listAdapter;
+    private ArrayAdapter<String> listAdapter;
     private ArrayList deviceList,addressList;
     private BroadcastReceiver newDeviceReceiver;
     private ListView lista;
@@ -41,6 +46,10 @@ public class friendshipActivity extends AppCompatActivity {
     UserLocalStore userLocalStore;
 
     private boolean zavrsena_pretraga=false;
+    private  List<String> friends;
+    private Passenger passenger;
+
+    static int removeFriendPos=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +63,33 @@ public class friendshipActivity extends AppCompatActivity {
         lista = (ListView) findViewById(R.id.friendship_bt_list);
 
         userLocalStore = new UserLocalStore(context);
+
+        if(userLocalStore.getTypeOfLoggedUser() == User.USER_TYPE_PASSENGER)
+        {
+            passenger= userLocalStore.getPassenger();
+            friends = passenger.getFriends();
+            listAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,friends);
+        }
+        else
+        {
+            friends =userLocalStore.getDriver().getFriends();
+            listAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,friends);
+        }
+
+        lista.setAdapter(listAdapter);
+
+
+        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                removeFriendPos=position;
+
+                showAlertDialogWithCustomMessage("Friendship","Do you want to remove friend: "+friends.get(position));
+
+                return true;
+            }
+        });
 
         //BT liste
         deviceList = new ArrayList();
@@ -80,24 +116,24 @@ public class friendshipActivity extends AppCompatActivity {
                 //Kada se zavrsi pretraga
                 else if(BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
                 {
-                        Toast.makeText(getApplicationContext(),R.string.bluetooth_search_finish_message,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),R.string.bluetooth_search_finish_message,Toast.LENGTH_SHORT).show();
 
-                        //Add paired devices
-                        pairedDevices = BA.getBondedDevices();
+                    //Add paired devices
+                    pairedDevices = BA.getBondedDevices();
 
-                        for(BluetoothDevice bt : pairedDevices) {
+                    for(BluetoothDevice bt : pairedDevices) {
                         deviceList.add(bt.getName());
                         addressList.add(bt.getAddress());
-                        }
+                    }
 
-                        if(deviceList.size()>0) {
-                            //Prikaz vidljivih uredjaja
-                            ShowAlertDialogWithListview(getString(R.string.bluetooth_nearby_title), deviceList);
-                        }
-                        else {
-                            Toast.makeText(context,getString(R.string.bluetooth_no_devices),Toast.LENGTH_SHORT).show();
-                        }
-                        zavrsena_pretraga=true;
+                    if(deviceList.size()>0) {
+                        //Prikaz vidljivih uredjaja
+                        ShowAlertDialogWithListview(getString(R.string.bluetooth_nearby_title), deviceList);
+                    }
+                    else {
+                        Toast.makeText(context,getString(R.string.bluetooth_no_devices),Toast.LENGTH_SHORT).show();
+                    }
+                    zavrsena_pretraga=true;
                 }
 
                 //Kada je pretraga zapoceta
@@ -135,11 +171,6 @@ public class friendshipActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
-            case R.id.friendship_search_button:
-                //Search bez interneta ;)
-                break;
-
-
             case R.id.friendship_add_button:
                 //Dodavanje prijatelja preko bluetooth-a
 
@@ -174,14 +205,44 @@ public class friendshipActivity extends AppCompatActivity {
     public void showAlertDialogWithCustomMessage(String title,String message)
     {
         //Build dialog
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle(title);
         dialogBuilder.setMessage(message);
 
+        dialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                //friendshipActivity.this.removeFriendFromList();
+
+                ((friendshipActivity)context).removeFriendFromList();
+
+                /*
+                friends.remove(removeFriendPos);
+
+                listAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,android.R.id.text1,friends);
+                lista.setAdapter(listAdapter);
+                */
+
+                dialog.dismiss();
+            }
+        });
+
+        dialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+            }
+        });
+
         //Create alert dialog object via builder
         AlertDialog alertDialogObject = dialogBuilder.create();
+
         //Show the dialog
         alertDialogObject.show();
+
     }
 
     public void ShowAlertDialogWithListview(String title, ArrayList<String> data)
@@ -259,6 +320,20 @@ public class friendshipActivity extends AppCompatActivity {
     }
 
 
+    private void removeFriendFromList()
+    {
+        UserLocalStore ls = new UserLocalStore(this);
+        Passenger mp = ls.getPassenger();
+
+        mp.removeFriend(friends.get(removeFriendPos));
+
+        friends.remove(removeFriendPos);
+        listAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,android.R.id.text1,friends);
+        lista.setAdapter(listAdapter);
+
+        //Brisanje iz local stora!
+        ls.storeUser(mp);
+    }
 
 }
 

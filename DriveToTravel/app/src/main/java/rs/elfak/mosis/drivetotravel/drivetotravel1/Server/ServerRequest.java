@@ -9,6 +9,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -19,6 +27,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.MyConverter;
 //import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.AddFriendAsyncTask;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchDriversToursAsyncTask;
 //import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FriendWithAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.LoginUserAsyncTask;
@@ -43,6 +52,7 @@ public class ServerRequest {
     private UserLocalStore userLocalStore;
     private Driver classDriver;
     private Context context;
+    public String friendsArray;
 
     public ServerRequest() {
         this.context = null;
@@ -175,7 +185,7 @@ public class ServerRequest {
         }
     }
 
-    public String addFriend(String userFriendParam) {
+    public String addFriend(String userFriendParam, int userId) {
         JSONObject userFriend = new JSONObject();
         String successMessage;
 
@@ -183,28 +193,33 @@ public class ServerRequest {
 
         try {
             userFriend.put("username", userFriendParam);
+            userFriend.put("userid", userId);
 
             String route = ServerStaticAttributes.USER_ADD_FRIEND;
             String requestData = userFriend.toString();
             String[] requestDataArray = { route , requestData };
 
-            ServerRequestAsyncTask task = new ServerRequestAsyncTask(this.context, null);
-            task.execute(requestDataArray).get();
+//            ServerRequestAsyncTask task = new ServerRequestAsyncTask(this.context, null);
+//            task.execute(requestDataArray).get();
 
-            return task.getResponseData();
+
+            return this.addFriendServerCommunication(requestDataArray);
+//            return task.getResponseData();
 //            task.execute(userFriend.toString()).get();
 //            if (task.getResponse()) {
 //                retValue = userFriendParam;
 //            } else {
 //                retValue = null;
 //            }
-        } catch (InterruptedException e) {
-            successMessage = "ServerRequestAddFriend: InterruptedException - " + e.getMessage();
-            Log.e("*****BREAK_POINT*****", successMessage);
-        } catch (ExecutionException e) {
-            successMessage = "ServerRequestAddFriend: ExecutionException - " + e.getMessage();
-            Log.e("*****BREAK_POINT*****", successMessage);
-        } catch (JSONException e) {
+        }
+//        catch (InterruptedException e) {
+//            successMessage = "ServerRequestAddFriend: InterruptedException - " + e.getMessage();
+//            Log.e("*****BREAK_POINT*****", successMessage);
+//        } catch (ExecutionException e) {
+//            successMessage = "ServerRequestAddFriend: ExecutionException - " + e.getMessage();
+//            Log.e("*****BREAK_POINT*****", successMessage);
+//        }
+        catch (JSONException e) {
             successMessage = "ServerRequestAddFriend: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
         }
@@ -212,40 +227,39 @@ public class ServerRequest {
         return null;
     }
 
-//    public String removeFriend(String userFriendParam) {
-//        JSONObject userFriend = new JSONObject();
-//        String successMessage;
-//        String retValue;
-//
+    public String removeFriend(String userFriendParam, int userId) {
+        JSONObject userFriend = new JSONObject();
+        String successMessage;
+
 //        AddFriendAsyncTask task = new AddFriendAsyncTask();
-//
-//        try {
-//            userFriend.put("username", userFriendParam);
-//            task.execute(userFriend.toString()).get();
-//            if (task.getResponse()) {
-//                retValue = userFriendParam;
-//            } else {
-//                retValue = null;
-//            }
-//        } catch (InterruptedException e) {
-//            successMessage = "ServerRequestRemoveFriend: InterruptedException - " + e.getMessage();
-//            Log.e("*****BREAK_POINT*****", successMessage);
-//            e.printStackTrace();
-//            retValue = null;
-//        } catch (ExecutionException e) {
-//            successMessage = "ServerRequestRemoveFriend: ExecutionException - " + e.getMessage();
-//            Log.e("*****BREAK_POINT*****", successMessage);
-//            e.printStackTrace();
-//            retValue = null;
-//        } catch (JSONException e) {
-//            successMessage = "ServerRequestRemoveFriend: JSONException - " + e.getMessage();
-//            Log.e("*****BREAK_POINT*****", successMessage);
-//            e.printStackTrace();
-//            retValue = null;
-//        }
-//
-//        return retValue;
-//    }
+
+        try {
+            userFriend.put("username", userFriendParam);
+            userFriend.put("userid", userId);
+
+            String route = ServerStaticAttributes.USER_REMOVE_FRIEND;
+            String requestData = userFriend.toString();
+            String[] requestDataArray = { route , requestData };
+
+            ServerRequestAsyncTask task = new ServerRequestAsyncTask(this.context, null);
+            task.execute(requestDataArray).get();
+
+            return task.getResponseData();
+        }
+        catch (InterruptedException e) {
+            successMessage = "ServerRequest::removeFriend : InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+        } catch (ExecutionException e) {
+            successMessage = "ServerRequest::removeFriend : ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+        }
+        catch (JSONException e) {
+            successMessage = "ServerRequest::removeFriend : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+        }
+
+        return null;
+    }
 
     public List<Double> updateTourRank(double rankParam, int tourid) {
         String successMessage;
@@ -620,4 +634,73 @@ public class ServerRequest {
         }
     }
 
+    private String addFriendServerCommunication(String...params)
+    {
+        String route = params[0];
+        String postValue = params[1];
+
+        String routeUrl = ServerStaticAttributes._SERVER_ROOT_URL
+                + route;
+
+        try
+        {
+            URL url = new URL(routeUrl);
+
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+            httpURLConnection.setReadTimeout(ServerStaticAttributes._readTimeOut);
+            httpURLConnection.setConnectTimeout(ServerStaticAttributes._connectTimeOut);
+            httpURLConnection.setRequestMethod(ServerStaticAttributes._requestMethod);
+            httpURLConnection.setDoInput(true);
+            httpURLConnection.setDoOutput(true);
+
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);//, "UTF-8");
+
+            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+
+            bufferedWriter.write(postValue);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+
+            outputStream.close();
+
+            int responseCode = httpURLConnection.getResponseCode();
+
+            if (responseCode == HttpURLConnection.HTTP_OK)
+            {
+                this.friendsArray = StringManipulator.inputStreamToString(httpURLConnection.getInputStream());
+                return this.friendsArray;
+            }
+
+            else
+            {
+                throw new Exception("Dismissed connection: " + responseCode);
+            }
+        }
+        catch (ProtocolException e)
+        {
+            String successMessage = "ServerRequestAsyncTask: ProtocolException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+        catch (MalformedURLException e)
+        {
+            String successMessage = "ServerRequestAsyncTask: MalformedURLException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+        catch (IOException e)
+        {
+            String successMessage = "ServerRequestAsyncTask: IOException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+        catch (Exception e)
+        {
+            String successMessage = "ServerRequestAsyncTask: Exception - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+    }
 }
