@@ -178,7 +178,6 @@ public class ServerRequest {
     public String addFriend(String userFriendParam) {
         JSONObject userFriend = new JSONObject();
         String successMessage;
-        String retValue;
 
 //        AddFriendAsyncTask task = new AddFriendAsyncTask();
 
@@ -202,18 +201,12 @@ public class ServerRequest {
         } catch (InterruptedException e) {
             successMessage = "ServerRequestAddFriend: InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
         } catch (ExecutionException e) {
             successMessage = "ServerRequestAddFriend: ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
         } catch (JSONException e) {
             successMessage = "ServerRequestAddFriend: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
         }
 
         return null;

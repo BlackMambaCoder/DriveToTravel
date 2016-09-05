@@ -175,6 +175,10 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
         textFromLayout = editText.getText().toString();
         user.setPassword(textFromLayout);
 
+        editText = (EditText)findViewById(R.id.etRegPhoneNumber);
+        textFromLayout = editText.getText().toString();
+        user.setPhoneNumber(textFromLayout);
+
         user.setProfileImage(this.profileBitmap);
 
         return user;
@@ -251,6 +255,18 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
             }
 
             toastString += R.string.enter_password_message;
+            retValue = false;
+        }
+
+        editText = (EditText)findViewById(R.id.etRegPhoneNumber);
+        if (editText.getText().toString().equals(""))
+        {
+            if (!toastString.equals(""))
+            {
+                toastString += "\n";
+            }
+
+            toastString += "Enter phone number";
             retValue = false;
         }
 
