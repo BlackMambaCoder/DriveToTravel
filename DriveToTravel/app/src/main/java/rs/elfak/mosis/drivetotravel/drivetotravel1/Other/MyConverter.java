@@ -96,7 +96,7 @@ public class MyConverter
 
         if (stringBuilder.length() > 0)
         {
-            stringBuilder.deleteCharAt(stringBuilder.length());
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
 
         return stringBuilder.toString();
