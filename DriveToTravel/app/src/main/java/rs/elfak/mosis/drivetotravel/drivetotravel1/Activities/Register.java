@@ -297,7 +297,7 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             profileBitmap = (Bitmap) extras.get("data");
-
+            profileBitmap = resizeProfilePicutre(profileBitmap,128,140);
             profilePictureView.setImageBitmap(profileBitmap);
         }
     }
@@ -308,5 +308,10 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
         {
             Toast.makeText(this, "Profile could not been uploaded", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private Bitmap resizeProfilePicutre(Bitmap image,int width, int height){
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(image, width, height, false);
+        return resizedBitmap;
     }
 }
