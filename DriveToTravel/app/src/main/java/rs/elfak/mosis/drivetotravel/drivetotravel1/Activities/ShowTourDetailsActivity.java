@@ -77,6 +77,7 @@ public class ShowTourDetailsActivity extends AppCompatActivity implements View.O
 
         this.userLocalStore = new UserLocalStore(this);
         this.loggedInPassenger = this.userLocalStore.getPassenger();
+        this.tour = this.userLocalStore.getTour();
     }
 
     @Override
