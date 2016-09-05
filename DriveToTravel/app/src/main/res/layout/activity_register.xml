@@ -69,7 +69,21 @@
         android:layout_alignParentStart="true"
         android:layout_marginLeft="5dp" />
 
-    <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone number"
+                android:id="@+id/tvRegPhoneNumber"
+                android:layout_gravity="center_horizontal|left"
+                android:layout_marginLeft="5dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/etRegPhoneNumber"
+                android:layout_marginLeft="5dp" />
+
+            <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/password"
