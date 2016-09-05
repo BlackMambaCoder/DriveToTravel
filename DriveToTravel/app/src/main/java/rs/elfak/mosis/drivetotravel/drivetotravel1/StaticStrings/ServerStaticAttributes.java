@@ -5,11 +5,6 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings;
  */
 public class ServerStaticAttributes
 {
-    public static String _serverAddress = "http://192.168.0.107";
-    public static String _serverPath = "ProjectsPHP/DriveToTravel/mongoDB/";
-    public static String _CREATE_TOUR_SCRIPT = "createTour.php";
-
-
     public static int _readTimeOut = 10000;
     public static int _connectTimeOut = 15000;
     public static String _requestMethod = "POST";
@@ -17,12 +12,13 @@ public class ServerStaticAttributes
     public static int USER_NAME_ERROR = 125;
     public static int PASSWORD_ERROR = 126;
 
-    public static String _SERVER_ROOT_URL = "http://192.168.0.106";
+    public static String _SERVER_ROOT_URL = "http://192.168.0.105";
     public static String _LOGIN_URL = "/user/login";
     public static String _REGISTER_URL = "/user/register";
     public static String UPLOAD_USER_IMAGE = "/user/upload_image";
     public static String USER_FRIEND_WITH = "/user/friend";
     public static String USER_ADD_FRIEND = "/user/add_friend";
+    public static String UPDATE_USER_LOCATION = "user/update_location";
 
     public static String CREATE_TOUR_URL = "/tour/create";
     public static String FETCH_DRIVERS_TOURS = "/tour/drivers";

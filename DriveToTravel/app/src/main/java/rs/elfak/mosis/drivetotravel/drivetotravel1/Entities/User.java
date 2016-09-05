@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -191,6 +192,28 @@ public abstract class User
         catch(Exception e)
         {
             e.getMessage();
+            return null;
+        }
+    }
+
+    public static List<JSONObject> JSONArrayToJSONObject(String JSONArrayString)
+    {
+        try
+        {
+            List<JSONObject> retValue = new ArrayList<>();
+
+            JSONArray jsonArray = new JSONArray(JSONArrayString);
+
+            for(int i = 0; i < jsonArray.length(); i++)
+            {
+                retValue.add(jsonArray.getJSONObject(i));
+            }
+
+            return retValue;
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
             return null;
         }
     }

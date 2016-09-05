@@ -32,6 +32,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.CustomInfoWindowAdapter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
@@ -48,6 +50,7 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
     private boolean lockTaxiPosition = false;
     private String uid;
     private UserLocalStore userLocalStore;
+    private Passenger userPassanger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
 
 
         userLocalStore = new UserLocalStore(this);
+        userPassanger = userLocalStore.getPassenger();
 
         mGPS = new GPSTracker(this, userLocalStore.getPassenger().getId());
 
@@ -119,16 +123,26 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
         {
             mMap.setMyLocationEnabled(true);
 
-            String accUsername = "AlexZed";
-            String firstName = "Aleksandar";
-            String lastName = "Zdravkovic";
-            String phone = "069/575-46-86";
-            String userType = "Passenger";
+            String accUsername = userPassanger.getUsername();
+            String firstName = userPassanger.getName();
+            String lastName = userPassanger.getSurname();
+            String phone = userPassanger.getPhoneNumber();
+            String userType;
+            Bitmap profile_img = userPassanger.getProfileImage();
+
+            if(userPassanger.getUserType() == User.USER_TYPE_PASSENGER) {
+                userType = "Passenger";
+            }
+            else
+            {
+                userType = "Driver";
+            }
 
             String data = firstName+" "+lastName+","+phone+","+userType;
 
             myPositionMarker = mMap.addMarker(new MarkerOptions().position(myLocation).title(accUsername).snippet(data));
-            myPositionMarker.setIcon(BitmapDescriptorFactory.fromBitmap(resizeMapIcon(R.drawable.profile,128,140)));
+            myPositionMarker.setIcon(BitmapDescriptorFactory.fromBitmap(resizeMapIcon(profile_img,140,162)));
+
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation,15));
         }
 

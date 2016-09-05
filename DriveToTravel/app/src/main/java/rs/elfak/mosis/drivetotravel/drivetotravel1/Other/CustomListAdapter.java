@@ -58,7 +58,8 @@ public class CustomListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent)
+    {
         Holder holder=new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.passanger_driving_custom_list, null);
@@ -70,12 +71,16 @@ public class CustomListAdapter extends BaseAdapter {
         SimpleDateFormat dateFormat = new SimpleDateFormat("d-M-yyyy", Locale.ENGLISH);
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm",Locale.ENGLISH);
 
-        String Date = dateFormat.format(tour_list[position].getStartDate().getTime());
-        String Time = timeFormat.format(tour_list[position].getStartDate().getTime());
 
-        holder.route.setText(tour_list[position].getStartLocation()+" - "+tour_list[position].getDestinationLocation());
-        holder.date.setText(Date);
-        holder.time.setText(Time);
+        if(tour_list[position] !=null) {
+            String Date = dateFormat.format(tour_list[position].getStartDate().getTime());
+            String Time = timeFormat.format(tour_list[position].getStartDate().getTime());
+
+            holder.route.setText(tour_list[position].getStartLocation() + " - " + tour_list[position].getDestinationLocation());
+            holder.date.setText(Date);
+            holder.time.setText(Time);
+        }
+
 
         return rowView;
     }

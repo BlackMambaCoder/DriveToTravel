@@ -52,23 +52,6 @@
         android:layout_alignParentStart="true"
         android:layout_marginLeft="5dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/username"
-        android:id="@+id/tvRegUsername"
-        android:layout_below="@+id/etRegSurname"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="5dp" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/etRegUsername"
-        android:layout_below="@+id/tvRegUsername"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="5dp" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,7 +64,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/etRegPhoneNumber"
+                android:layout_marginLeft="5dp"
+                android:inputType="phone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/username"
+                android:id="@+id/tvRegUsername"
+                android:layout_below="@+id/etRegSurname"
+                android:layout_alignParentStart="true"
                 android:layout_marginLeft="5dp" />
+
+            <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etRegUsername"
+        android:layout_below="@+id/tvRegUsername"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
 
             <TextView
         android:layout_width="wrap_content"
@@ -98,7 +99,8 @@
         android:id="@+id/etRegPassword"
         android:layout_below="@+id/tvRegPassword"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="5dp" />
+        android:layout_marginLeft="5dp"
+        android:inputType="textPassword" />
 
             <RadioGroup
                 android:layout_width="match_parent"

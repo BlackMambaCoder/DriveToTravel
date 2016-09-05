@@ -48,11 +48,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         TextView phone = (TextView) popUp.findViewById(R.id.infowindow_phone);
         TextView acc = (TextView) popUp.findViewById(R.id.infowindow_account);
 
-        ImageView accImage = (ImageView) popUp.findViewById(R.id.infowindow_acc_image);
-
         //Format data
-        //Marker title = username
-
         username.setText(marker.getTitle());
 
         //Account data
@@ -61,25 +57,6 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         name.setText(accData[0]);
         phone.setText(accData[1]);
         acc.setText(accData[2]);
-
-        accImage.setImageResource(R.drawable.profile);
-
-        // Load the image thumbnail from memory
-        //final String imagePath = markers.get(marker.getId());
-        //ImageLoader imageLoader = ((AppConfig)mContext.getApplicationContext()).getImageLoader();
-        //imageLoader.loadBitmap(imagePath, popUpImage, 0, 0, onImageLoaded);
-
-        //Load image from string
-        String encodedImage="";
-
-        if(!encodedImage.isEmpty()) {
-            // Dekodiranje stringa
-            byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-
-            //Slika
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            accImage.setImageBitmap(decodedByte);
-        }
 
         // Returning the view containing InfoWindow contents
         return popUp;

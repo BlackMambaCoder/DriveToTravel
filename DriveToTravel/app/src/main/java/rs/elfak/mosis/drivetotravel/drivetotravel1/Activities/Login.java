@@ -233,6 +233,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
     private void loginTestUser(int userType)
     {
+        UserLocalStore userLocalStore   = new UserLocalStore(this);
+
         if(userType == User.USER_TYPE_DRIVER)
         {
             Driver myDriver = new Driver();
@@ -244,6 +246,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
             myDriver.setPhoneNumber("000/000-00-00");
             myDriver.setCarModel("Renault Clio");
             myDriver.setId(1);
+
+            userLocalStore.storeUser(myDriver);
 
             Intent intent = new Intent(this, DriversMainActivity.class);
             startActivity(intent);
@@ -261,6 +265,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
             myPassanger.setPhoneNumber("000/000-00-00");
             myPassanger.seteMail("beta@test.com");
 
+            userLocalStore.storeUser(myPassanger);
 
             Intent intent = new Intent(this, PassangerMainActivity.class);
             startActivity(intent);

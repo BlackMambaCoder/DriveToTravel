@@ -96,7 +96,9 @@ public class PassangerMainActivity extends AppCompatActivity {
                 // Toast.makeText(PassangerMainActivity.this, "Click: " + item.getStartLocation()+" "+item.getDestinationLocation(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(PassangerMainActivity.this, ShowTourDetailsActivity.class);
-                intent.putExtra("tour", item);
+                UserLocalStore userLocalStore = new UserLocalStore(PassangerMainActivity.this);
+                userLocalStore.storeTour(item);
+//                intent.putExtra("tour", item);
 
                 startActivity(intent);
             }
@@ -247,7 +249,7 @@ public class PassangerMainActivity extends AppCompatActivity {
     {
         UserLocalStore userLocalStore = new UserLocalStore(this);
         this.user = userLocalStore.getPassenger();
-        Toast.makeText(this, this.user.getUsername(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Hello "+this.user.getUsername(), Toast.LENGTH_LONG).show();
     }
 
     private void getAllTours()

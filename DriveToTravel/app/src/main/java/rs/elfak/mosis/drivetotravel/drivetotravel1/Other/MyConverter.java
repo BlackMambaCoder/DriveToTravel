@@ -12,11 +12,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
+
 /**
  * Created by LEO on 11.4.2016..
  */
 public class MyConverter
 {
+    public static String DATE_COMPLEX_FORMAT = "E MMM dd HH:mm:ss Z yyyy";
+
     public static Date _String2Date(String dateArg)
     {
         /**
@@ -53,8 +57,10 @@ public class MyConverter
          */
         SimpleDateFormat simpleDateFormat =
                 new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH);
+//        SimpleDateFormat simpleDateFormat =
+//                new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 
-        Date retValue = new Date();
+        Date retValue ;//= new Date();
 
         try
         {
