@@ -3,23 +3,18 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.ByteArrayOutputStream;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
@@ -94,14 +89,13 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
                     if (rBtnDriverUser.isChecked())
                     {
                         Driver driver = new Driver(user);
-                        driver.setProfileImage(this.profileBitmap);
 
                         driver = serverRequest.storeUser(driver);
 
-                        if (driver != null)
-                        {
-                            this.uploadProfileImage(driver, serverRequest);
-                        }
+//                        if (driver != null)
+//                        {
+//                            this.uploadProfileImage(driver, serverRequest);
+//                        }
 
                         if (driver != null && this.storeUserToLocalStore(driver))
                         {
@@ -181,6 +175,12 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
         textFromLayout = editText.getText().toString();
         user.setPassword(textFromLayout);
 
+        editText = (EditText)findViewById(R.id.etRegPhoneNumber);
+        textFromLayout = editText.getText().toString();
+        user.setPhoneNumber(textFromLayout);
+
+        user.setProfileImage(this.profileBitmap);
+
         return user;
     }
 
@@ -255,6 +255,18 @@ public class  Register extends ActionBarActivity implements View.OnClickListener
             }
 
             toastString += R.string.enter_password_message;
+            retValue = false;
+        }
+
+        editText = (EditText)findViewById(R.id.etRegPhoneNumber);
+        if (editText.getText().toString().equals(""))
+        {
+            if (!toastString.equals(""))
+            {
+                toastString += "\n";
+            }
+
+            toastString += "Enter phone number";
             retValue = false;
         }
 

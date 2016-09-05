@@ -3,10 +3,7 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Activities;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +15,6 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.MyConverter;
@@ -172,7 +168,19 @@ public class AddTourActivity extends AppCompatActivity implements
         retValue.setStartLocation(startLoc);
         retValue.setDestinationLocation(destLoc);
 
-        Date startDate = MyConverter._String2Date(startDateStr + " " + startTimeStr);
+//        Date startDate = MyConverter._String2Date(startDateStr + " " + startTimeStr);
+
+        String[] dateStr = startDateStr.split("-");
+        String[] timeStr = startTimeStr.split(":");
+
+        Date startDate = new Date(
+                Integer.valueOf(dateStr[2]),
+                Integer.valueOf(dateStr[1]),
+                Integer.valueOf(dateStr[0]),
+                Integer.valueOf(timeStr[0]),
+                Integer.valueOf(timeStr[1])
+        );
+
         if (startDate == null)
         {
             Toast.makeText(this, "Date error", Toast.LENGTH_SHORT).show();

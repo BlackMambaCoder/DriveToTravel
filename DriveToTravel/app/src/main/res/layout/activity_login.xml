@@ -43,7 +43,8 @@
         android:layout_below="@+id/tvPassword"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp" />
+        android:layout_marginRight="5dp"
+        android:inputType="textPassword" />
 
     <Button
         android:layout_width="150dp"

@@ -1,10 +1,7 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Entities;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Arrays;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
 
@@ -33,6 +30,8 @@ public class Driver extends User
         this.eMail                      = user.eMail;
         this.phoneNumber                = user.phoneNumber;
         this.userType                   = User.USER_TYPE_DRIVER;
+        this.friends                    = user.friends;
+        this.profileImage               = user.profileImage;
     }
 
     public String getCarModel()
@@ -103,6 +102,7 @@ public class Driver extends User
         retValue.put(UserStaticAttributes._eMail, this.eMail);
         retValue.put(UserStaticAttributes._carModel, this.carModel);
         retValue.put(UserStaticAttributes._userType, User.USER_TYPE_DRIVER);
+        retValue.put(UserStaticAttributes.PROFILE_IMAGE, this.getProfileImageString());
 
         return retValue;
     }

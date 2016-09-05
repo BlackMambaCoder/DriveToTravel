@@ -4,9 +4,6 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,7 +13,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Exception.HttpConnectionException;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.StringManipulator;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.ServerStaticAttributes;
@@ -41,7 +37,8 @@ public class SendDeviceLocationDataAsyncTask extends AsyncTask<String, Void, Voi
         Resources res           = Resources.getSystem();
         String postValue        = params[0];
         String successMessage;
-        String routeUrl         = res.getString(R.string.servers_url) + res.getString(R.string.update_user_location);
+        String routeUrl         = ServerStaticAttributes._SERVER_ROOT_URL +
+                ServerStaticAttributes.UPDATE_USER_LOCATION;
         try
         {
             URL url                 = new URL(routeUrl);
@@ -74,10 +71,6 @@ public class SendDeviceLocationDataAsyncTask extends AsyncTask<String, Void, Voi
                         httpURLConnection.getInputStream()
                 );
             }
-            else
-            {
-                throw new HttpConnectionException("Dismissed connection: " + responseCode);
-            }
 
         }
         catch (MalformedURLException e)
@@ -95,12 +88,6 @@ public class SendDeviceLocationDataAsyncTask extends AsyncTask<String, Void, Voi
         catch (IOException e)
         {
             successMessage = "SendDeviceLocationDataAsyncTask: IOException - " + e.getMessage();
-            Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-        }
-        catch (HttpConnectionException e)
-        {
-            successMessage = "SendDeviceLocationDataAsyncTask: HttpConnectionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
         }

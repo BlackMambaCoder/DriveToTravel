@@ -18,16 +18,14 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.MyConverter;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.AddFriendAsyncTask;
+//import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.AddFriendAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchDriversToursAsyncTask;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FetchTourDataAsyncTask;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FriendWithAsyncTask;
+//import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.FriendWithAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.LoginUserAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.ServerRequestAsyncTask;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.StoreTourDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.StoreUserDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.UpdateTourRankAsyncTask;
+//import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.UpdateTourRankAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.ServerStaticAttributes;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.TourStaticAttributes;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
@@ -58,25 +56,6 @@ public class ServerRequest {
         this.classDriver = null;
     }
 
-//    public Driver getDriver() {
-//        return this.classDriver;
-//    }
-
-//    public void searchTour(String startLocationParam, String endLocationParam, String timeParam, String dateParam)
-//    {
-//        JSONArray JSONDataArray = new JSONArray();
-//
-//        JSONDataArray.put(startLocationParam);
-//        JSONDataArray.put(endLocationParam);
-//        JSONDataArray.put(timeParam);
-//        JSONDataArray.put(dateParam);
-//
-//        String dataArrayForPostRequest = JSONDataArray.toString();
-//
-//        FetchTourDataAsyncTask fetchTourDataAsyncTask = new FetchTourDataAsyncTask(this.context);
-//        fetchTourDataAsyncTask.execute(dataArrayForPostRequest);
-//    }
-
     private List<Tour> searchTour(JSONObject jsonObject) throws ExecutionException, InterruptedException {
 //        FetchTourDataAsyncTask fetchTourDataAsyncTask
 //                = new FetchTourDataAsyncTask(this.context);
@@ -99,24 +78,34 @@ public class ServerRequest {
         List<Tour> tours;
         JSONObject jsonObject = new JSONObject();
 
-        try {
-            if (searchCriteria == ServerRequest.SEARCH_FOR_DRIVER) {
+        try
+        {
+            if (searchCriteria == ServerRequest.SEARCH_FOR_DRIVER)
+            {
                 jsonObject.put("username", searchAttribute[0]);
-            } else if (searchCriteria == ServerRequest.SEARCH_FOR_LOCATION) {
+            }
+            else if (searchCriteria == ServerRequest.SEARCH_FOR_LOCATION)
+            {
                 jsonObject.put("startlocation", searchAttribute[0]);
                 jsonObject.put("destlocation", searchAttribute[1]);
             }
 
             tours = this.searchTour(jsonObject);
-        } catch (JSONException e) {
+        }
+        catch (JSONException e)
+        {
             String successMessage = "ServerRequestSearchTour: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             tours = null;
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e)
+        {
             String successMessage = "ServerRequestSearchTour: InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             tours = null;
-        } catch (ExecutionException e) {
+        }
+        catch (ExecutionException e)
+        {
             String successMessage = "ServerRequestSearchTour: ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
             tours = null;
@@ -154,104 +143,109 @@ public class ServerRequest {
         boolean retValue;
         JSONObject requestData = new JSONObject();
 
-        FriendWithAsyncTask task = new FriendWithAsyncTask();
+//        FriendWithAsyncTask task = new FriendWithAsyncTask();
         try {
-
             requestData.put("firstuser", user1);
             requestData.put("seconduser", user2);
 
-            task.execute(requestData.toString()).get();
+            String route = ServerStaticAttributes.USER_FRIEND_WITH;
+            String requestDataString = requestData.toString();
+            String[] requestDataArray = { route , requestDataString };
 
-            retValue = task.getResponse();
+            ServerRequestAsyncTask task = new ServerRequestAsyncTask(this.context, null);
+            task.execute(requestDataArray).get();
+
+            return task.getResponseData() != null;
+
+//            task.execute(requestData.toString()).get();
+
+//            retValue = task.getResponse();
         } catch (InterruptedException e) {
             String successMessage = "ServerRequestFriendWith: InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = false;
+            return false;
         } catch (ExecutionException e) {
             String successMessage = "ServerRequestFriendWith: ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = false;
+            return false;
         } catch (JSONException e) {
             String successMessage = "ServerRequestFriendWith: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = false;
+            return false;
         }
-
-        return retValue;
     }
 
     public String addFriend(String userFriendParam) {
         JSONObject userFriend = new JSONObject();
         String successMessage;
-        String retValue;
 
-        AddFriendAsyncTask task = new AddFriendAsyncTask();
+//        AddFriendAsyncTask task = new AddFriendAsyncTask();
 
         try {
             userFriend.put("username", userFriendParam);
-            task.execute(userFriend.toString()).get();
-            if (task.getResponse()) {
-                retValue = userFriendParam;
-            } else {
-                retValue = null;
-            }
+
+            String route = ServerStaticAttributes.USER_ADD_FRIEND;
+            String requestData = userFriend.toString();
+            String[] requestDataArray = { route , requestData };
+
+            ServerRequestAsyncTask task = new ServerRequestAsyncTask(this.context, null);
+            task.execute(requestDataArray).get();
+
+            return task.getResponseData();
+//            task.execute(userFriend.toString()).get();
+//            if (task.getResponse()) {
+//                retValue = userFriendParam;
+//            } else {
+//                retValue = null;
+//            }
         } catch (InterruptedException e) {
             successMessage = "ServerRequestAddFriend: InterruptedException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
         } catch (ExecutionException e) {
             successMessage = "ServerRequestAddFriend: ExecutionException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
         } catch (JSONException e) {
             successMessage = "ServerRequestAddFriend: JSONException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
         }
 
-        return retValue;
+        return null;
     }
 
-    public String removeFriend(String userFriendParam) {
-        JSONObject userFriend = new JSONObject();
-        String successMessage;
-        String retValue;
-
-        AddFriendAsyncTask task = new AddFriendAsyncTask();
-
-        try {
-            userFriend.put("username", userFriendParam);
-            task.execute(userFriend.toString()).get();
-            if (task.getResponse()) {
-                retValue = userFriendParam;
-            } else {
-                retValue = null;
-            }
-        } catch (InterruptedException e) {
-            successMessage = "ServerRequestRemoveFriend: InterruptedException - " + e.getMessage();
-            Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
-        } catch (ExecutionException e) {
-            successMessage = "ServerRequestRemoveFriend: ExecutionException - " + e.getMessage();
-            Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
-        } catch (JSONException e) {
-            successMessage = "ServerRequestRemoveFriend: JSONException - " + e.getMessage();
-            Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
-            retValue = null;
-        }
-
-        return retValue;
-    }
+//    public String removeFriend(String userFriendParam) {
+//        JSONObject userFriend = new JSONObject();
+//        String successMessage;
+//        String retValue;
+//
+//        AddFriendAsyncTask task = new AddFriendAsyncTask();
+//
+//        try {
+//            userFriend.put("username", userFriendParam);
+//            task.execute(userFriend.toString()).get();
+//            if (task.getResponse()) {
+//                retValue = userFriendParam;
+//            } else {
+//                retValue = null;
+//            }
+//        } catch (InterruptedException e) {
+//            successMessage = "ServerRequestRemoveFriend: InterruptedException - " + e.getMessage();
+//            Log.e("*****BREAK_POINT*****", successMessage);
+//            e.printStackTrace();
+//            retValue = null;
+//        } catch (ExecutionException e) {
+//            successMessage = "ServerRequestRemoveFriend: ExecutionException - " + e.getMessage();
+//            Log.e("*****BREAK_POINT*****", successMessage);
+//            e.printStackTrace();
+//            retValue = null;
+//        } catch (JSONException e) {
+//            successMessage = "ServerRequestRemoveFriend: JSONException - " + e.getMessage();
+//            Log.e("*****BREAK_POINT*****", successMessage);
+//            e.printStackTrace();
+//            retValue = null;
+//        }
+//
+//        return retValue;
+//    }
 
     public List<Double> updateTourRank(double rankParam, int tourid) {
         String successMessage;
@@ -625,4 +619,5 @@ public class ServerRequest {
             return null;
         }
     }
+
 }

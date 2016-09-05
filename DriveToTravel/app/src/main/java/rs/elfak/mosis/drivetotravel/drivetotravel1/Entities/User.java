@@ -84,7 +84,7 @@ public abstract class User
 
     public String getProfileImageString()
     {
-        return this.bitmapToString(this.profileImage);
+        return User.bitmapToString(this.profileImage);
     }
 
     // === SETTER === //
@@ -131,7 +131,7 @@ public abstract class User
 
     public boolean setProfileImage (String bitmapStringParam)
     {
-        return (this.profileImage = this.stringToBitmap(bitmapStringParam)) != null;
+        return (this.profileImage = User.stringToBitmap(bitmapStringParam)) != null;
     }
 
     public abstract JSONObject toJSONObject () throws JSONException;
@@ -160,7 +160,8 @@ public abstract class User
 
         if (
                 this.friends.contains(usernameParam) &&
-                serverRequest.removeFriend(usernameParam) != null
+//                serverRequest.removeFriend(usernameParam) != null
+                serverRequest.addFriend(usernameParam) != null
             )
         {
             this.friends.remove(usernameParam);
@@ -191,6 +192,28 @@ public abstract class User
         catch(Exception e)
         {
             e.getMessage();
+            return null;
+        }
+    }
+
+    public static List<JSONObject> JSONArrayToJSONObject(String JSONArrayString)
+    {
+        try
+        {
+            List<JSONObject> retValue = new ArrayList<>();
+
+            JSONArray jsonArray = new JSONArray(JSONArrayString);
+
+            for(int i = 0; i < jsonArray.length(); i++)
+            {
+                retValue.add(jsonArray.getJSONObject(i));
+            }
+
+            return retValue;
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
             return null;
         }
     }

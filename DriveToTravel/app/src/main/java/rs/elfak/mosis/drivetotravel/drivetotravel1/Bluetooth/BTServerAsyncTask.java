@@ -14,11 +14,9 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.UUID;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
-import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 
 /**
  * Created by Alexa on 8/25/2016.

@@ -1,8 +1,5 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Other;
 
-import android.util.Log;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
