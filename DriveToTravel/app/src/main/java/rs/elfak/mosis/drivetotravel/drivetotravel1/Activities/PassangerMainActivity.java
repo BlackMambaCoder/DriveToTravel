@@ -39,7 +39,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.GPSTracker;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.LocationUpdateService;
 
-public class PassangerMainActivity extends AppCompatActivity {
+public class PassangerMainActivity extends AppCompatActivity implements Comparator<Tour> {
 
     ListView listaVoznji;
     CustomListAdapter listAdapter;
@@ -53,6 +53,9 @@ public class PassangerMainActivity extends AppCompatActivity {
 
     public static Handler publicHandler            = null;
     private Passenger user;
+
+    private boolean sortAlphabetic = true;
+    private int sortFlag = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +177,7 @@ public class PassangerMainActivity extends AppCompatActivity {
                 break;
 
             case R.id.passanger_main_menu_sort:
-                Toast.makeText(this,"Sorting rides by start date",Toast.LENGTH_SHORT).show();
+
                 sortTours();
                 break;
 
@@ -284,23 +287,24 @@ public class PassangerMainActivity extends AppCompatActivity {
 
     private void sortTours()
     {
-        Tour pom;
+        this.sortFlag = 1;
 
-        for(int i=0;i<tours.size();i++)
+        if (this.sortAlphabetic)
         {
-            for(int j=0;j<tours.size();j++)
-            {
-                if(tours.get(i).getRank() > tours.get(j).getRank())
-                {
-                    pom = tours.get(i);
-                    tours.add(i, tours.get(j));
-                    tours.add(j, pom);
-                }
-            }
+            this.sortFlag = -1;
         }
+
+        this.sortAlphabetic = !this.sortAlphabetic;
+        Collections.sort(this.tours, this);
 
         Tour[] tourArray = Tour.getArrayFromList(this.tours);
         this.listAdapter = new CustomListAdapter(PassangerMainActivity.this, tourArray);
         this.listaVoznji.setAdapter(this.listAdapter);
+    }
+
+    @Override
+    public int compare(Tour lhs, Tour rhs) {
+        //return lhs.getStartLocation().compareTo(rhs.getStartLocation()) < 0 ? sortFlag : (-1) * sortFlag;
+        return lhs.getDriverRank() > rhs.getDriverRank() ? sortFlag : (-1) * sortFlag;
     }
 }

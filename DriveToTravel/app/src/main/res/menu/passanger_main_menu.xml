@@ -19,7 +19,7 @@
     <item android:id="@+id/passanger_main_menu_sort"
         android:title="Sort"
         android:orderInCategory="0"
-        android:icon="@drawable/ic_reorder_white_24dp"
+        android:icon="@drawable/ic_sort_white_24dp"
         app:showAsAction="ifRoom"/>
 
 </menu>

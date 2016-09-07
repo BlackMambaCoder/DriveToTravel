@@ -8,4 +8,10 @@
         android:icon="@drawable/ic_account_circle_white_24dp"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/map_rank_driver_btn"
+        android:title="Rank driver"
+        android:icon="@drawable/ic_star_rate_white_18dp"
+        app:showAsAction="always"/>
+
 </menu>

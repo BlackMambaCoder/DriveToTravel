@@ -1,6 +1,7 @@
 package rs.elfak.mosis.drivetotravel.drivetotravel1.Activities;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,6 +47,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.CustomInfoWindowAdapter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Services.GPSTracker;
 
 public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
@@ -62,6 +68,8 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
     private LatLng[] friendLocations;
     private  boolean showFriends=true;
 
+    private int tourRank=-1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +78,13 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Bundle extras = getIntent().getExtras();
+
+        if(extras != null)
+        {
+            tourRank = extras.getInt("tourid");
+        }
 
 
         userLocalStore = new UserLocalStore(this);
@@ -202,6 +217,10 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
                     Toast.makeText(this,"Show friends: "+showFriends,Toast.LENGTH_SHORT).show();
                 }
 
+                break;
+
+            case R.id.map_rank_driver_btn:
+                this.RankDriver();
                 break;
 
         }
@@ -362,5 +381,37 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
         {
             e.printStackTrace();
         }
+    }
+
+
+    private void RankDriver()
+    {
+        final Dialog rankDialog = new Dialog(tourMap.this);
+        rankDialog.setContentView(R.layout.rank_dialog_layout);
+        rankDialog.setCancelable(true);
+
+        final RatingBar ratingBar = (RatingBar)rankDialog.findViewById(R.id.dialog_ratingbar);
+        ratingBar.setRating(0);
+
+        TextView text = (TextView) rankDialog.findViewById(R.id.rank_dialog_text1);
+        text.setText("Rank ride");
+
+        Button updateButton = (Button) rankDialog.findViewById(R.id.rank_dialog_button);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Send rank to server
+                ServerRequest rq = new ServerRequest(null);
+
+                Double rVal = Double.valueOf(ratingBar.getRating());
+
+                rq.updateTourRank(rVal,tourRank);
+                rankDialog.dismiss();
+            }
+        });
+
+        //now that the dialog is set up, it's time to show it
+        rankDialog.show();
     }
 }

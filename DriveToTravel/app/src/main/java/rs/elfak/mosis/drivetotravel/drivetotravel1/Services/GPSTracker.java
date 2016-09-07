@@ -2,7 +2,10 @@ package rs.elfak.mosis.drivetotravel.drivetotravel1.Services;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +19,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,8 +32,10 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Activities.tourMap;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.LocListener;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.SendDeviceLocationDataAsyncTask;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
 
@@ -76,6 +82,10 @@ public class GPSTracker extends Service implements LocationListener {
     static final public String GPS_MESSAGE = "GPSTRACKER_GPS_MSG";
     static final public String FRIEND_MESSAGE = "GPS_TRACKER_FRIEND_MESSAGE";
 
+    private NotificationManager mNotificationManager;
+    NotificationCompat.Builder mBuilder;
+    int mId=0;
+
     public void initTracker(int userID)
     {
         this.userId = userID;
@@ -102,6 +112,8 @@ public class GPSTracker extends Service implements LocationListener {
             Bundle extras = intent.getExtras();
             this.userId = extras.getInt("userid");
         }
+
+        buildNotifications();
 
         Log.d("[SERVIS]", "Servis je pokrenut");
 
@@ -510,6 +522,35 @@ public class GPSTracker extends Service implements LocationListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+
+    private void buildNotifications()
+    {
+        mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.icon)
+                        .setContentTitle("Drive2Travle - Friend is nearby")
+                        .setContentText("Your friend is nearby, check map");
+
+        Intent resultIntent = new Intent(this, tourMap.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(tourMap.class);
+
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        mBuilder.setContentIntent(resultPendingIntent);
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    private void showNotification()
+    {
+      mNotificationManager.notify(mId, mBuilder.build());
     }
 
 }
