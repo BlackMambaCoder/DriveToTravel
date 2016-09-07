@@ -12,6 +12,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.sql.DriverManager;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Driver;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
@@ -19,13 +24,16 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.CustomListAdapter;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.ServerRequest;
 
-public class DriversMainActivity extends AppCompatActivity implements View.OnClickListener {
+public class DriversMainActivity extends AppCompatActivity implements View.OnClickListener, Comparator<Tour> {
 
     private ListView lvTours;
     private Tour[] toursArray;
+    private List<Tour> toursList;
     private CustomListAdapter listAdapter;
     private Driver user;
 
+    private boolean sortAlphabetic = true;
+    private int sortFlag = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +59,7 @@ public class DriversMainActivity extends AppCompatActivity implements View.OnCli
         {
             case R.id.create_tour_button:
                 Intent intent = new Intent(this, AddTourActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, AddTourActivity.REQUEST_CODE_NEW_DRIVE);
                 Toast.makeText(this, "create tour", Toast.LENGTH_SHORT).show();
                 break;
         }
@@ -62,7 +70,15 @@ public class DriversMainActivity extends AppCompatActivity implements View.OnCli
     private void getDriversTours()
     {
         ServerRequest serverRequest = new ServerRequest(this);
-        this.toursArray = serverRequest.getDriverTours(this.user.getId());
+        this.toursList = serverRequest.getDriverTours(this.user.getId(), true);
+
+        if (toursList == null)
+        {
+            this.toursArray = null;
+            return;
+        }
+
+        this.toursArray = Tour.getArrayFromList(this.toursList);
     }
 
     private void prepareView()
@@ -71,13 +87,7 @@ public class DriversMainActivity extends AppCompatActivity implements View.OnCli
 
         this.getDriversTours();
 
-        if (this.toursArray == null)
-        {
-            return;
-        }
-
-        this.listAdapter = new CustomListAdapter(DriversMainActivity.this, this.toursArray);
-        this.lvTours.setAdapter(this.listAdapter);
+        this.fillTourListView();
     }
 
     private void getLoggedInUser()
@@ -105,9 +115,60 @@ public class DriversMainActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent_fr);
                 break;
 
+            case R.id.passanger_main_menu_sort:
+                sortTours();
+                break;
+
             default:
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == AddTourActivity.REQUEST_CODE_NEW_DRIVE)
+        {
+            Tour newTour = new UserLocalStore(this).getTour();
+            this.toursList.add(newTour);
+
+            this.toursArray = Tour.getArrayFromList(this.toursList);
+
+            this.fillTourListView();
+        }
+    }
+
+    private void fillTourListView()
+    {
+        if (this.toursArray == null)
+        {
+            return;
+        }
+
+        this.listAdapter = new CustomListAdapter(DriversMainActivity.this, this.toursArray);
+        this.lvTours.setAdapter(this.listAdapter);
+    }
+
+    private void sortTours()
+    {
+        this.sortFlag = 1;
+
+        if (this.sortAlphabetic)
+        {
+            this.sortFlag = -1;
+        }
+
+        this.sortAlphabetic = !this.sortAlphabetic;
+        Collections.sort(this.toursList, this);
+
+        this.toursArray = Tour.getArrayFromList(this.toursList);
+        this.fillTourListView();
+    }
+
+    @Override
+    public int compare(Tour lhs, Tour rhs) {
+        return lhs.getStartLocation().compareTo(rhs.getStartLocation()) < 0 ? sortFlag : (-1) * sortFlag;
     }
 }

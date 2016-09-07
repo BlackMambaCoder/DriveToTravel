@@ -34,6 +34,8 @@ public class StoreUserDataAsyncTask extends AsyncTask<String, Void, Void>
     private ProgressDialog progressDialog;
     private String responseUser;
 
+    private final String USER_EXISTS_STRING = "user exists";
+
     public StoreUserDataAsyncTask(){}
 
     public StoreUserDataAsyncTask(Driver user, Context context)//, ProgressDialog progressDialog)
@@ -57,7 +59,7 @@ public class StoreUserDataAsyncTask extends AsyncTask<String, Void, Void>
             try
             {
 
-                if (this.responseUser.equals("user exists"))
+                if (this.responseUser.equals(USER_EXISTS_STRING))
                 {
                     user = new JSONObject();
                     user.put(UserStaticAttributes.USER_EXISTS, true);
@@ -127,7 +129,7 @@ public class StoreUserDataAsyncTask extends AsyncTask<String, Void, Void>
 
             else if (responseCode == HttpURLConnection.HTTP_CONFLICT)
             {
-                this.responseUser           = "user exists";
+                this.responseUser           = USER_EXISTS_STRING;
             }
 
             else

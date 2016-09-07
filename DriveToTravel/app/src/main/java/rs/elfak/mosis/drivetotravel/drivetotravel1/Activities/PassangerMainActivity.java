@@ -45,7 +45,8 @@ public class PassangerMainActivity extends AppCompatActivity {
     CustomListAdapter listAdapter;
     String start,stop;
 
-    Tour[] tours;
+    List<Tour> tours;
+//    Tour[] tours;
     boolean toggleLocationNotification      = false;
     private String locations                = "";
     ArrayList<Location> locationsList       = null;
@@ -263,7 +264,8 @@ public class PassangerMainActivity extends AppCompatActivity {
             return;
         }
 
-        this.listAdapter = new CustomListAdapter(PassangerMainActivity.this, this.tours);
+        Tour[] tourArray = Tour.getArrayFromList(this.tours);
+        this.listAdapter = new CustomListAdapter(PassangerMainActivity.this, tourArray);
         this.listaVoznji.setAdapter(this.listAdapter);
     }
 
@@ -282,26 +284,23 @@ public class PassangerMainActivity extends AppCompatActivity {
 
     private void sortTours()
     {
+        Tour pom;
 
-//
-//        Tour pom;
-//
-//        for(int i=0;i<tours.length;i++)
-//        {
-//            for(int j=0;j<tours.length;j++)
-//            {
-//                if(tours[i].getId()>tours[j].getId())
-//                {
-//                    pom = tours[i];
-//                    tours[i]=tours[j];
-//                    tours[j]=pom;
-//                }
-//            }
-//        }
+        for(int i=0;i<tours.size();i++)
+        {
+            for(int j=0;j<tours.size();j++)
+            {
+                if(tours.get(i).getRank() > tours.get(j).getRank())
+                {
+                    pom = tours.get(i);
+                    tours.add(i, tours.get(j));
+                    tours.add(j, pom);
+                }
+            }
+        }
 
-
-
-        this.listAdapter = new CustomListAdapter(PassangerMainActivity.this, this.tours);
+        Tour[] tourArray = Tour.getArrayFromList(this.tours);
+        this.listAdapter = new CustomListAdapter(PassangerMainActivity.this, tourArray);
         this.listaVoznji.setAdapter(this.listAdapter);
     }
 }

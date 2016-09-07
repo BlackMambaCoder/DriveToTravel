@@ -348,6 +348,17 @@ public class ServerRequest {
             task.execute(user.toString()).get();
             user = task.getStoredUser();
 
+            if (user == null)
+            {
+                Toast.makeText(
+                        this.context,
+                        "Error",
+                        Toast.LENGTH_LONG
+                ).show();
+
+                return null;
+            }
+
             if (user.getBoolean(UserStaticAttributes.USER_EXISTS)) {
                 Toast.makeText(
                         this.context,
@@ -496,13 +507,41 @@ public class ServerRequest {
         }
     }
 
+    public List<Tour> getDriverTours(int driverIdParam, boolean b) {
+        JSONObject postValue = new JSONObject();
+        try {
+            postValue.put(UserStaticAttributes._id, driverIdParam);
+            FetchDriversToursAsyncTask task = new FetchDriversToursAsyncTask(null);
+            task.execute(postValue.toString()).get();
+            String response = task.getResponse();
+
+            if (response == null) {
+                Toast.makeText(this.context, "response from tours is null", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+            return Tour.getToursFromJsonArray(response);
+        } catch (JSONException e) {
+            String successMessage = "ServerRequest::getDriverTours : JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        } catch (InterruptedException e) {
+            String successMessage = "ServerRequest::getDriverTours : InterruptedException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        } catch (ExecutionException e) {
+            String successMessage = "ServerRequest::getDriverTours : ExecutionException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            return null;
+        }
+    }
+
     /**
      * Uses new AsyncTask: ServerRequest AsyncTask which can perform
      * server requests for all types of requests from this app.
      *
      * @return array all tours from database
      */
-    public Tour[] getAllTours() {
+    public List<Tour> getAllTours() {
         String postValue = "";
         String route = ServerStaticAttributes.FETCH_ALL_TOURS;
 
@@ -515,9 +554,10 @@ public class ServerRequest {
             String response = task.getResponseData();
 
             if (response != null) {
-                return Tour.getArrayFromList(
-                        Tour.getToursFromJsonArray(response)
-                );
+                return Tour.getToursFromJsonArray(response);
+//                return Tour.getArrayFromList(
+//                        Tour.getToursFromJsonArray(response)
+//                );
             }
 
             return null;

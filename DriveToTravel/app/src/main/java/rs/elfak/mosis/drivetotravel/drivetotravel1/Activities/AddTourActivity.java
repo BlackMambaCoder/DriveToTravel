@@ -30,6 +30,8 @@ public class AddTourActivity extends AppCompatActivity implements View.OnClickLi
     private TextView startDate,startTime;
     private ImageButton dateBtn,timeBtn,addTour;
 
+    public static int REQUEST_CODE_NEW_DRIVE = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -84,6 +86,10 @@ public class AddTourActivity extends AppCompatActivity implements View.OnClickLi
                         }
                     }
 
+                    UserLocalStore tourLocalStore = new UserLocalStore(this);
+                    tourLocalStore.storeTour(tour);
+
+                    setResult(REQUEST_CODE_NEW_DRIVE);
                     finish();
                 }
 
