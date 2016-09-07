@@ -15,9 +15,10 @@
         android:layout_alignParentTop="false"
         android:layout_alignParentStart="false" >
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,55 +51,84 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/tvAddTourDestinationLocation" />
 
-            <Button
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Show route on map"
-                android:id="@+id/btnShowRoute"
-                android:layout_alignParentStart="false"
-                android:layout_marginTop="20dp"
-                android:layout_alignParentEnd="false"
-                android:layout_below="@+id/etStartTime" />
+                android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start date"
+                    android:id="@+id/tvStartDate"
+                    android:layout_below="@+id/etAddTourDestinationLocation"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentTop="false" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="/"
+                    android:id="@+id/start_date_label"
+                    android:layout_marginLeft="10dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chose date"
+                    android:id="@+id/btn_select_date"
+                    android:layout_alignBottom="@+id/etStartDate"
+                    android:layout_toEndOf="@+id/etStartDate"
+                    android:src="@android:drawable/ic_menu_month"
+                    android:layout_gravity="right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start time"
+                    android:id="@+id/tvStartTime"
+                    android:layout_below="@+id/etStartDate"
+                    android:layout_alignParentLeft="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="/"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/start_time_label" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chose time"
+                    android:id="@+id/btn_select_time"
+                    android:layout_above="@+id/btnShowRoute"
+                    android:layout_alignStart="@+id/btn_select_date"
+                    android:layout_alignEnd="@+id/btn_select_date"
+                    android:src="@android:drawable/ic_menu_recent_history"
+                    android:layout_gravity="right" />
+            </LinearLayout>
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="Add tour"
                 android:id="@+id/btnAddTour"
                 android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/btnShowRoute"
-                android:layout_below="@+id/etStartDate" />
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Start date"
-                android:id="@+id/tvStartDate"
-                android:layout_below="@+id/etAddTourDestinationLocation"
-                android:layout_alignParentLeft="false"
-                android:layout_alignParentTop="false" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/etStartDate"
-                android:layout_below="@+id/tvStartDate"
-                android:layout_alignParentLeft="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Start time"
-                android:id="@+id/tvStartTime"
-                android:layout_below="@+id/etStartDate"
-                android:layout_alignParentLeft="true" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/etStartTime"
-                android:layout_below="@+id/tvStartTime"
-                android:layout_alignParentStart="true" />
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 </RelativeLayout>

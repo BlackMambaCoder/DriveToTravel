@@ -19,6 +19,9 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,13 +31,14 @@ import java.util.concurrent.ExecutionException;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Other.LocListener;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Server.AsyncTasks.SendDeviceLocationDataAsyncTask;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
 
 /**
  * Created by Alexa on 8/31/2016.
  */
 public class GPSTracker extends Service implements LocationListener {
 
-    private final Context mContext;
+    private Context mContext;
 
     // flag for GPS status
     boolean isGPSEnabled = false;
@@ -44,6 +48,8 @@ public class GPSTracker extends Service implements LocationListener {
 
     // flag for GPS status
     boolean canGetLocation = false;
+
+    boolean locationProviderIsWorking = false;
 
     Location location; // location
     double latitude; // latitude
@@ -55,10 +61,10 @@ public class GPSTracker extends Service implements LocationListener {
     private boolean startSettings=false;
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 5; // 5 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000*10; //10s
+    private static final long MIN_TIME_BW_UPDATES = 1000*5; //5s
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
@@ -68,26 +74,70 @@ public class GPSTracker extends Service implements LocationListener {
 
     static final public String GPS_RESULT = "GPSTRACKER_REQUEST_PROCESSED";
     static final public String GPS_MESSAGE = "GPSTRACKER_GPS_MSG";
+    static final public String FRIEND_MESSAGE = "GPS_TRACKER_FRIEND_MESSAGE";
 
-    public GPSTracker(Context context,int userID)
-        {
-        this.mContext = context;
+    public void initTracker(int userID)
+    {
         this.userId = userID;
-        broadcaster = LocalBroadcastManager.getInstance(mContext);
-        initLocationProvider();
     }
 
+    public GPSTracker()
+    {
+
+    }
+
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
+        this.mContext = this;
+    }
+
+
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if(intent!=null) {
+            Bundle extras = intent.getExtras();
+            this.userId = extras.getInt("userid");
+        }
+
+        Log.d("[SERVIS]", "Servis je pokrenut");
+
+        if (!this.locationProviderIsWorking)
+        {
+            this.initLocationProvider();
+        }
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopUsingGPS();
+    }
+
+
+    /**
+     * Check if location provider (Network or GPS) is activated and get lcoation;
+     *
+     * @return
+     */
     public boolean initLocationProvider()
     {
+        Log.d("[SERVIS]", "Inicijalizacija location provajdera");
+
         try {
 
-            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 
             //No permission
-            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 //ActivityCompat.requestPermissions(this,new String[]{"Location"},0);
-                Toast.makeText(mContext,"Please enable location permission!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Please enable location permission!",Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -98,7 +148,7 @@ public class GPSTracker extends Service implements LocationListener {
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
             if (!isGPSEnabled && !isNetworkEnabled) {
-                Toast.makeText(mContext, "Not found any location provider, please turn on GPS", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Not found any location provider, please turn on GPS", Toast.LENGTH_SHORT).show();
                 canGetLocation=false;
                 return false;
             }
@@ -124,7 +174,7 @@ public class GPSTracker extends Service implements LocationListener {
                     }
                 }
 
-                Toast.makeText(mContext, "Location update activated", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Location update activated", Toast.LENGTH_LONG).show();
                 return true;
             }
 
@@ -148,6 +198,7 @@ public class GPSTracker extends Service implements LocationListener {
                     }
                 }
 
+                this.locationProviderIsWorking = true;
                 return true;
             }
 
@@ -169,9 +220,9 @@ public class GPSTracker extends Service implements LocationListener {
      * */
     public void stopUsingGPS() {
 
-        if (locationManager != null) {
-
-            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (locationManager != null)
+        {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -182,13 +233,15 @@ public class GPSTracker extends Service implements LocationListener {
                 // for ActivityCompat#requestPermissions for more details.
                 //  ActivityCompat.requestPermissions(this,new String[]{"Location"},0);
 
-                Toast.makeText(mContext,"Please grant location permission",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Please grant location permission",Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            Toast.makeText(mContext, "Location update deactivated", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Location update deactivated", Toast.LENGTH_LONG).show();
+            Log.d("[SERVIS]","Stopiran GPS servis");
             locationManager.removeUpdates(GPSTracker.this);
             this.canGetLocation=false;
+            locationProviderIsWorking=false;
         }
     }
 
@@ -231,7 +284,8 @@ public class GPSTracker extends Service implements LocationListener {
      * On pressing Settings button will lauch Settings Options
      * */
     public void showSettingsAlert(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+       /*
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         // Setting Dialog Title
         alertDialog.setTitle("GPS settings");
@@ -243,7 +297,7 @@ public class GPSTracker extends Service implements LocationListener {
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                mContext.startActivity(intent);
+                this.startActivity(intent);
             }
         });
 
@@ -256,6 +310,7 @@ public class GPSTracker extends Service implements LocationListener {
 
         // Showing Alert Message
         alertDialog.show();
+        */
     }
 
 
@@ -267,17 +322,17 @@ public class GPSTracker extends Service implements LocationListener {
         latitude = location.getLatitude();
 
         //Send broadcast message to other activities
+        //String locationStr=String.valueOf(latitude)+","+String.valueOf(longitude);
 
-        String locationStr=String.valueOf(latitude)+","+String.valueOf(longitude);
-        sendLocationUpdate(locationStr);
-        //sendLocationToServer();
+//        sendLocationUpdate(locationStr);
+        sendLocationToServer();
     }
 
     /* WHEN USER DISABLE INTERNET OR GPS */
     @Override
     public void onProviderDisabled(String provider)
     {
-        Toast.makeText(mContext,"Location provider: "+provider+" disabled",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Location provider: "+provider+" disabled",Toast.LENGTH_SHORT).show();
     }
 
     /* WHEN USER ENABLE INTERNET OR GPS */
@@ -285,7 +340,7 @@ public class GPSTracker extends Service implements LocationListener {
     @Override
     public void onProviderEnabled(String provider)
     {
-        Toast.makeText(mContext,"Location provider: "+provider+" enabled",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Location provider: "+provider+" enabled",Toast.LENGTH_SHORT).show();
     }
 
      /* WHEN USER DISABLE/ENABLE INTERNET OR GPS */
@@ -302,26 +357,41 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
     /* SEND UPDATE VIA BROADCAST */
+
     private void sendLocationUpdate(String message) {
 
         Intent intent = new Intent(GPS_RESULT);
 
-        Log.d("[GPS]","Location update: "+message);
+        Log.d("[GPS]","Location update");
 
         if(message != null)
             intent.putExtra(GPS_MESSAGE, message);
 
-        broadcaster.sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private double[] getDeviceLocation()
-    {
-        double[] retValue = new double[4];
+    private void sendFriendLocation(String message) {
 
-        retValue[0]                         = LocListener.getLat();
-        retValue[1]                         = LocListener.getLon();
-        retValue[2]                         = LocListener.getAlt();
-        retValue[3]                         = LocListener.getSpeed();
+        Intent intent = new Intent(GPS_RESULT);
+
+        Log.d("[GPS]","Location update");
+
+        if(message != null)
+            intent.putExtra(FRIEND_MESSAGE, message);
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private String[] getDeviceLocation()
+    {
+        String[] retValue = new String[4];
+
+        retValue[0] = String.valueOf(longitude);
+        retValue[1] = String.valueOf(latitude);
+        retValue[2] = String.valueOf(0);
+        retValue[3]  = String.valueOf(0);
+
+        Log.d("[GPS]","Sending Latitude: "+retValue[0]+" Longitude: "+retValue[1]);
 
         return retValue;
     }
@@ -330,15 +400,44 @@ public class GPSTracker extends Service implements LocationListener {
 
     private void sendLocationToServer()
     {
-        double[] sendLocData = this.getDeviceLocation();
-        SendDeviceLocationDataAsyncTask task
-                = new SendDeviceLocationDataAsyncTask();
+        String[] sendLocData = this.getDeviceLocation();
+
+        SendDeviceLocationDataAsyncTask task = new SendDeviceLocationDataAsyncTask();
+
         try
         {
-            task.execute(this.locationToJSONObject(sendLocData).toString()).get();
-            this.responseLocations = task.getJSONUsersLocationArray();
+            JSONObject requestDataJsonObject = this.locationToJSONObject(sendLocData);
+            requestDataJsonObject.put("userid", this.userId);
 
-            List<JSONObject> users = User.JSONArrayToJSONObject(this.responseLocations);
+            task.execute(requestDataJsonObject.toString()).get();
+            this.responseLocations = task.getJSONUsersLocationArray();
+            JSONArray jsonArray = new JSONArray();
+            JSONArray newJsonArrayFriends = new JSONArray();
+
+            if (responseLocations != null)
+            {
+                jsonArray = new JSONArray(this.responseLocations);
+
+                for (int i = 0; i < jsonArray.length(); i++)
+                {
+                    JSONObject friend = jsonArray.getJSONObject(i);
+                    JSONObject newFriend = friend.getJSONObject("meta_data");
+
+                    newFriend.put(UserStaticAttributes._username, friend.get(UserStaticAttributes._username));
+                    newFriend.put("location", friend.getJSONObject("location"));
+                    newJsonArrayFriends.put(newFriend);
+                }
+            }
+
+            newJsonArrayFriends.put(longitude);
+            newJsonArrayFriends.put(latitude);
+
+//            List<JSONObject> users = User.JSONArrayToJSONObject(this.responseLocations);
+
+            if (this.responseLocations != null)
+            {
+                this.sendFriendLocation(newJsonArrayFriends.toString());
+            }
         }
         catch (InterruptedException e)
         {
@@ -353,10 +452,15 @@ public class GPSTracker extends Service implements LocationListener {
             Log.e("*****BREAK_POINT*****", successMessage);
             e.printStackTrace();
             this.responseLocations  = null;
+        } catch (JSONException e)
+        {
+            String successMessage = "SendLocationThread::sendLocationToServer: JSONException - " + e.getMessage();
+            Log.e("*****BREAK_POINT*****", successMessage);
+            this.responseLocations  = null;
         }
     }
 
-    private JSONObject locationToJSONObject(double[] locationParam)
+    private JSONObject locationToJSONObject(String[] locationParam)
     {
         JSONObject retValue = new JSONObject();
 
@@ -377,6 +481,35 @@ public class GPSTracker extends Service implements LocationListener {
         }
 
         return retValue;
+    }
+
+    /* Distance in km */
+    public static double distanceBetween(LatLng loc1,LatLng loc2)
+    {
+        double lat1 = loc1.latitude * Math.PI / 180.0;
+        double lon1 = loc1.longitude * Math.PI / 180.0;
+        double lat2 = loc2.latitude * Math.PI / 180.0;
+        double lon2 = loc2.longitude * Math.PI / 180.0;
+
+        double theta = lon1 - lon2;
+        double dist = Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(theta);
+        dist = Math.acos(dist);
+        dist = dist* 180.0 / Math.PI;
+        dist = dist * 60 * 1.1515;
+        return (dist);
+    }
+
+    private void sendInitUserLocation()
+    {
+        JSONArray newJsonArrayFriends = new JSONArray();
+
+        try {
+            newJsonArrayFriends.put(longitude);
+            newJsonArrayFriends.put(latitude);
+            this.sendFriendLocation(newJsonArrayFriends.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }

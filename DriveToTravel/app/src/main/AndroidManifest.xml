@@ -72,11 +72,10 @@
             android:theme="@style/AppTheme"
             />
 
-        <!---->
-        <!--<service-->
-            <!--android:name=".Services.GPSTracker"-->
-            <!--android:enabled="true"-->
-            <!--android:exported="false"></service>-->
+        <service
+            android:name=".Services.GPSTracker"
+            android:enabled="true"
+            android:exported="false"></service>
 
         <activity
             android:name=".Activities.DriversMainActivity"

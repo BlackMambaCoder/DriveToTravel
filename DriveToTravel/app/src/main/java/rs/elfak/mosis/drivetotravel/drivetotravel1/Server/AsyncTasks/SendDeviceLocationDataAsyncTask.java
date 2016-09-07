@@ -34,7 +34,6 @@ public class SendDeviceLocationDataAsyncTask extends AsyncTask<String, Void, Voi
     @Override
     protected Void doInBackground(String... params)
     {
-        Resources res           = Resources.getSystem();
         String postValue        = params[0];
         String successMessage;
         String routeUrl         = ServerStaticAttributes._SERVER_ROOT_URL +
@@ -77,19 +76,16 @@ public class SendDeviceLocationDataAsyncTask extends AsyncTask<String, Void, Voi
         {
             successMessage = "SendDeviceLocationDataAsyncTask: MalformedURLException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
         }
         catch (ProtocolException e)
         {
             successMessage = "SendDeviceLocationDataAsyncTask: ProtocolException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
         }
         catch (IOException e)
         {
             successMessage = "SendDeviceLocationDataAsyncTask: IOException - " + e.getMessage();
             Log.e("*****BREAK_POINT*****", successMessage);
-            e.printStackTrace();
         }
         return null;
     }

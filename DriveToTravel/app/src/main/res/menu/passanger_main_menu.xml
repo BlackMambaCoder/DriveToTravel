@@ -2,12 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/passanger_menu_search_btn"
-        android:title="@string/title_menu_passanger_search_transport"
-        android:orderInCategory="0"
-        android:icon="@android:drawable/ic_menu_search"
-        app:showAsAction="always"/>
+
 
     <item android:id="@+id/passanger_main_menu_activate_location_notification"
         android:title="LocNotify"
@@ -21,9 +16,10 @@
         android:icon="@drawable/ic_group_white_24dp"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/passanger_main_menu_logout_action"
-        android:title="Logout"
+    <item android:id="@+id/passanger_main_menu_sort"
+        android:title="Sort"
         android:orderInCategory="0"
+        android:icon="@drawable/ic_reorder_white_24dp"
         app:showAsAction="ifRoom"/>
 
 </menu>

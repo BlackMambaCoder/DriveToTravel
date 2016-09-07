@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +22,12 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Tour;
 import org.json.JSONArray;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Model.UserLocalStore;
@@ -46,8 +52,6 @@ public class PassangerMainActivity extends AppCompatActivity {
 
     public static Handler publicHandler            = null;
     private Passenger user;
-
-    private GPSTracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +96,6 @@ public class PassangerMainActivity extends AppCompatActivity {
 
         this.getLoggedInUser();
         this.prepareView();
-        tracker = new GPSTracker(this,user.getId());
 
         //Klik na item
         listaVoznji.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -126,16 +129,6 @@ public class PassangerMainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
-            case R.id.passanger_menu_search_btn:
-                //Open search dialog
-                //showSearchDialog();
-
-                Intent intent = new Intent(this, SearchRideActivity.class);
-                startActivityForResult(intent,SearchRideActivity.REQUEST_CODE);
-
-
-                break;
-
             case R.id.passanger_main_menu_activate_location_notification:
 
                 if (!this.toggleLocationNotification)
@@ -152,16 +145,23 @@ public class PassangerMainActivity extends AppCompatActivity {
                             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                             != PackageManager.PERMISSION_GRANTED)
                     {
+                        Toast.makeText(this,"Please enable location permission!",Toast.LENGTH_SHORT).show();
                         ActivityCompat.requestPermissions(this, new String[]{"Location"}, 0);
                     }
-
-
-                    tracker.initLocationProvider();
+                    else
+                    {
+                        Intent serviceIntent = new Intent(this,GPSTracker.class);
+                        serviceIntent.putExtra("userid",user.getId());
+                        startService(serviceIntent);
+                    }
                 }
                 else
                 {
                     this.toggleLocationNotification = false;
-                    tracker.stopUsingGPS();
+
+                    Intent serviceIntent = new Intent(this,GPSTracker.class);
+                    stopService(serviceIntent);
+
                     Toast.makeText(this, "Location update deactivated", Toast.LENGTH_LONG).show();
                 }
 
@@ -170,6 +170,11 @@ public class PassangerMainActivity extends AppCompatActivity {
             case R.id.passanger_main_menu_friendship:
                 Intent intent_fr = new Intent(this, friendshipActivity.class);
                 startActivity(intent_fr);
+                break;
+
+            case R.id.passanger_main_menu_sort:
+                Toast.makeText(this,"Sorting rides by start date",Toast.LENGTH_SHORT).show();
+                sortTours();
                 break;
 
             default:
@@ -273,5 +278,30 @@ public class PassangerMainActivity extends AppCompatActivity {
     {
         ServerRequest serverRequest = new ServerRequest(this);
         this.tours = serverRequest.getAllTours();
+    }
+
+    private void sortTours()
+    {
+
+//
+//        Tour pom;
+//
+//        for(int i=0;i<tours.length;i++)
+//        {
+//            for(int j=0;j<tours.length;j++)
+//            {
+//                if(tours[i].getId()>tours[j].getId())
+//                {
+//                    pom = tours[i];
+//                    tours[i]=tours[j];
+//                    tours[j]=pom;
+//                }
+//            }
+//        }
+
+
+
+        this.listAdapter = new CustomListAdapter(PassangerMainActivity.this, this.tours);
+        this.listaVoznji.setAdapter(this.listAdapter);
     }
 }

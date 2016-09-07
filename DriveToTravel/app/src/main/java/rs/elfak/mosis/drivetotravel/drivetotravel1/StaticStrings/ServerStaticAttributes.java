@@ -19,7 +19,7 @@ public class ServerStaticAttributes
     public static String USER_FRIEND_WITH = "/user/friend";
     public static String USER_ADD_FRIEND = "/user/add_friend";
     public static String USER_REMOVE_FRIEND = "/user/remove_friend";
-    public static String UPDATE_USER_LOCATION = "user/update_location";
+    public static String UPDATE_USER_LOCATION = "/user/update_location";
 
     public static String CREATE_TOUR_URL = "/tour/create";
     public static String FETCH_DRIVERS_TOURS = "/tour/drivers";

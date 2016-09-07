@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -23,7 +24,7 @@ import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.TourStaticAttri
 /**
  * Created by LEO on 4.4.2016..
  */
-public class Tour implements Parcelable
+public class Tour implements Parcelable, Comparator<Tour>
 {
     private int id;
     private String startLocation;
@@ -375,4 +376,10 @@ public class Tour implements Parcelable
             return new Tour[size];
         }
     };
+
+    @Override
+    public int compare(Tour lhs, Tour rhs)
+    {
+        return lhs.getStartDate().compareTo(rhs.getStartDate());
+    }
 }

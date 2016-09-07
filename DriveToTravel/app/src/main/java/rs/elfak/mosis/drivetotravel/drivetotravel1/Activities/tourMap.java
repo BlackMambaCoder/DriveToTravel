@@ -28,9 +28,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.Passenger;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
@@ -51,6 +56,11 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
     private String uid;
     private UserLocalStore userLocalStore;
     private Passenger userPassanger;
+    private boolean firstLocation=false;
+
+    private Marker[] friendMarkers;
+    private LatLng[] friendLocations;
+    private  boolean showFriends=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,27 +75,58 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
         userLocalStore = new UserLocalStore(this);
         userPassanger = userLocalStore.getPassenger();
 
-        mGPS = new GPSTracker(this, userLocalStore.getPassenger().getId());
+        mGPS = new GPSTracker();
 
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                String s = intent.getStringExtra("GPSTRACKER_GPS_MSG");
+//                String s = intent.getStringExtra("GPSTRACKER_GPS_MSG");
+                String friends = intent.getStringExtra(GPSTracker.FRIEND_MESSAGE);
 
-                Log.d("[MAP]", "Location update: " + s);
+//                Log.d("[MAP]", "Location update: " + s);
 
                 //Update UI
-                String[] data = s.split(",");
+//                String[] data = s.split(",");
+                JSONArray userLocations;
+
+//                try
+//                {
+//                    userLocations = new JSONArray(s);
+//                }
+//                catch (JSONException e)
+//                {
+//                    userLocations = null;
+//                    e.printStackTrace();
+//                }
+
+                if (firstLocation)
+                {
+
+                }
 
                 LatLng myPos;
 
-                if (mapIsReady) {
-                    myLocation = new LatLng(Double.valueOf(data[0]), Double.valueOf(data[1]));
-                    myPositionMarker.setPosition(myLocation);
+                if (mapIsReady)
+                {
+//                    myLocation = new LatLng(Double.valueOf(data[0]), Double.valueOf(data[1]));
+//                    myPositionMarker.setPosition(myLocation);
 
-                    if (lockTaxiPosition) {
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+                    if(!firstLocation)
+                    {
+                        initFriends(friends);
+
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(myLocation)
+                                .zoom(14)
+                                .build();
+
+                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        firstLocation=true;
+                    }
+                    else
+                    {
+                        updateFriends(friends);
                     }
                 }
             }
@@ -105,48 +146,21 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(this));
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this,"Please enable location permission!",Toast.LENGTH_SHORT).show();
-            finish();
-        }
 
-        if (mGPS.canGetLocation())
+        try
         {
-            myLocation = new LatLng(mGPS.getLatitude(), mGPS.getLongitude());
+            initUserMarker(new LatLng(0,0));
+            mapIsReady=true;
         }
-
-        //Check location
-        if(myLocation != null)
+        catch (JSONException e)
         {
-            mMap.setMyLocationEnabled(true);
-
-            String accUsername = userPassanger.getUsername();
-            String firstName = userPassanger.getName();
-            String lastName = userPassanger.getSurname();
-            String phone = userPassanger.getPhoneNumber();
-            String userType;
-            Bitmap profile_img = userPassanger.getProfileImage();
-
-            if(userPassanger.getUserType() == User.USER_TYPE_PASSENGER) {
-                userType = "Passenger";
-            }
-            else
-            {
-                userType = "Driver";
-            }
-
-            String data = firstName+" "+lastName+","+phone+","+userType;
-
-            myPositionMarker = mMap.addMarker(new MarkerOptions().position(myLocation).title(accUsername).snippet(data));
-            myPositionMarker.setIcon(BitmapDescriptorFactory.fromBitmap(resizeMapIcon(profile_img,140,162)));
-
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation,15));
+            e.printStackTrace();
+            mapIsReady = false;
         }
-
-        mapIsReady=true;
     }
 
     @Override
@@ -176,9 +190,18 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            case R.id.map_taxi_lock_btn:
-                lockTaxiPosition = !lockTaxiPosition;
-                Toast.makeText(tourMap.this,"Tracking driver: "+lockTaxiPosition,Toast.LENGTH_SHORT).show();
+            case R.id.map_show_friends_btn:
+
+                showFriends=!showFriends;
+
+                if(friendMarkers != null && friendMarkers.length>0) {
+                    for (Marker m : friendMarkers) {
+                        m.setVisible(showFriends);
+                    }
+
+                    Toast.makeText(this,"Show friends: "+showFriends,Toast.LENGTH_SHORT).show();
+                }
+
                 break;
 
         }
@@ -198,4 +221,146 @@ public class tourMap extends AppCompatActivity implements OnMapReadyCallback {
         return resizedBitmap;
     }
 
+    private void initUserMarker(LatLng loc) throws JSONException
+    {
+//        String accUsername = userPassanger.getUsername();
+//        String firstName = userPassanger.getName();
+//        String lastName = userPassanger.getSurname();
+//        String phone = userPassanger.getPhoneNumber();
+//        String userType;
+        Bitmap profile_img = userPassanger.getProfileImage();
+
+//        if(userPassanger.getUserType() == User.USER_TYPE_PASSENGER)
+//        {
+//            userType = "Passenger";
+//        }
+//        else
+//        {
+//            userType = "Driver";
+//        }
+
+//        String data = firstName+" "+lastName+","+phone+","+userType;
+
+        JSONObject userPassengerJSONObject = userPassanger.toJSONObject();
+
+        myLocation = new LatLng(loc.latitude,loc.longitude);
+        myPositionMarker = mMap.addMarker(new MarkerOptions().position(loc).title(userPassanger.getUsername()).snippet(userPassengerJSONObject.toString()));
+        myPositionMarker.setIcon(BitmapDescriptorFactory.fromBitmap(resizeMapIcon(profile_img,140,180)));
+    }
+
+    private void initFriends(String userLocationsString)
+    {
+        JSONArray userLocations = null;
+        try
+        {
+            userLocations = new JSONArray(userLocationsString);
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+
+            this.friendLocations = new LatLng[0];
+            this.friendMarkers = new Marker[0];
+
+            return;
+        }
+
+        this.friendLocations = new LatLng[userLocations.length() - 2];
+        this.friendMarkers = new Marker[userLocations.length() - 2];
+
+        for (int i = 0; i < userLocations.length() - 2; i++)
+        {
+            double lat = 0.0;
+            double lng = 0.0;
+
+            Marker marker;
+            LatLng friendLoc;
+
+            try
+            {
+                lat = userLocations.getJSONObject(i).getJSONObject("location").getDouble("latitude");
+                lng = userLocations.getJSONObject(i).getJSONObject("location").getDouble("longitude");
+
+                friendLoc = new LatLng(lat, lng);
+
+                marker = mMap.addMarker(new MarkerOptions().position(friendLoc).title("").snippet(userLocations.getJSONObject(i).toString()));
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+                continue;
+            }
+
+            Bitmap bitmap;
+            try
+            {
+                bitmap = User.stringToBitmap(userLocations.getJSONObject(i).getString("profileimage"));
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+                bitmap = resizeMapIcon(R.drawable.profile, 140, 180);
+            }
+
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(resizeMapIcon(bitmap, 140, 180)));
+
+            this.friendMarkers[i] = marker;
+            this.friendLocations[i] = friendLoc;
+        }
+    }
+
+    private void updateFriends(String userLocationsString)
+    {
+        JSONArray userLocations = null;
+        try
+        {
+            userLocations = new JSONArray(userLocationsString);
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+
+            this.friendLocations = new LatLng[0];
+            this.friendMarkers = new Marker[0];
+
+            return;
+        }
+
+        for (int i = 0; i < userLocations.length() - 2; i++)
+        {
+            double lat = 0.0;
+            double lng = 0.0;
+
+            try
+            {
+                lat = userLocations.getJSONObject(i).getJSONObject("location").getDouble("latitude");
+                lng = userLocations.getJSONObject(i).getJSONObject("location").getDouble("longitude");
+
+                friendLocations[i] = new LatLng(lat,lng);
+                friendMarkers[i].setPosition(friendLocations[i]);
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+                continue;
+            }
+        }
+
+        try
+        {
+            double myLat = userLocations.getDouble(userLocations.length() - 1);
+            double myLng = userLocations.getDouble(userLocations.length() - 2);
+
+            this.myLocation = new LatLng(myLat, myLng);
+            this.myPositionMarker.setPosition(myLocation);
+
+            double distance = GPSTracker.distanceBetween(myLocation,friendLocations[0]);
+            Log.d("[DISTANCE]",String.valueOf(distance));
+
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

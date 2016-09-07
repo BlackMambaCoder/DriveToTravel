@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/map_taxi_lock_btn"
-        android:title="Track taxi location"
-        android:icon="@drawable/ic_near_me_white_24dp"
-        app:showAsAction="always" />
+        android:id="@+id/map_show_friends_btn"
+        android:title="Show friends"
+        android:icon="@drawable/ic_account_circle_white_24dp"
+        app:showAsAction="always"/>
 
 </menu>

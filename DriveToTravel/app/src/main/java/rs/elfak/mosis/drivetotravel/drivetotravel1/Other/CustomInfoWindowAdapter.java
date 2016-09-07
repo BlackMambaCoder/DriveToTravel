@@ -12,7 +12,12 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import rs.elfak.mosis.drivetotravel.drivetotravel1.Entities.User;
 import rs.elfak.mosis.drivetotravel.drivetotravel1.R;
+import rs.elfak.mosis.drivetotravel.drivetotravel1.StaticStrings.UserStaticAttributes;
 
 /**
  * Created by Alexa on 9/3/2016.
@@ -49,14 +54,34 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         TextView acc = (TextView) popUp.findViewById(R.id.infowindow_account);
 
         //Format data
-        username.setText(marker.getTitle());
+//        username.setText(marker.getTitle());
 
         //Account data
-        String[] accData = marker.getSnippet().split(",");
+//        String[] accData = marker.getSnippet().split(",");
+        JSONObject userPassenger;
+        try {
+            userPassenger = new JSONObject(marker.getSnippet());
+            name.setText(userPassenger.getString(UserStaticAttributes._name));
+            phone.setText(userPassenger.getString(UserStaticAttributes._phoneNumber));
 
-        name.setText(accData[0]);
-        phone.setText(accData[1]);
-        acc.setText(accData[2]);
+            if(userPassenger.getInt(UserStaticAttributes._userType) == User.USER_TYPE_PASSENGER) {
+                acc.setText("Passanger");
+            }
+            else
+            {
+                acc.setText("Driver");
+            }
+
+            username.setText(userPassenger.getString(UserStaticAttributes._username));
+        } catch (JSONException e) {
+            userPassenger = null;
+            e.printStackTrace();
+        }
+
+
+//        name.setText(accData[0]);
+//        phone.setText(accData[1]);
+//        acc.setText(accData[2]);
 
         // Returning the view containing InfoWindow contents
         return popUp;
